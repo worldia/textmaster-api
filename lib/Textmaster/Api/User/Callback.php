@@ -16,6 +16,7 @@ class Callback extends AbstractApi
      * Set a callback url and format for a given user and event.
      *
      * @link https://fr.textmaster.com/documentation#users-update-callback-information
+     * @deprecated Xml format is deprecated in favour of Json.
      *
      * @param string $userId Current user id
      * @param string $event  One of 'waiting_assignment', 'completed'
@@ -30,7 +31,7 @@ class Callback extends AbstractApi
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback event.', $event));
         }
 
-        if (!in_array($format, array('json'))) {
+        if (!in_array($format, array('json', 'xml'))) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback format.', $format));
         }
 

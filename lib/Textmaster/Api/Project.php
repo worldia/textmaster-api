@@ -166,12 +166,14 @@ class Project extends AbstractApi
      * @link https://www.textmaster.com/documentation#projects-launch-a-project-asynchronously
      * @link https://www.textmaster.com/documentation#projects-launch-a-project
      *
+     * @deprecated Synchronously launching a project is deprecated
+     *
      * @param string $projectId
      * @param bool $async
      *
      * @return array
      */
-    public function launch($projectId, $async = false)
+    public function launch($projectId, $async = true)
     {
         if ($async) {
             return $this->post($this->getPath($projectId).'/async_launch');
