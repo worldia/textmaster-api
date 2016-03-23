@@ -88,7 +88,7 @@ class ErrorListener
                         }
                     }
 
-                    throw new ValidationFailedException('Validation Failed: ' . implode(', ', $errors), 422);
+                    throw new ValidationFailedException('Validation Failed: '.implode(', ', $errors), 422);
                 }
             }
 

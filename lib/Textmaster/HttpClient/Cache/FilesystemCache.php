@@ -74,7 +74,7 @@ class FilesystemCache implements CacheInterface
     }
 
     /**
-     * @param $id string
+     * @param string $id string
      *
      * @return string
      */
