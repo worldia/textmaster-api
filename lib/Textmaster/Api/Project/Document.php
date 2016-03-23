@@ -119,10 +119,10 @@ class Document extends AbstractApi
     {
         $params = array();
 
-        if ($satisfaction) {
+        if (null !== $satisfaction) {
             $params['satisfaction'] = $satisfaction;
         }
-        if ($message) {
+        if (null !== $message) {
             $params['message'] = $message;
         }
 
@@ -147,10 +147,10 @@ class Document extends AbstractApi
             'documents' => $documentIds
         );
 
-        if ($satisfaction) {
+        if (null !== $satisfaction) {
             $params['satisfaction'] = $satisfaction;
         }
-        if ($message) {
+        if (null !== $message) {
             $params['message'] = $message;
         }
 
@@ -192,7 +192,7 @@ class Document extends AbstractApi
      */
     protected function getPath($projectId, $documentId = null)
     {
-        if ($documentId) {
+        if (null !== $documentId) {
             return sprintf(
                 'clients/projects/%s/documents/%s',
                 rawurlencode($projectId),

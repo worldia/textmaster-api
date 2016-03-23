@@ -1,14 +1,11 @@
 <?php
 
-require __DIR__.'/vendor/autoload.php';
+$finder = Symfony\CS\Finder::create()
+    ->exclude('somedir')
+    ->in(__DIR__)
+;
 
-use SLLH\StyleCIBridge\ConfigBridge;
-
-$config = ConfigBridge::create();
-$config->setUsingCache(true);
-
-if (method_exists($config, 'setRiskyAllowed')) {
-    $config->setRiskyAllowed(true);
-}
-
-return $config;
+return Symfony\CS\Config::create()
+    ->fixers(array('strict_param', 'short_array_syntax'))
+    ->finder($finder)
+;

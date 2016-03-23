@@ -25,7 +25,7 @@ class Mine extends AbstractApi
     {
         $params = array();
 
-        if ($status) {
+        if (null !== $status) {
             if (!$this->isValidStatus($status)) {
                 throw new InvalidArgumentException(sprintf('"%s" is not valid author status.', $status));
             }
@@ -59,7 +59,7 @@ class Mine extends AbstractApi
                 )
             );
 
-        if ($description) {
+        if (null !== $description) {
             $params['my_author']['description'] = $description;
         }
 
@@ -91,7 +91,7 @@ class Mine extends AbstractApi
                 )
             );
 
-        if ($description) {
+        if (null !== $description) {
             $params['my_author']['description'] = $description;
         }
 
@@ -121,7 +121,7 @@ class Mine extends AbstractApi
      */
     protected function getPath($authorId = null)
     {
-        if ($authorId) {
+        if (null !== $authorId) {
             return sprintf('clients/my_authors/%s', rawurlencode($authorId));
         }
 

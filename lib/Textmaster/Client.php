@@ -48,9 +48,7 @@ class Client
     );
 
     /**
-     * The Buzz instance used to communicate with Textmaster.
-     *
-     * @var HttpClient
+     * @var HttpClientInterface
      */
     private $httpClient;
 

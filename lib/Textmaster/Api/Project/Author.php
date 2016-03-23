@@ -25,7 +25,7 @@ class Author extends AbstractApi
     {
         $params = array();
 
-        if ($status && in_array($status, array('my_textmaster', 'blacklisted', 'uncategorized'))) {
+        if (null !== $status && in_array($status, array('my_textmaster', 'blacklisted', 'uncategorized'))) {
             $params['status'] = $status;
         }
 

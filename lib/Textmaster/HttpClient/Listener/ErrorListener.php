@@ -45,7 +45,7 @@ class ErrorListener
                 throw new ApiLimitExceedException($limit);
             }
 
-            if (401 === $response->getStatusCode()) {
+            if (401 == $response->getStatusCode()) {
                 if ($response->hasHeader('X-Textmaster-OTP') && 0 === strpos((string) $response->getHeader('X-Textmaster-OTP'), 'required;')) {
                     $type = substr((string) $response->getHeader('X-Textmaster-OTP'), 9);
 

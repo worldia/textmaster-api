@@ -68,7 +68,7 @@ class Project extends AbstractApi
             'project' => $params
         );
 
-        if ($tracker) {
+        if (null !== $tracker) {
             $params['tracker'] = $tracker;
         }
 

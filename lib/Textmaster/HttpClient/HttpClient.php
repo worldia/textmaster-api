@@ -20,6 +20,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class HttpClient implements HttpClientInterface
 {
+    /**
+     * @var ClientInterface
+     */
+    protected $client;
+
     protected $options = array(
         'base_url'    => 'http://api.textmaster.com/%s/clients',
 
@@ -47,7 +52,7 @@ class HttpClient implements HttpClientInterface
             sprintf($this->options['base_url'], $this->options['api_version']),
             $this->options
         );
-        $this->client  = $client;
+        $this->client = $client;
 
         $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
         $this->clearHeaders();
@@ -75,7 +80,6 @@ class HttpClient implements HttpClientInterface
     public function clearHeaders()
     {
         $this->headers = array(
-            // 'Accept' => sprintf('application/vnd.github.%s+json', $this->options['api_version']),
             'User-Agent' => sprintf('%s', $this->options['user_agent']),
         );
     }
@@ -141,8 +145,6 @@ class HttpClient implements HttpClientInterface
             $response = $this->client->send($request);
         } catch (\LogicException $e) {
             throw new ErrorException($e->getMessage(), $e->getCode(), $e);
-        } catch (TwoFactorAuthenticationRequiredException $e) {
-            throw $e;
         } catch (\RuntimeException $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }

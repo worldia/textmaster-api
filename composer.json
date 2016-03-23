@@ -1,19 +1,14 @@
 {
-    "name": "knplabs/github-api",
+    "name": "cdaguerre/github-api",
     "type": "library",
     "description": "Textmaster API v3 client",
-    "homepage": "https://github.com/KnpLabs/php-github-api",
-    "keywords": ["github", "gh", "api", "gist"],
-    "license": "MIT",
+    "homepage": "https://github.com/cdaguerre/php-github-api",
+    "keywords": ["textmaster", "translation", "api"],
+    "license": "UNLICENSED",
     "authors": [
         {
-            "name": "KnpLabs Team",
-            "homepage": "http://knplabs.com"
-        },
-        {
-            "name": "Thibault Duplessis",
-            "email": "thibault.duplessis@gmail.com",
-            "homepage": "http://ornicar.github.com"
+            "name": "Christian Daguerre",
+            "email": "christian@daguer.re"
         }
     ],
     "require": {
@@ -23,7 +18,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
-        "sllh/php-cs-fixer-styleci-bridge": "~1.3"
+        "fabpot/php-cs-fixer": "^1.11"
     },
     "suggest": {
         "knplabs/gaufrette": "Needed for optional Gaufrette cache"
@@ -33,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.5.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     }
 }
