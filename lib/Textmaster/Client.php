@@ -175,9 +175,7 @@ class Client
      */
     public function getOption($name)
     {
-        if (!array_key_exists($name, $this->options)) {
-            throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
-        }
+        $this->validateOptionExistence($name);
 
         return $this->options[$name];
     }
@@ -191,9 +189,7 @@ class Client
      */
     public function setOption($name, $value)
     {
-        if (!array_key_exists($name, $this->options)) {
-            throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
-        }
+        $this->validateOptionExistence($name);
 
         $this->options[$name] = $value;
     }
@@ -201,7 +197,7 @@ class Client
     /**
      * @param string $name
      *
-     * @throws InvalidArgumentException
+     * @throws BadMethodCallException
      *
      * @return ApiInterface
      */
@@ -211,6 +207,16 @@ class Client
             return $this->api($name);
         } catch (InvalidArgumentException $e) {
             throw new BadMethodCallException(sprintf('Undefined method called: "%s"', $name));
+        }
+    }
+
+    /**
+     * @param string $name
+     */
+    private function validateOptionExistence($name)
+    {
+        if (!array_key_exists($name, $this->options)) {
+            throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
         }
     }
 }
