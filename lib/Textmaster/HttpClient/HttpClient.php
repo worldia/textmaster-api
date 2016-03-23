@@ -183,6 +183,10 @@ class HttpClient implements HttpClientInterface
         return $this->lastResponse;
     }
 
+    /**
+     * @param string $httpMethod
+     * @param string $path
+     */
     protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array())
     {
         return $this->client->createRequest(
