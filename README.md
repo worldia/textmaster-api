@@ -1,6 +1,6 @@
 # PHP Textmaster API
 
-[![Build Status](https://travis-ci.org/cdaguerre/php-textmaster-api.svg?branch=master)](https://travis-ci.org/KnpLabs/php-textmaster-api)
+[![Build Status](https://travis-ci.com/cdaguerre/php-textmaster-api.svg?branch=master)](https://travis-ci.com/cdaguerre/php-textmaster-api)
 
 A simple Object Oriented wrapper for Textmaster API, written with PHP5.
 
