@@ -85,7 +85,7 @@ class CachedHttpClient extends HttpClient
         $this->id = $path;
 
         if (array_key_exists('query', $options) && !empty($options['query'])) {
-            $this->id .= '?' . $request->getQuery();
+            $this->id .= '?'.$request->getQuery();
         }
 
         if ($modifiedAt = $this->getCache()->getModifiedSince($this->id)) {
@@ -112,7 +112,7 @@ class CachedHttpClient extends HttpClient
      */
     public function getLastResponse($force = false)
     {
-        $lastResponse =  parent::getLastResponse();
+        $lastResponse = parent::getLastResponse();
         if (304 != $lastResponse->getStatusCode()) {
             $force = true;
         }

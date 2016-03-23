@@ -2,7 +2,6 @@
 
 namespace Textmaster\HttpClient;
 
-use Textmaster\Exception\TwoFactorAuthenticationRequiredException;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\Request;
@@ -84,6 +83,9 @@ class HttpClient implements HttpClientInterface
         );
     }
 
+    /**
+     * @param string $eventName
+     */
     public function addListener($eventName, $listener)
     {
         $this->client->getEventDispatcher()->addListener($eventName, $listener);
