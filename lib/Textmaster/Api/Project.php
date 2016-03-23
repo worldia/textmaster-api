@@ -225,7 +225,7 @@ class Project extends AbstractApi
      */
     protected function getPath($projectId = null)
     {
-        if ($projectId) {
+        if (null !== $projectId) {
             return sprintf('clients/projects/%s', rawurlencode($projectId));
         }
 
