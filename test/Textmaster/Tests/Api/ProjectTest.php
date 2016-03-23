@@ -199,7 +199,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/launch')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->launch(1));
+        $this->assertEquals($expectedArray, $api->launch(1, false));
     }
 
     /**
@@ -215,7 +215,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/async_launch')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->launch(1, true));
+        $this->assertEquals($expectedArray, $api->launch(1));
     }
 
     /**

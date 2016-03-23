@@ -22,7 +22,7 @@ class ErrorListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Textmaster\Exception\RuntimeException
+     * @expectedException \Textmaster\Exception\ErrorException
      */
     public function shouldNotPassWhenContentWasNotValidJson()
     {
@@ -40,7 +40,7 @@ class ErrorListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Textmaster\Exception\RuntimeException
+     * @expectedException \Textmaster\Exception\ErrorException
      */
     public function shouldNotPassWhenContentWasValidJsonButStatusIsNotCovered()
     {
@@ -54,27 +54,6 @@ class ErrorListenerTest extends \PHPUnit_Framework_TestCase
         $response->expects($this->any())
             ->method('getStatusCode')
             ->will($this->returnValue(404));
-
-        $listener = new ErrorListener(array());
-        $listener->onRequestError($this->getEventMock($response));
-    }
-
-    /**
-     * @test
-     * @expectedException \Textmaster\Exception\RuntimeException
-     */
-    public function shouldNotPassWhen400IsSent()
-    {
-        $response = $this->getMockBuilder('Guzzle\Http\Message\Response')->disableOriginalConstructor()->getMock();
-        $response->expects($this->once())
-            ->method('isClientError')
-            ->will($this->returnValue(true));
-        $response->expects($this->once())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode(array('message' => 'test'))));
-        $response->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue("400"));
 
         $listener = new ErrorListener(array());
         $listener->onRequestError($this->getEventMock($response));
