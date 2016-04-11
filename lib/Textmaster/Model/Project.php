@@ -2,7 +2,7 @@
 
 namespace Textmaster\Model;
 
-class Project implements ProjectInterface
+class Project extends TextmasterObject implements ProjectInterface
 {
     /**
      * @var string
@@ -50,26 +50,11 @@ class Project implements ProjectInterface
     protected $options;
 
     /**
-     * @var array
-     */
-    protected $documents;
-
-    /**
      * {@inheritdoc}
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -83,29 +68,9 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCtype()
     {
         return $this->ctype;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCtype($ctype)
-    {
-        $this->ctype = $ctype;
-
-        return $this;
     }
 
     /**
@@ -131,29 +96,9 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLanguageFrom()
     {
         return $this->languageFrom;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLanguageFrom($languageFrom)
-    {
-        $this->languageFrom = $languageFrom;
-
-        return $this;
     }
 
     /**
@@ -167,29 +112,9 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setLanguageTo($languageTo)
-    {
-        $this->languageTo = $languageTo;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
     }
 
     /**
@@ -203,66 +128,8 @@ class Project implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function setProjectBriefing($projectBriefing)
-    {
-        $this->projectBriefing = $projectBriefing;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocuments()
-    {
-        return $this->documents;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDocuments(array $documents)
-    {
-        $this->documents = $documents;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addDocument(DocumentInterface $document)
-    {
-        $document->setProject($this);
-        $this->documents[] = $document;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeDocument(DocumentInterface $document)
-    {
-        $document->setProject(null);
-        $key = array_search($document, $this->documents);
-
-        unset($this->documents[$key]);
     }
 }

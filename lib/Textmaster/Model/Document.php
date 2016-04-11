@@ -2,7 +2,7 @@
 
 namespace Textmaster\Model;
 
-class Document implements DocumentInterface
+class Document extends TextmasterObject implements DocumentInterface
 {
     /**
      * @var string
@@ -30,9 +30,9 @@ class Document implements DocumentInterface
     protected $translatedContent;
 
     /**
-     * @var ProjectInterface
+     * @var string
      */
-    protected $project;
+    protected $projectId;
 
     /**
      * {@inheritdoc}
@@ -40,16 +40,6 @@ class Document implements DocumentInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -63,29 +53,9 @@ class Document implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     /**
@@ -99,16 +69,6 @@ class Document implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function setOriginalContent($originalContent)
-    {
-        $this->originalContent = $originalContent;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslatedContent()
     {
         return $this->translatedContent;
@@ -117,28 +77,8 @@ class Document implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function setTranslatedContent($translatedContent)
+    public function getProjectId()
     {
-        $this->translatedContent = $translatedContent;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProject(ProjectInterface $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
+        return $this->projectId;
     }
 }
