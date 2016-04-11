@@ -16,6 +16,9 @@ interface DocumentInterface extends TextmasterObject
     const STATUS_COUNTING_WORDS = 'counting_words';
     const STATUS_QUALITY = 'quality_control';
 
+    /**
+     * @return DocumentInterface
+     */
     public function getId();
 
     /**

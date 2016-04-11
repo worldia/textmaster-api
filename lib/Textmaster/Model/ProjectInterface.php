@@ -19,6 +19,7 @@ interface ProjectInterface extends TextmasterObject
      * @return string
      */
     public function getId();
+
     /**
      * @param string $id
      *
@@ -37,6 +38,7 @@ interface ProjectInterface extends TextmasterObject
      * @return ProjectInterface
      */
     public function setName($name);
+
     /**
      * @return string
      */
@@ -72,6 +74,7 @@ interface ProjectInterface extends TextmasterObject
      * @return string
      */
     public function getLanguageFrom();
+
     /**
      * @param string $languageFrom
      *
@@ -95,6 +98,7 @@ interface ProjectInterface extends TextmasterObject
      * @return string
      */
     public function getCategory();
+
     /**
      * @param string $category
      *
