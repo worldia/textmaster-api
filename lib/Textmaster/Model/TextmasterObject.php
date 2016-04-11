@@ -2,6 +2,6 @@
 
 namespace Textmaster\Model;
 
-interface TextMasterObject
+interface TextmasterObject
 {
 }
