@@ -43,8 +43,8 @@ class Serializer
 
             $underscored = strtolower(
                 preg_replace(
-                    ['/([A-Z]+)/', '/_([A-Z]+)([A-Z][a-z])/'],
-                    ['_$1', '_$1_$2'],
+                    array('/([A-Z]+)/', '/_([A-Z]+)([A-Z][a-z])/'),
+                    array('_$1', '_$1_$2'),
                     lcfirst($property)
                 )
             );
