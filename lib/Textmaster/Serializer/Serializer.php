@@ -1,15 +1,15 @@
 <?php
 
-namespace Textmaster\Transformer;
+namespace Textmaster\Serializer;
 
-use Textmaster\Model\TextMasterObject;
+use Textmaster\Model\TextmasterObject;
 
 /**
- * Manage transformation for TextMasterObject:
- *  - Serialize -> from TextMasterObject to php array.
- *  - Unserialize -> from php array to TextMasterObject.
+ * Manage transformation for TextmasterObject:
+ *  - Serialize -> from TextmasterObject to php array.
+ *  - Unserialize -> from php array to TextmasterObject.
  */
-class Transformer
+class Serializer
 {
     /**
      * List of all attributes that should not be serialized.
@@ -19,17 +19,15 @@ class Transformer
     private $notSerializedAttributes = array('id', 'textMasterId', 'documents');
 
     /**
-     * Serialize a TextMasterObject to a php array.
+     * Serialize a TextmasterObject to a php array.
      *
-     * @param TextMasterObject $object
+     * @param TextmasterObject $object
      *
      * @return array
      */
-    public function serialize(TextMasterObject $object)
+    public function serialize(TextmasterObject $object)
     {
-        if (!is_null($object->getTextMasterId())) {
-            $values['id'] = $object->getTextMasterId();
-        }
+        $values = array();
 
         $properties = $this->getPropertiesValues($object);
         foreach ($properties as $property) {
@@ -58,27 +56,24 @@ class Transformer
     }
 
     /**
-     * Unserialize a php array into a TextMasterObject.
+     * Unserialize a php array into a TextmasterObject.
      *
-     * @param TextMasterObject $object
+     * @param TextmasterObject $object
      * @param array            $values
      *
-     * @return TextMasterObject
+     * @return TextmasterObject
      *
      * @throws \Exception
      */
-    public function unserialize(TextMasterObject $object, array $values)
+    public function unserialize(TextmasterObject $object, array $values)
     {
-        if (!array_key_exists('id', $values)) {
-            throw new \Exception('Cannot unserialize a TextMasterObject from values without id.');
-        }
-        $object->setTextMasterId($values['id']);
-        unset($values['id']);
-
         $properties = $this->getPropertiesValues($object);
 
         foreach ($values as $key => $value) {
-            $property = lcfirst(str_replace('_', '', ucwords($key, '_')));
+            $property = lcfirst(implode('', array_map(function ($key) {
+                return ucfirst($key);
+            }, explode('_', $key))));
+
             if (!in_array($property, $properties)) {
                 continue;
             }
@@ -93,15 +88,16 @@ class Transformer
     /**
      * Get properties values for the given object.
      *
-     * @param TextMasterObject $object
+     * @param TextmasterObject $object
      *
      * @return array
      */
-    private function getPropertiesValues(TextMasterObject $object)
+    private function getPropertiesValues(TextmasterObject $object)
     {
+        $values = array();
+
         $reflect = new \ReflectionClass($object);
         $properties = $reflect->getProperties();
-
         foreach ($properties as $property) {
             $values[] = $property->getName();
         }

@@ -7,43 +7,53 @@ class Document implements DocumentInterface
     /**
      * @var string
      */
-    private $textMasterId;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string
      */
-    private $originalContent;
+    protected $originalContent;
 
     /**
      * @var string
      */
-    private $translatedContent;
+    protected $translatedContent;
 
     /**
      * @var ProjectInterface
      */
-    private $project;
+    protected $project;
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getTextMasterId()
+    public function getId()
     {
-        return $this->textMasterId;
+        return $this->id;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getTitle()
     {
@@ -51,53 +61,7 @@ class Document implements DocumentInterface
     }
 
     /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOriginalContent()
-    {
-        return $this->originalContent;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTranslatedContent()
-    {
-        return $this->translatedContent;
-    }
-
-    /**
-     * @return ProjectInterface
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param string $textMasterId
-     *
-     * @return Document
-     */
-    public function setTextMasterId($textMasterId)
-    {
-        $this->textMasterId = $textMasterId;
-
-        return $this;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return Document
+     * {@inheritdoc}
      */
     public function setTitle($title)
     {
@@ -107,9 +71,15 @@ class Document implements DocumentInterface
     }
 
     /**
-     * @param string $status
-     *
-     * @return Document
+     * {@inheritdoc}
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setStatus($status)
     {
@@ -119,9 +89,15 @@ class Document implements DocumentInterface
     }
 
     /**
-     * @param string $originalContent
-     *
-     * @return Document
+     * {@inheritdoc}
+     */
+    public function getOriginalContent()
+    {
+        return $this->originalContent;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setOriginalContent($originalContent)
     {
@@ -131,9 +107,15 @@ class Document implements DocumentInterface
     }
 
     /**
-     * @param string $translatedContent
-     *
-     * @return Document
+     * {@inheritdoc}
+     */
+    public function getTranslatedContent()
+    {
+        return $this->translatedContent;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setTranslatedContent($translatedContent)
     {
@@ -143,11 +125,17 @@ class Document implements DocumentInterface
     }
 
     /**
-     * @param ProjectInterface $project
-     *
-     * @return Document
+     * {@inheritdoc}
      */
-    public function setProject(ProjectInterface $project)
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

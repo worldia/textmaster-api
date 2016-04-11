@@ -2,7 +2,7 @@
 
 namespace Textmaster\Model;
 
-interface ProjectInterface extends TextMasterObject
+interface ProjectInterface extends TextmasterObject
 {
     const CTYPE_TRANSLATION = 'translation';
     const CTYPE_COPYWRITING = 'copywriting';
@@ -16,74 +16,127 @@ interface ProjectInterface extends TextMasterObject
     const STATUS_CANCELED = 'canceled';
 
     /**
-     * Get name.
+     * @return string
+     */
+    public function getId();
+    /**
+     * @param string $id
      *
+     * @return ProjectInterface
+     */
+    public function setId($id);
+
+    /**
      * @return string
      */
     public function getName();
 
     /**
-     * Get ctype.
+     * @param string $name
      *
+     * @return ProjectInterface
+     */
+    public function setName($name);
+    /**
      * @return string
      */
     public function getCtype();
 
     /**
-     * Get allowed activities.
+     * @param string $ctype
      *
-     * @return string
+     * @return ProjectInterface
+     */
+    public function setCtype($ctype);
+
+    /**
+     * Get allowed values for ctype.
+     *
+     * @return array
      */
     public function getAllowedCtypes();
 
     /**
-     * Get status.
-     *
      * @return string
      */
     public function getStatus();
 
     /**
-     * Get language from.
+     * @param string $status
      *
+     * @return ProjectInterface
+     */
+    public function setStatus($status);
+
+    /**
      * @return string
      */
     public function getLanguageFrom();
+    /**
+     * @param string $languageFrom
+     *
+     * @return ProjectInterface
+     */
+    public function setLanguageFrom($languageFrom);
 
     /**
-     * Get language to.
-     *
      * @return string
      */
     public function getLanguageTo();
 
     /**
-     * Get category.
+     * @param string $languageTo
      *
+     * @return ProjectInterface
+     */
+    public function setLanguageTo($languageTo);
+
+    /**
      * @return string
      */
     public function getCategory();
+    /**
+     * @param string $category
+     *
+     * @return ProjectInterface
+     */
+    public function setCategory($category);
 
     /**
-     * Get project briefing.
-     *
      * @return string
      */
     public function getProjectBriefing();
 
     /**
-     * Get options.
+     * @param string $projectBriefing
      *
+     * @return ProjectInterface
+     */
+    public function setProjectBriefing($projectBriefing);
+
+    /**
      * @return array
      */
     public function getOptions();
 
     /**
-     * Get documents.
+     * @param array $options
      *
+     * @return ProjectInterface
+     */
+    public function setOptions($options);
+
+    /**
      * @return array
      */
     public function getDocuments();
+
+    /**
+     * @param array $documents
+     *
+     * @return ProjectInterface
+     */
+    public function setDocuments(array $documents);
 
     /**
      * Add a document.
@@ -98,60 +151,4 @@ interface ProjectInterface extends TextMasterObject
      * @param DocumentInterface $document
      */
     public function removeDocument(DocumentInterface $document);
-
-    /**
-     * @param string $name
-     *
-     * @return Project
-     */
-    public function setName($name);
-
-    /**
-     * @param string $ctype
-     *
-     * @return Project
-     */
-    public function setCtype($ctype);
-
-    /**
-     * @param string $status
-     *
-     * @return Project
-     */
-    public function setStatus($status);
-
-    /**
-     * @param string $languageFrom
-     *
-     * @return Project
-     */
-    public function setLanguageFrom($languageFrom);
-
-    /**
-     * @param string $languageTo
-     *
-     * @return Project
-     */
-    public function setLanguageTo($languageTo);
-
-    /**
-     * @param string $category
-     *
-     * @return Project
-     */
-    public function setCategory($category);
-
-    /**
-     * @param string $projectBriefing
-     *
-     * @return Project
-     */
-    public function setProjectBriefing($projectBriefing);
-
-    /**
-     * @param array $options
-     *
-     * @return Project
-     */
-    public function setOptions($options);
 }

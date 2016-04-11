@@ -2,7 +2,7 @@
 
 namespace Textmaster\Model;
 
-interface DocumentInterface extends TextMasterObject
+interface DocumentInterface extends TextmasterObject
 {
     const STATUS_IN_CREATION = 'in_creation';
     const STATUS_IN_PROGRESS = 'in_progress';
@@ -16,30 +16,19 @@ interface DocumentInterface extends TextMasterObject
     const STATUS_COUNTING_WORDS = 'counting_words';
     const STATUS_QUALITY = 'quality_control';
 
+    public function getId();
+
+    /**
+     * @param string $id
+     *
+     * @return DocumentInterface
+     */
+    public function setId($id);
+
     /**
      * @return string
      */
     public function getTitle();
-
-    /**
-     * @return string
-     */
-    public function getStatus();
-
-    /**
-     * @return string
-     */
-    public function getOriginalContent();
-
-    /**
-     * @return string
-     */
-    public function getTranslatedContent();
-
-    /**
-     * @return ProjectInterface
-     */
-    public function getProject();
 
     /**
      * @param string $title
@@ -49,11 +38,21 @@ interface DocumentInterface extends TextMasterObject
     public function setTitle($title);
 
     /**
+     * @return string
+     */
+    public function getStatus();
+
+    /**
      * @param string $status
      *
      * @return DocumentInterface
      */
     public function setStatus($status);
+
+    /**
+     * @return string
+     */
+    public function getOriginalContent();
 
     /**
      * @param string $originalContent
@@ -63,6 +62,11 @@ interface DocumentInterface extends TextMasterObject
     public function setOriginalContent($originalContent);
 
     /**
+     * @return string
+     */
+    public function getTranslatedContent();
+
+    /**
      * @param string $translatedContent
      *
      * @return DocumentInterface
@@ -70,9 +74,14 @@ interface DocumentInterface extends TextMasterObject
     public function setTranslatedContent($translatedContent);
 
     /**
+     * @return ProjectInterface
+     */
+    public function getProject();
+
+    /**
      * @param ProjectInterface $project
      *
      * @return DocumentInterface
      */
-    public function setProject(ProjectInterface $project);
+    public function setProject(ProjectInterface $project = null);
 }

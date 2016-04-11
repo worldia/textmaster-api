@@ -7,63 +7,73 @@ class Project implements ProjectInterface
     /**
      * @var string
      */
-    private $textMasterId;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $ctype;
+    protected $ctype;
 
     /**
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string
      */
-    private $languageFrom;
+    protected $languageFrom;
 
     /**
      * @var string
      */
-    private $languageTo;
+    protected $languageTo;
 
     /**
      * @var string
      */
-    private $category;
+    protected $category;
 
     /**
      * @var string
      */
-    private $projectBriefing;
+    protected $projectBriefing;
 
     /**
      * @var array
      */
-    private $options;
+    protected $options;
 
     /**
      * @var array
      */
-    private $documents;
+    protected $documents;
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getTextMasterId()
+    public function getId()
     {
-        return $this->textMasterId;
+        return $this->id;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -71,7 +81,17 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getCtype()
     {
@@ -79,9 +99,17 @@ class Project implements ProjectInterface
     }
 
     /**
-     * Get allowed values for ctype.
-     *
-     * @return array
+     * {@inheritdoc}
+     */
+    public function setCtype($ctype)
+    {
+        $this->ctype = $ctype;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getAllowedCtypes()
     {
@@ -93,7 +121,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getStatus()
     {
@@ -101,119 +129,7 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @return string
-     */
-    public function getLanguageFrom()
-    {
-        return $this->languageFrom;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageTo()
-    {
-        return $this->languageTo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProjectBriefing()
-    {
-        return $this->projectBriefing;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Get documents.
-     *
-     * @return array
-     */
-    public function getDocuments()
-    {
-        return $this->documents;
-    }
-
-    /**
-     * Add a document.
-     *
-     * @param DocumentInterface $document
-     */
-    public function addDocument(DocumentInterface $document)
-    {
-        $document->setProject($this);
-        $this->documents[] = $document;
-    }
-
-    /**
-     * Remove a document.
-     *
-     * @param DocumentInterface $document
-     */
-    public function removeDocument(DocumentInterface $document)
-    {
-        $document->setProject(null);
-        $key = array_search($document, $this->documents);
-
-        unset($this->documents[$key]);
-    }
-
-    /**
-     * @param string $textMasterId
-     *
-     * @return Project
-     */
-    public function setTextMasterId($textMasterId)
-    {
-        $this->textMasterId = $textMasterId;
-
-        return $this;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return Project
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @param string $ctype
-     *
-     * @return Project
-     */
-    public function setCtype($ctype)
-    {
-        $this->ctype = $ctype;
-
-        return $this;
-    }
-
-    /**
-     * @param string $status
-     *
-     * @return Project
+     * {@inheritdoc}
      */
     public function setStatus($status)
     {
@@ -223,9 +139,15 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $languageFrom
-     *
-     * @return Project
+     * {@inheritdoc}
+     */
+    public function getLanguageFrom()
+    {
+        return $this->languageFrom;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setLanguageFrom($languageFrom)
     {
@@ -235,9 +157,15 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $languageTo
-     *
-     * @return Project
+     * {@inheritdoc}
+     */
+    public function getLanguageTo()
+    {
+        return $this->languageTo;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setLanguageTo($languageTo)
     {
@@ -247,9 +175,15 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $category
-     *
-     * @return Project
+     * {@inheritdoc}
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setCategory($category)
     {
@@ -259,9 +193,15 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $projectBriefing
-     *
-     * @return Project
+     * {@inheritdoc}
+     */
+    public function getProjectBriefing()
+    {
+        return $this->projectBriefing;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setProjectBriefing($projectBriefing)
     {
@@ -271,14 +211,58 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param array $options
-     *
-     * @return Project
+     * {@inheritdoc}
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setOptions($options)
     {
         $this->options = $options;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDocuments(array $documents)
+    {
+        $this->documents = $documents;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDocument(DocumentInterface $document)
+    {
+        $document->setProject($this);
+        $this->documents[] = $document;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeDocument(DocumentInterface $document)
+    {
+        $document->setProject(null);
+        $key = array_search($document, $this->documents);
+
+        unset($this->documents[$key]);
     }
 }

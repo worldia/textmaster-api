@@ -1,8 +1,8 @@
 <?php
 
-namespace Textmaster\Tests\Transformer;
+namespace Textmaster\Tests\Serializer;
 
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class SerializerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -36,8 +36,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
             ))
         ;
 
-        $transformer = new \Textmaster\Transformer\Transformer();
-        $values = $transformer->serialize($project);
+        $serializer = new \Textmaster\Serializer\Serializer();
+        $values = $serializer->serialize($project);
 
         $this->assertEquals($expectedValues, $values);
     }
@@ -63,10 +63,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         );
 
         $project = new \Textmaster\Model\Project();
-        $transformer = new \Textmaster\Transformer\Transformer();
-        $project = $transformer->unserialize($project, $values);
+        $serializer = new \Textmaster\Serializer\Serializer();
+        $project = $serializer->unserialize($project, $values);
 
-        $this->assertEquals($project->getTextMasterId(), 123456);
+        $this->assertEquals($project->getId(), 123456);
         $this->assertEquals($project->getName(), $values['name']);
         $this->assertEquals($project->getCtype(), $values['ctype']);
         $this->assertEquals($project->getLanguageFrom(), $values['language_from']);
@@ -93,8 +93,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
             ->setOriginalContent('This content will be translated.')
         ;
 
-        $transformer = new \Textmaster\Transformer\Transformer();
-        $values = $transformer->serialize($document);
+        $serializer = new \Textmaster\Serializer\Serializer();
+        $values = $serializer->serialize($document);
 
         $this->assertEquals($expectedValues, $values);
     }
@@ -113,10 +113,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         );
 
         $document = new \Textmaster\Model\Document();
-        $transformer = new \Textmaster\Transformer\Transformer();
-        $document = $transformer->unserialize($document, $values);
+        $serializer = new \Textmaster\Serializer\Serializer();
+        $document = $serializer->unserialize($document, $values);
 
-        $this->assertEquals($document->getTextMasterId(), 123456);
+        $this->assertEquals($document->getId(), 123456);
         $this->assertEquals($document->getTitle(), 'Document title');
         $this->assertEquals($document->getStatus(), \Textmaster\Model\Document::STATUS_IN_PROGRESS);
         $this->assertEquals($document->getOriginalContent(), 'This content will be translated.');
