@@ -3,7 +3,8 @@
 namespace Textmaster;
 
 /**
- * Textmaster API events
+ * Textmaster API events.
+ *
  * @link https://www.textmaster.com/documentation#principles-work-flow
  */
 final class Events
@@ -13,7 +14,7 @@ final class Events
      **************************************************************************************/
 
     /**
-     * Initial status
+     * Initial status.
      *
      * The document can be edited and is not accessible to the authors yet.
      */

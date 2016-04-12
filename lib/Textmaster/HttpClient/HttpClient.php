@@ -25,14 +25,14 @@ class HttpClient implements HttpClientInterface
     protected $client;
 
     protected $options = array(
-        'base_url'    => 'http://api.textmaster.com/%s/clients',
+        'base_url' => 'http://api.textmaster.com/%s/clients',
 
-        'user_agent'  => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
-        'timeout'     => 10,
+        'user_agent' => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
+        'timeout' => 10,
 
         'api_version' => 'v1',
 
-        'cache_dir'   => null
+        'cache_dir' => null,
     );
 
     protected $headers = array();
@@ -58,7 +58,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
@@ -66,7 +66,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setHeaders(array $headers)
     {
@@ -97,7 +97,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($path, array $parameters = array(), array $headers = array())
     {
@@ -105,7 +105,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function post($path, $body = null, array $headers = array())
     {
@@ -113,7 +113,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function patch($path, $body = null, array $headers = array())
     {
@@ -121,7 +121,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($path, $body = null, array $headers = array())
     {
@@ -129,7 +129,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function put($path, $body, array $headers = array())
     {
@@ -137,7 +137,7 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array())
     {
@@ -151,19 +151,19 @@ class HttpClient implements HttpClientInterface
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $this->lastRequest  = $request;
+        $this->lastRequest = $request;
         $this->lastResponse = $response;
 
         return $response;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function authenticate($key, $secret)
     {
         $this->addListener('request.before_send', array(
-            new AuthListener($key, $secret), 'onRequestBeforeSend'
+            new AuthListener($key, $secret), 'onRequestBeforeSend',
         ));
     }
 

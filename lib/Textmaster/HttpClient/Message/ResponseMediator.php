@@ -25,7 +25,7 @@ class ResponseMediator
         $header = (string) $response->getHeader('Link');
 
         if (empty($header)) {
-            return null;
+            return;
         }
 
         $pagination = array();

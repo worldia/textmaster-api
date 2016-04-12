@@ -5,7 +5,7 @@ namespace Textmaster\Api;
 use Textmaster\Api\Expertise\SubExpertise;
 
 /**
- * Listing expertises.
+ * Expertises Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -16,7 +16,7 @@ class Expertise extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#public-listing-languages
      *
-     * @param string $activity
+     * @param string      $activity
      * @param null|string $locale
      *
      * @return array

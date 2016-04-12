@@ -6,7 +6,7 @@ use Textmaster\Api\AbstractApi;
 use Textmaster\Exception\InvalidArgumentException;
 
 /**
- * Callbacks.
+ * Callbacks Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -40,10 +40,10 @@ class Callback extends AbstractApi
                 'callback' => array(
                     $event => array(
                         'url' => $url,
-                        'format' => $format
-                    )
-                )
-            )
+                        'format' => $format,
+                    ),
+                ),
+            ),
         ));
     }
 }

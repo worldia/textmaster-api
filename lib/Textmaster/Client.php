@@ -39,12 +39,12 @@ class Client
      * @var array
      */
     private $options = array(
-        'base_url'    => 'http://api.textmaster.com/%s/clients',
+        'base_url' => 'http://api.textmaster.com/%s/clients',
         'api_version' => 'v1',
-        'sandbox'     => false,
-        'user_agent'  => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
-        'timeout'     => 10,
-        'cache_dir'   => null
+        'sandbox' => false,
+        'user_agent' => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
+        'timeout' => 10,
+        'cache_dir' => null,
     );
 
     /**

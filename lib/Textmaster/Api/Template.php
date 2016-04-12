@@ -3,7 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Listing work templates.
+ * Work templates Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

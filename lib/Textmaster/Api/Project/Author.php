@@ -5,7 +5,7 @@ namespace Textmaster\Api\Project;
 use Textmaster\Api\AbstractApi;
 
 /**
- * Listing authors.
+ * Project authors Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -17,7 +17,7 @@ class Author extends AbstractApi
      * @link https://fr.textmaster.com/documentation#my-authors-get-all-my-authors-who-can-do-this-project
      *
      * @param string $projectId
-     * @param string $status Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
+     * @param string $status    Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
      *
      * @return array
      */

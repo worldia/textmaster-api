@@ -6,7 +6,7 @@ use Textmaster\Api\AbstractApi;
 use Textmaster\Exception\InvalidArgumentException;
 
 /**
- * My authors.
+ * My authors Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -40,8 +40,8 @@ class Mine extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#my-authors-get-my-authors
      *
-     * @param string $authorId
-     * @param string $status Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
+     * @param string      $authorId
+     * @param string      $status      Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
      * @param null|string $description
      *
      * @return array
@@ -56,7 +56,7 @@ class Mine extends AbstractApi
             'my_author' => array(
                 'author_id' => $authorId,
                 'status' => $status,
-                )
+                ),
             );
 
         if (null !== $description) {
@@ -73,8 +73,8 @@ class Mine extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#my-authors-update-my-author
      *
-     * @param string $authorId
-     * @param string $status Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
+     * @param string      $authorId
+     * @param string      $status      Possible values: 'my_textmaster', 'blacklisted', 'uncategorized'
      * @param null|string $description
      *
      * @return array
@@ -88,7 +88,7 @@ class Mine extends AbstractApi
         $params = array(
             'my_author' => array(
                 'status' => $status,
-                )
+                ),
             );
 
         if (null !== $description) {
@@ -115,7 +115,7 @@ class Mine extends AbstractApi
     /**
      * Get api path.
      *
-     * @param  null|string $authorId
+     * @param null|string $authorId
      *
      * @return string
      */
@@ -133,7 +133,7 @@ class Mine extends AbstractApi
      *
      * @param string $status
      *
-     * @return boolean
+     * @return bool
      */
     protected function isValidStatus($status)
     {

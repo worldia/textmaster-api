@@ -3,8 +3,6 @@
 namespace Textmaster\HttpClient\Listener;
 
 use Guzzle\Common\Event;
-use Textmaster\Client;
-use Textmaster\Exception\RuntimeException;
 
 class AuthListener
 {

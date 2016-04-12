@@ -6,9 +6,10 @@ use Textmaster\Api\AbstractApi;
 use Textmaster\Api\Project\Document\SupportMessage;
 
 /**
- * Creating, deleting and listing documents.
+ * Documents Api.
  *
  * @link   https://fr.textmaster.com/documentation#documents-complete-document
+ *
  * @author Christian Daguerre <christian@daguer.re>
  */
 class Document extends AbstractApi
@@ -33,7 +34,7 @@ class Document extends AbstractApi
      * @link https://fr.textmaster.com/documentation#documents-filter-documents-by-status
      *
      * @param string $projectId
-     * @param array $params
+     * @param array  $params
      *
      * @return array
      */
@@ -63,7 +64,7 @@ class Document extends AbstractApi
      * @link https://www.textmaster.com/documentation#documents-create-a-document
      *
      * @param string $projectId
-     * @param array $params
+     * @param array  $params
      *
      * @return array
      */
@@ -79,7 +80,7 @@ class Document extends AbstractApi
      *
      * @param string $projectId
      * @param string $documentId
-     * @param array $params
+     * @param array  $params
      *
      * @return array
      */
@@ -108,8 +109,8 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-complete-document
      *
-     * @param string $projectId
-     * @param string $documentId
+     * @param string      $projectId
+     * @param string      $documentId
      * @param null|string $satisfaction One of 'neutral', 'positive' or 'negative'
      * @param null|string $message
      *
@@ -134,8 +135,8 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-complete-multiple-documents
      *
-     * @param string $projectId
-     * @param array $documentIds
+     * @param string      $projectId
+     * @param array       $documentIds
      * @param null|string $satisfaction One of 'neutral', 'positive' or 'negative'
      * @param null|string $message
      *
@@ -144,7 +145,7 @@ class Document extends AbstractApi
     public function batchComplete($projectId, array $documentIds, $satisfaction = null, $message = null)
     {
         $params = array(
-            'documents' => $documentIds
+            'documents' => $documentIds,
         );
 
         if (null !== $satisfaction) {
@@ -163,7 +164,7 @@ class Document extends AbstractApi
      * @link https://fr.textmaster.com/documentation#documents-create-multiple-new-documents
      *
      * @param string $projectId
-     * @param array $documents
+     * @param array  $documents
      *
      * @return array
      */
@@ -185,8 +186,8 @@ class Document extends AbstractApi
     /**
      * Get api path.
      *
-     * @param  string $projectId
-     * @param  null|string $documentId
+     * @param string      $projectId
+     * @param null|string $documentId
      *
      * @return string
      */

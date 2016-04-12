@@ -3,7 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Listing categories.
+ * Categories Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

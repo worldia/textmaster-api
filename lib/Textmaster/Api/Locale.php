@@ -3,10 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Listing locales.
- *
- * @link   https://fr.textmaster.com/documentation#locales-listing-locales
- * @link   https://fr.textmaster.com/documentation#public-listing-locales
+ * Locales listing, reference pricings and localized countries.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

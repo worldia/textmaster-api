@@ -5,7 +5,7 @@ namespace Textmaster\Api;
 use Textmaster\Api\User\Callback;
 
 /**
- * Users.
+ * Users Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

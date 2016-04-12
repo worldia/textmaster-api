@@ -5,7 +5,7 @@ namespace Textmaster\Api\Project\Document;
 use Textmaster\Api\AbstractApi;
 
 /**
- * Support messages.
+ * Support messages Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -40,15 +40,15 @@ class SupportMessage extends AbstractApi
     public function create($projectId, $documentId, $message)
     {
         return $this->post($this->getPath($projectId, $documentId), array(
-            'support_message' => array('message' => $message)
+            'support_message' => array('message' => $message),
         ));
     }
 
     /**
      * Get api path.
      *
-     * @param  string $projectId
-     * @param  string $documentId
+     * @param string $projectId
+     * @param string $documentId
      *
      * @return string
      */

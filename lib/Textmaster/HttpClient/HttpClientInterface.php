@@ -6,9 +6,7 @@ use Textmaster\Exception\InvalidArgumentException;
 use Guzzle\Http\Message\Response;
 
 /**
- * Performs requests on Textmaster API. API documentation should be self-explanatory.
- *
- * @author Joseph Bielawski <stloyd@gmail.com>
+ * Performs requests on Textmaster API.
  */
 interface HttpClientInterface
 {
@@ -102,7 +100,7 @@ interface HttpClientInterface
     /**
      * Authenticate a user for all next requests.
      *
-     * @param string      $key    Textmaster private api key
+     * @param string $key    Textmaster private api key
      * @param string $secret Textmaster secret
      */
     public function authenticate($key, $secret);

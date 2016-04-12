@@ -3,7 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Listing bundles.
+ * Bundles Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

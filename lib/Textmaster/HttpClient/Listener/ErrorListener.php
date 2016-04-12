@@ -22,7 +22,7 @@ class ErrorListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function onRequestError(Event $event)
     {

@@ -6,7 +6,7 @@ use Textmaster\Api\Project\Author as ProjectAuthors;
 use Textmaster\Api\Project\Document;
 
 /**
- * Creating, deleting and listing projects.
+ * Projects Api.
  *
  * @link   https://fr.textmaster.com/documentation#projects-archive-a-project
  *
@@ -57,7 +57,7 @@ class Project extends AbstractApi
      *
      * @link https://www.textmaster.com/documentation#projects-create-a-project
      *
-     * @param array $params
+     * @param array       $params
      * @param string|null $tracker
      *
      * @return array
@@ -65,7 +65,7 @@ class Project extends AbstractApi
     public function create(array $params, $tracker = null)
     {
         $params = array(
-            'project' => $params
+            'project' => $params,
         );
 
         if (null !== $tracker) {
@@ -81,7 +81,7 @@ class Project extends AbstractApi
      * @link https://fr.textmaster.com/documentation#projects-update-a-project
      *
      * @param string $projectId
-     * @param array $params
+     * @param array  $params
      *
      * @return array
      */
@@ -165,11 +165,10 @@ class Project extends AbstractApi
      *
      * @link https://www.textmaster.com/documentation#projects-launch-a-project-asynchronously
      * @link https://www.textmaster.com/documentation#projects-launch-a-project
-     *
      * @deprecated Synchronously launching a project is deprecated
      *
      * @param string $projectId
-     * @param bool $async
+     * @param bool   $async
      *
      * @return array
      */
@@ -219,7 +218,7 @@ class Project extends AbstractApi
     /**
      * Get api path.
      *
-     * @param  null|string $projectId
+     * @param null|string $projectId
      *
      * @return string
      */

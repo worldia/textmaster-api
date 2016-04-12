@@ -6,7 +6,7 @@ use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Api\Author\Mine;
 
 /**
- * Listing authors.
+ * Authors Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
@@ -17,7 +17,7 @@ class Author extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#potential-authors-for-a-project-list-all-potential-authors-for-a-translation-project
      *
-     * @param  array  $params
+     * @param array $params
      *
      * @return array
      */
@@ -31,7 +31,7 @@ class Author extends AbstractApi
                 'language_from',
                 'language_to',
                 'project_briefing',
-                'category'
+                'category',
             ))) {
                 throw new InvalidArgumentException(sprintf('"%s" is not a valid author search parameter.', $name));
             }

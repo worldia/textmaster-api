@@ -3,7 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Billing.
+ * Billing Api.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */

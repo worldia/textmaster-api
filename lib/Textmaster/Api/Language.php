@@ -3,7 +3,7 @@
 namespace Textmaster\Api;
 
 /**
- * Listing languages and levels.
+ * Language and LanguageLevel Apis.
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
