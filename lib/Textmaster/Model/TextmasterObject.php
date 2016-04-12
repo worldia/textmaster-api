@@ -38,7 +38,7 @@ abstract class TextmasterObject
 
         $properties = $this->getPropertiesValues();
         foreach ($properties as $property) {
-            if (is_null($this->$property)) {
+            if (null === $this->$property) {
                 continue;
             }
 
