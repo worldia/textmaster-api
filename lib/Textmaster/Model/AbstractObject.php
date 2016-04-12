@@ -83,14 +83,14 @@ abstract class AbstractObject
      */
     protected function failIfImmutable()
     {
-        if ($this->status === self::STATUS_IN_CREATION) {
+        if (!$this->isImmutable()) {
             return;
         }
 
         throw new ObjectImmutableException(sprintf(
             'Object of class "%s" with id "%s" is immutable.',
             get_called_class(),
-            isset($this->id) ? $this->id : 'unknown'
+            property_exists($this, 'id') ? $this->id : 'unknown'
         ));
     }
 

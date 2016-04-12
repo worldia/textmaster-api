@@ -101,10 +101,10 @@ class Project extends AbstractObject implements ProjectInterface
     {
         $this->failIfImmutable();
 
-        if (!in_array($type, self::getAllowedActivitys())) {
+        if (!in_array($type, self::getAllowedActivities())) {
             throw new InvalidArgumentException(sprintf(
                 'Type must me one of "%s".',
-                implode('","', self::getAllowedActivitys())
+                implode('","', self::getAllowedActivities())
             ));
         }
 

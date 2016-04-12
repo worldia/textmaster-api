@@ -22,6 +22,16 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * @var string
      */
+    protected $description;
+
+    /**
+     * @var string
+     */
+    protected $instructions;
+
+    /**
+     * @var string
+     */
     protected $status;
 
     /**

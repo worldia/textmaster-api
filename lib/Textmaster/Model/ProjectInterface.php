@@ -111,7 +111,7 @@ interface ProjectInterface
     /**
      * Set Textmaster content category.
      *
-     * @param string $category One of the Textmaster category codes, refer https://fr.textmaster.com/documentation#public-listing-categories
+     * @param string $code One of the Textmaster category codes, refer https://fr.textmaster.com/documentation#public-listing-categories
      *
      * @return ProjectInterface
      *
