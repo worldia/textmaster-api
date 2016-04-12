@@ -2,9 +2,9 @@
 
 namespace Textmaster\HttpClient\Listener;
 
-use Textmaster\HttpClient\Message\ResponseMediator;
 use Guzzle\Common\Event;
 use Textmaster\Exception\ErrorException;
+use Textmaster\HttpClient\Message\ResponseMediator;
 
 class ErrorListener
 {
@@ -14,6 +14,8 @@ class ErrorListener
     private $options;
 
     /**
+     * ErrorListener constructor.
+     *
      * @param array $options
      */
     public function __construct(array $options)

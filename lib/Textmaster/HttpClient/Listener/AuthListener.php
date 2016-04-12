@@ -6,10 +6,28 @@ use Guzzle\Common\Event;
 
 class AuthListener
 {
+    /**
+     * @var string
+     */
     private $key;
+
+    /**
+     * @var string
+     */
     private $secret;
+
+    /**
+     * @var \DateTime
+     */
     private $date;
 
+    /**
+     * AuthListener constructor.
+     *
+     * @param string         $key
+     * @param string         $secret
+     * @param \DateTime|null $date
+     */
     public function __construct($key, $secret, \DateTime $date = null)
     {
         $this->key = $key;
@@ -21,6 +39,11 @@ class AuthListener
         }
     }
 
+    /**
+     * Add authentication headers to each request.
+     *
+     * @param Event $event
+     */
     public function onRequestBeforeSend(Event $event)
     {
         $event['request']->setHeader('APIKEY', $this->key);

@@ -31,10 +31,17 @@ class Project extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#projects-filtering-projects
      *
+     * @param array $where
+     * @param array $order
+     *
      * @return array
      */
-    public function filter(array $params)
+    public function filter(array $where = array(), array $order = array())
     {
+        $params = array();
+        empty($where) ?: $params['where'] = json_encode($where);
+        empty($order) ?: $params['order'] = json_encode($order);
+
         return $this->get($this->getPath().'/filter', $params);
     }
 
