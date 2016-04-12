@@ -144,6 +144,7 @@ class HttpClient implements HttpClientInterface
         $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
 
         try {
+            /** @var \Guzzle\Http\Message\Response $response */
             $response = $this->client->send($request);
         } catch (\LogicException $e) {
             throw new ErrorException($e->getMessage(), $e->getCode(), $e);
