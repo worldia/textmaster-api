@@ -2,8 +2,20 @@
 
 namespace Textmaster\Model;
 
-interface DocumentInterface extends TimestampedInterface
+interface DocumentInterface
 {
+    const STATUS_IN_CREATION = 'in_creation';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_WAITING_ASSIGNMENT = 'waiting_assignment';
+    const STATUS_IN_REVIEW = 'in_review';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_INCOMPLETE = 'incomplete';
+    const STATUS_PAUSED = 'paused';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_COPYSCAPE = 'copyscape';
+    const STATUS_COUNTING_WORDS = 'counting_words';
+    const STATUS_QUALITY = 'quality_control';
+
     /**
      * Get id.
      *
@@ -12,31 +24,11 @@ interface DocumentInterface extends TimestampedInterface
     public function getId();
 
     /**
-     * Get project.
-     *
-     * TODO: Check mutability.
-     *
-     * @return ProjectInterface
-     */
-    public function getProject();
-
-    /**
-     * Get author.
-     *
-     * TODO: Check mutability.
-     *
-     * @return AuthorInterface|null
-     */
-    public function getAuthor();
-
-    /**
-     * Get type.
-     *
-     * TODO: Check mutability.
+     * Get project id.
      *
      * @return string
      */
-    public function getType();
+    public function getProjectId();
 
     /**
      * Get title.
@@ -87,11 +79,30 @@ interface DocumentInterface extends TimestampedInterface
     public function setInstructions($instructions);
 
     /**
-     * Get original content.
+     * Get status.
      *
-     * TODO: Check mutability.
+     * @return string
+     */
+    public function getStatus();
+
+    /**
+     * Get original content.
      *
      * @return string
      */
     public function getOriginalContent();
+
+    /**
+     * Get original content.
+     *
+     * @param string $content
+     *
+     * @return DocumentInterface
+     */
+    public function setOriginalContent($content);
+
+    /**
+     * @return string
+     */
+    public function getTranslatedContent();
 }
