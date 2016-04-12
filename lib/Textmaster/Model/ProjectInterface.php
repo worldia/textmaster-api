@@ -60,7 +60,7 @@ interface ProjectInterface
     /**
      * @return string
      */
-    public function getProjectBriefing();
+    public function getBriefing();
 
     /**
      * @return array

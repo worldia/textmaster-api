@@ -36,7 +36,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fr-fr', $project->getLanguageFrom());
         $this->assertEquals('en-us', $project->getLanguageTo());
         $this->assertEquals('C014', $project->getCategory());
-        $this->assertEquals("Lorem ipsum dolor sit amet, consectetur adipisicing elit\n sed do eiusmod tempor...", $project->getProjectBriefing());
+        $this->assertEquals("Lorem ipsum dolor sit amet, consectetur adipisicing elit\n sed do eiusmod tempor...", $project->getBriefing());
         $this->assertEquals(array('language_level' => 'premium'), $project->getOptions());
 
         $result = $project->toArray();

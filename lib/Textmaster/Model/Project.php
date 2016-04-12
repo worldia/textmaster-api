@@ -42,7 +42,7 @@ class Project extends TextmasterObject implements ProjectInterface
     /**
      * @var string
      */
-    protected $projectBriefing;
+    protected $briefing;
 
     /**
      * @var array
@@ -120,9 +120,9 @@ class Project extends TextmasterObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getProjectBriefing()
+    public function getBriefing()
     {
-        return $this->projectBriefing;
+        return $this->briefing;
     }
 
     /**
@@ -131,5 +131,29 @@ class Project extends TextmasterObject implements ProjectInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray()
+    {
+        $values = parent::toArray();
+
+        $values['project_briefing'] = $values['briefing'];
+        unset($values['briefing']);
+
+        return $values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromArray(array $values)
+    {
+        $values['briefing'] = $values['project_briefing'];
+        unset($values['project_briefing']);
+
+        parent::fromArray($values);
     }
 }
