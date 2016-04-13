@@ -80,6 +80,7 @@ class HttpClient implements HttpClientInterface
     {
         $this->headers = array(
             'User-Agent' => sprintf('%s', $this->options['user_agent']),
+            'content-type' => 'application/json',
         );
     }
 
@@ -185,8 +186,15 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
+     * Create a request with the given parameters.
+     *
      * @param string $httpMethod
      * @param string $path
+     * @param string $body
+     * @param array  $headers
+     * @param array  $options
+     *
+     * @return \Guzzle\Http\Message\RequestInterface
      */
     protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array())
     {

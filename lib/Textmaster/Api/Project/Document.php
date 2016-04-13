@@ -17,7 +17,7 @@ class Document extends AbstractApi
     /**
      * List all documents.
      *
-     * @link https://fr.textmaster.com/documentation#documents-complete-document
+     * @link https://fr.textmaster.com/documentation#documents-list-all-documents-in-a-project
      *
      * @param string $projectId
      *

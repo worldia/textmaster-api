@@ -67,6 +67,8 @@ abstract class AbstractApi implements ApiInterface
      * @param string $path           Request path.
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
+     *
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     protected function post($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -80,9 +82,9 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Send a POST request with raw data.
      *
-     * @param string $path Request path.
-     * @param $body                     Request body.
-     * @param array $requestHeaders Request headers.
+     * @param string $path           Request path.
+     * @param string $body           Request body.
+     * @param array  $requestHeaders Request headers.
      *
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
@@ -103,6 +105,8 @@ abstract class AbstractApi implements ApiInterface
      * @param string $path           Request path.
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
+     *
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     protected function patch($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -121,6 +125,8 @@ abstract class AbstractApi implements ApiInterface
      * @param string $path           Request path.
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
+     *
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     protected function put($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -139,6 +145,8 @@ abstract class AbstractApi implements ApiInterface
      * @param string $path           Request path.
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
+     *
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     protected function delete($path, array $parameters = array(), $requestHeaders = array())
     {
