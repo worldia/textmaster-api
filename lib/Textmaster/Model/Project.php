@@ -24,7 +24,7 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * @var string
      */
-    protected $status;
+    protected $status = self::STATUS_IN_CREATION;
 
     /**
      * @var string
@@ -56,7 +56,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     protected $propertyMap = array(
         'project_briefing' => 'briefing',
-        'ctype' => 'activity'
+        'ctype' => 'activity',
     );
 
     /**
@@ -231,8 +231,8 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    protected function isImmutable()
+    public function isImmutable()
     {
-        return $this->status === self::STATUS_IN_CREATION;
+        return $this->status !== self::STATUS_IN_CREATION;
     }
 }
