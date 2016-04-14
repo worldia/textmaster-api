@@ -35,4 +35,50 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $values);
     }
+
+    /**
+     * @test
+     */
+    public function shouldUseSetters()
+    {
+        $document = new Document();
+
+        $title = 'Document 1';
+        $description = 'Description';
+        $instructions = 'Instructions';
+        $originalContent = 'Original content';
+
+        $document
+            ->setTitle($title)
+            ->setDescription($description)
+            ->setInstructions($instructions)
+            ->setOriginalContent($originalContent)
+        ;
+
+        $this->assertEquals($title, $document->getTitle());
+        $this->assertEquals($description, $document->getDescription());
+        $this->assertEquals($instructions, $document->getInstructions());
+        $this->assertEquals($originalContent, $document->getOriginalContent());
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\ObjectImmutableException
+     */
+    public function shouldBeImmutable()
+    {
+        $values = array(
+            'id' => '123456',
+            'title' => 'Document 1',
+            'status' => DocumentInterface::STATUS_IN_PROGRESS,
+            'original_content' => 'Text to translate.',
+            'translated_content' => 'Texte à traduire.',
+            'project_id' => '123456',
+        );
+
+        $document = new Document();
+        $document->fromArray($values);
+
+        $document->setTitle('New title');
+    }
 }

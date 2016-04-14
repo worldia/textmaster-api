@@ -8,7 +8,7 @@ abstract class AbstractObject
 {
     /**
      * Map TM properties to object properties where name is different.
-     * TM => PHP
+     * TM => PHP.
      *
      * @var array
      */
@@ -97,7 +97,7 @@ abstract class AbstractObject
     /**
      * Whether the object is immutable.
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function isImmutable();
 
