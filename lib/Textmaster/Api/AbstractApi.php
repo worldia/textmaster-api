@@ -20,11 +20,61 @@ abstract class AbstractApi implements ApiInterface
     protected $client;
 
     /**
+     * Number of items per page.
+     *
+     * @var null|int
+     */
+    protected $perPage;
+
+    /**
+     * Page parameter for next get request.
+     *
+     * @var null|int
+     */
+    protected $page;
+
+    /**
      * @param Client $client
      */
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPerPage()
+    {
+        return $this->perPage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPerPage($perPage)
+    {
+        $this->perPage = (null === $perPage ? $perPage : (int) $perPage);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPage($page)
+    {
+        $this->page = (null === $page ? $page : (int) $page);
+
+        return $this;
     }
 
     /**
@@ -38,6 +88,15 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function get($path, array $parameters = array(), $requestHeaders = array())
     {
+        if (null !== $this->perPage && !isset($parameters['per_page'])) {
+            $parameters['per_page'] = $this->perPage;
+        }
+        if (isset($this->page) && !isset($parameters['page'])) {
+            $parameters['page'] = $this->page;
+        }
+
+        $this->page = null;
+
         $response = $this->client->getHttpClient()->get($path, $parameters, $requestHeaders);
 
         return ResponseMediator::getContent($response);
@@ -169,5 +228,10 @@ abstract class AbstractApi implements ApiInterface
     protected function createJsonBody(array $parameters)
     {
         return (count($parameters) === 0) ? null : json_encode($parameters, empty($parameters) ? JSON_FORCE_OBJECT : 0);
+    }
+
+    public function getClient()
+    {
+        return $this->client;
     }
 }

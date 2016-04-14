@@ -24,11 +24,11 @@ interface DocumentInterface
     public function getId();
 
     /**
-     * Get project id.
+     * Get project.
      *
-     * @return string
+     * @return ProjectInterface
      */
-    public function getProjectId();
+    public function getProject();
 
     /**
      * Get title.
@@ -45,22 +45,6 @@ interface DocumentInterface
      * @return DocumentInterface
      */
     public function setTitle($title);
-
-    /**
-     * Get description.
-     *
-     * @return string
-     */
-    public function getDescription();
-
-    /**
-     * Set description.
-     *
-     * @param string $description
-     *
-     * @return DocumentInterface
-     */
-    public function setDescription($description);
 
     /**
      * Get instructions.
