@@ -195,22 +195,6 @@ class ProjectTest extends TestCase
 
         $api = $this->getApiMock();
         $api->expects($this->once())
-            ->method('put')
-            ->with('clients/projects/1/launch')
-            ->will($this->returnValue($expectedArray));
-
-        $this->assertEquals($expectedArray, $api->launch(1, false));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldLaunchProjectAsynchronously()
-    {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
-
-        $api = $this->getApiMock();
-        $api->expects($this->once())
             ->method('post')
             ->with('clients/projects/1/async_launch')
             ->will($this->returnValue($expectedArray));
@@ -241,7 +225,7 @@ class ProjectTest extends TestCase
     {
         $api = $this->getApiMock();
 
-        $this->assertInstanceOf('Textmaster\Api\Project\Document', $api->documents());
+        $this->assertInstanceOf('Textmaster\Api\Project\Document', $api->documents(1));
     }
 
     /**
@@ -251,7 +235,7 @@ class ProjectTest extends TestCase
     {
         $api = $this->getApiMock();
 
-        $this->assertInstanceOf('Textmaster\Api\Project\Author', $api->authors());
+        $this->assertInstanceOf('Textmaster\Api\Project\Author', $api->authors(1));
     }
 
     protected function getApiClass()

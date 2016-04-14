@@ -2,96 +2,140 @@
 
 namespace Textmaster\Model;
 
+use Textmaster\Api\ObjectApiInterface;
+use Textmaster\Client;
+use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\ObjectImmutableException;
 
 abstract class AbstractObject
 {
     /**
-     * Map TM properties to object properties where name is different.
-     * TM => PHP.
-     *
+     * @var Client
+     */
+    protected $client;
+
+    /**
      * @var array
      */
-    protected $propertyMap = array();
+    protected $data = array();
 
     /**
-     * Populate the object with the given array.
-     * The format for the array should be propertyName => value.
-     *
-     * @param array $values
+     * @var array
      */
-    public function fromArray(array $values)
+    protected $immutableProperties = array();
+
+    /**
+     * Constructor.
+     *
+     * @param Client $client the Textmaster client.
+     * @param mixed  $data   the id of the object or an array value to populate it.
+     */
+    public function __construct(Client $client, $data = null)
     {
-        $properties = $this->getProperties();
+        $this->client = $client;
 
-        foreach ($this->propertyMap as $source => $destination) {
-            $values[$destination] = $values[$source];
-            unset($values[$source]);
-        }
-
-        foreach ($values as $key => $value) {
-            $property = lcfirst(implode('', array_map(function ($key) {
-                return ucfirst($key);
-            }, explode('_', $key))));
-
-            if (!in_array($property, $properties)) {
-                continue;
-            }
-
-            $this->$property = $value;
+        if (is_array($data)) {
+            $this->data = $data;
+        } elseif (is_string($data)) {
+            $this->data['id'] = $data;
+            $this->refresh();
         }
     }
 
     /**
-     * Generate an array from the object.
+     * Get id.
      *
-     * @return array $values
+     * @return string
      */
-    public function toArray()
+    public function getId()
     {
-        $values = array();
-
-        $properties = $this->getProperties();
-        foreach ($properties as $property) {
-            if (null === $this->$property) {
-                continue;
-            }
-
-            $underscored = strtolower(
-                preg_replace(
-                    array('/([A-Z]+)/', '/_([A-Z]+)([A-Z][a-z])/'),
-                    array('_$1', '_$1_$2'),
-                    lcfirst($property)
-                )
-            );
-
-            $values[$underscored] = $this->$property;
+        if (array_key_exists('id', $this->data)) {
+            return $this->data['id'];
         }
 
-        foreach ($this->propertyMap as $source => $destination) {
-            $values[$source] = $values[$destination];
-            unset($values[$destination]);
-        }
-
-        return $values;
+        return;
     }
 
     /**
-     * Fail if immutable.
+     * Save the object through API.
+     *
+     * @return AbstractObject
+     */
+    public function save()
+    {
+        try {
+            $this->getId() ? $this->update() : $this->create();
+        } catch (BadMethodCallException $e) {
+            throw new BadMethodCallException(sprintf(
+                "You can't %s %s objects.",
+                $this->getId() ? 'update' : 'create',
+                get_called_class()
+            ));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Update the object through API.
+     *
+     * @return AbstractObject
+     */
+    protected function update()
+    {
+        $this->data = $this->getApi()->update($this->getId(), $this->data);
+
+        return $this;
+    }
+
+    /**
+     * Create the object through API.
+     *
+     * @return AbstractObject
+     */
+    protected function create()
+    {
+        $this->data = $this->getApi()->create($this->data);
+
+        return $this;
+    }
+
+    /**
+     * Refresh the object through API.
+     *
+     * @return AbstractObject
+     */
+    protected function refresh()
+    {
+        $this->data = $this->getApi()->show($this->getId());
+
+        return $this;
+    }
+
+    /**
+     * Set the given property and throw an exception if
+     * the property is immutable.
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @return AbstractObject
      *
      * @throws ObjectImmutableException
      */
-    protected function failIfImmutable()
+    protected function setProperty($property, $value)
     {
-        if (!$this->isImmutable()) {
-            return;
+        if ($this->isImmutable() && in_array($property, $this->immutableProperties)) {
+            throw new ObjectImmutableException(sprintf(
+                'Object of class "%s" with id "%s" is immutable.',
+                get_called_class(),
+                $this->getId() ? $this->getId() : 'unknown'
+            ));
         }
 
-        throw new ObjectImmutableException(sprintf(
-            'Object of class "%s" with id "%s" is immutable.',
-            get_called_class(),
-            property_exists($this, 'id') ? $this->id : 'unknown'
-        ));
+        $this->data[$property] = $value;
+
+        return $this;
     }
 
     /**
@@ -102,23 +146,9 @@ abstract class AbstractObject
     abstract protected function isImmutable();
 
     /**
-     * Get properties.
+     * Get the relating Api object.
      *
-     * @return array
+     * @return ObjectApiInterface
      */
-    private function getProperties()
-    {
-        $values = array();
-
-        $reflect = new \ReflectionClass($this);
-        $properties = $reflect->getProperties();
-        foreach ($properties as $property) {
-            if ($property->getName() === 'propertyMap') {
-                continue;
-            }
-            $values[] = $property->getName();
-        }
-
-        return $values;
-    }
+    abstract protected function getApi();
 }

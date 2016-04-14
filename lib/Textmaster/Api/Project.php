@@ -12,7 +12,7 @@ use Textmaster\Api\Project\Document;
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
-class Project extends AbstractApi
+class Project extends AbstractApi implements ObjectApiInterface, FilterableApiInterface
 {
     /**
      * List all projects.
@@ -39,6 +39,7 @@ class Project extends AbstractApi
     public function filter(array $where = array(), array $order = array())
     {
         $params = array();
+
         empty($where) ?: $params['where'] = json_encode($where);
         empty($order) ?: $params['order'] = json_encode($order);
 
@@ -64,22 +65,13 @@ class Project extends AbstractApi
      *
      * @link https://www.textmaster.com/documentation#projects-create-a-project
      *
-     * @param array       $params
-     * @param string|null $tracker
+     * @param array $params
      *
      * @return array
      */
-    public function create(array $params, $tracker = null)
+    public function create(array $params)
     {
-        $params = array(
-            'project' => $params,
-        );
-
-        if (null !== $tracker) {
-            $params['tracker'] = $tracker;
-        }
-
-        return $this->post($this->getPath(), $params);
+        return $this->post($this->getPath(), array('project' => $params));
     }
 
     /**
@@ -171,21 +163,14 @@ class Project extends AbstractApi
      * Launch a project.
      *
      * @link https://www.textmaster.com/documentation#projects-launch-a-project-asynchronously
-     * @link https://www.textmaster.com/documentation#projects-launch-a-project
-     * @deprecated Synchronously launching a project is deprecated
      *
      * @param string $projectId
-     * @param bool   $async
      *
      * @return array
      */
-    public function launch($projectId, $async = true)
+    public function launch($projectId)
     {
-        if ($async) {
-            return $this->post($this->getPath($projectId).'/async_launch');
-        }
-
-        return $this->put($this->getPath($projectId).'/launch');
+        return $this->post($this->getPath($projectId).'/async_launch');
     }
 
     /**
@@ -205,21 +190,25 @@ class Project extends AbstractApi
     /**
      * Documents Api.
      *
+     * @param string $projectId
+     *
      * @return Document
      */
-    public function documents()
+    public function documents($projectId)
     {
-        return new Document($this->client);
+        return new Document($this->client, $projectId);
     }
 
     /**
      * Authors Api.
      *
+     * @param string $projectId
+     *
      * @return ProjectAuthors
      */
-    public function authors()
+    public function authors($projectId)
     {
-        return new ProjectAuthors($this->client);
+        return new ProjectAuthors($this->client, $projectId);
     }
 
     /**

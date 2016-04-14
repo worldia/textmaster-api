@@ -2,62 +2,67 @@
 
 namespace Textmaster\Model;
 
+use Textmaster\Client;
+use Textmaster\Exception\InvalidArgumentException;
+
 class Document extends AbstractObject implements DocumentInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $id;
+    protected $data = array(
+        'status' => DocumentInterface::STATUS_IN_CREATION,
+    );
 
     /**
-     * @var string
+     * @var array
      */
-    protected $projectId;
+    protected $immutableProperties = array(
+        'title',
+        'instructions',
+        'original_content',
+    );
 
     /**
-     * @var string
+     * Constructor.
+     *
+     * @param Client $client the Textmaster client.
+     * @param array  $data   all values to populate document | id and project id to load from API |
+     *                       nothing to create an empty document
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var string
-     */
-    protected $instructions;
-
-    /**
-     * @var string
-     */
-    protected $status = self::STATUS_IN_CREATION;
-
-    /**
-     * @var string
-     */
-    protected $translatedContent;
-
-    /**
-     * @var string
-     */
-    protected $originalContent;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function __construct(Client $client, array $data = array())
     {
-        return $this->id;
+        $this->client = $client;
+
+        if (1 < count($data)) {
+            $this->data = $data;
+        } else {
+            $this->data = array_merge($this->data, $data);
+        }
+
+        if (2 === count($data) && isset($data['project_id']) && isset($data['id'])) {
+            $this->refresh();
+        }
+
+        if (isset($data['id']) && !isset($data['project_id'])) {
+            throw new InvalidArgumentException('Both the document and project ids are required.');
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProjectId()
+    public function getProject()
     {
-        return $this->projectId;
+        return new Project($this->client, $this->data['project_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProject(ProjectInterface $project)
+    {
+        return $this->setProperty('project_id', $project->getId());
     }
 
     /**
@@ -65,7 +70,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->data['title'];
     }
 
     /**
@@ -73,29 +78,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setTitle($title)
     {
-        $this->failIfImmutable();
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description)
-    {
-        $this->failIfImmutable();
-        $this->description = $description;
-
-        return $this;
+        return $this->setProperty('title', $title);
     }
 
     /**
@@ -103,7 +86,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getInstructions()
     {
-        return $this->instructions;
+        return $this->data['instructions'];
     }
 
     /**
@@ -111,10 +94,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setInstructions($instructions)
     {
-        $this->failIfImmutable();
-        $this->instructions = $instructions;
-
-        return $this;
+        return $this->setProperty('instructions', $instructions);
     }
 
     /**
@@ -122,7 +102,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getStatus()
     {
-        return $this->status;
+        return $this->data['status'];
     }
 
     /**
@@ -130,7 +110,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getOriginalContent()
     {
-        return $this->originalContent;
+        return $this->data['original_content'];
     }
 
     /**
@@ -138,10 +118,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setOriginalContent($content)
     {
-        $this->failIfImmutable();
-        $this->originalContent = $content;
-
-        return $this;
+        return $this->setProperty('original_content', $content);
     }
 
     /**
@@ -149,7 +126,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getTranslatedContent()
     {
-        return $this->translatedContent;
+        return $this->data['translated_content'];
     }
 
     /**
@@ -157,6 +134,16 @@ class Document extends AbstractObject implements DocumentInterface
      */
     protected function isImmutable()
     {
-        return $this->status !== self::STATUS_IN_CREATION;
+        return $this->data['status'] !== self::STATUS_IN_CREATION;
+    }
+
+    /**
+     * Get the Document Api object.
+     *
+     * @return \Textmaster\Api\Project\Document
+     */
+    protected function getApi()
+    {
+        return $this->client->projects()->documents($this->data['project_id']);
     }
 }

@@ -2,77 +2,39 @@
 
 namespace Textmaster\Model;
 
+use Pagerfanta\Pagerfanta;
+use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\PagerfantaAdapter;
 
 class Project extends AbstractObject implements ProjectInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $activity;
-
-    /**
-     * @var string
-     */
-    protected $status = self::STATUS_IN_CREATION;
-
-    /**
-     * @var string
-     */
-    protected $languageFrom;
-
-    /**
-     * @var string
-     */
-    protected $languageTo;
-
-    /**
-     * @var string
-     */
-    protected $category;
-
-    /**
-     * @var string
-     */
-    protected $briefing;
+    protected $data = array(
+        'status' => ProjectInterface::STATUS_IN_CREATION,
+    );
 
     /**
      * @var array
      */
-    protected $options;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $propertyMap = array(
-        'project_briefing' => 'briefing',
-        'ctype' => 'activity',
+    protected $immutableProperties = array(
+        'name',
+        'ctype',
+        'category',
+        'language_from',
+        'language_to',
+        'project_briefing',
+        'options',
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return $this->name;
+        return $this->data['name'];
     }
 
     /**
@@ -80,37 +42,87 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function setName($name)
     {
-        $this->failIfImmutable();
-        $this->name = $name;
-
-        return $this;
+        return $this->setProperty('name', $name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getActivity()
+    public function getLanguageFrom()
     {
-        return $this->activity;
+        return $this->data['language_from'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setActivity($type)
+    public function setLanguageFrom($language)
     {
-        $this->failIfImmutable();
+        return $this->setProperty('language_from', $language);
+    }
 
-        if (!in_array($type, self::getAllowedActivities())) {
-            throw new InvalidArgumentException(sprintf(
-                'Type must me one of "%s".',
-                implode('","', self::getAllowedActivities())
-            ));
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function getLanguageTo()
+    {
+        return $this->data['language_to'];
+    }
 
-        $this->activity = $type;
+    /**
+     * {@inheritdoc}
+     */
+    public function setLanguageTo($language)
+    {
+        return $this->setProperty('language_to', $language);
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategory()
+    {
+        return $this->data['category'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCategory($code)
+    {
+        return $this->setProperty('category', $code);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBriefing()
+    {
+        return $this->data['project_briefing'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBriefing($briefing)
+    {
+        return $this->setProperty('project_briefing', $briefing);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptions()
+    {
+        return $this->data['options'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        return $this->setProperty('options', $options);
     }
 
     /**
@@ -128,102 +140,67 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
+    public function getActivity()
+    {
+        return $this->data['ctype'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivity($activity)
+    {
+        $activities = self::getAllowedActivities();
+        if (!in_array($activity, $activities)) {
+            throw new InvalidArgumentException(sprintf(
+                'Activity must me one of "%s".',
+                implode('","', $activities)
+            ));
+        }
+
+        return $this->setProperty('ctype', $activity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStatus()
     {
-        return $this->status;
+        return $this->data['status'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLanguageFrom()
+    public function getDocuments(array $where = array(), array $order = array())
     {
-        return $this->languageFrom;
+        return new Pagerfanta(new PagerfantaAdapter($this->getApi()->documents($this->getId()), $where, $order));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLanguageFrom($language)
+    public function createDocument()
     {
-        $this->failIfImmutable();
-        $this->languageFrom = $language;
+        if (null === $this->getId()) {
+            throw new BadMethodCallException('The project must be saved before adding documents.');
+        }
 
-        return $this;
+        return new Document($this->client, array('project_id' => $this->getId()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLanguageTo()
+    public function launch()
     {
-        return $this->languageTo;
-    }
+        if ($this->isImmutable() || null === $this->getId()) {
+            throw new BadMethodCallException(
+                'The project cannot be launched because it has not been saved or is immutable.'
+            );
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLanguageTo($language)
-    {
-        $this->failIfImmutable();
-        $this->languageTo = $language;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategory($code)
-    {
-        $this->failIfImmutable();
-        $this->category = $code;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBriefing()
-    {
-        return $this->briefing;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBriefing($briefing)
-    {
-        $this->failIfImmutable();
-        $this->briefing = $briefing;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        $this->failIfImmutable();
-        $this->options = $options;
+        $this->data = $this->getApi()->launch($this->getId());
 
         return $this;
     }
@@ -233,6 +210,16 @@ class Project extends AbstractObject implements ProjectInterface
      */
     protected function isImmutable()
     {
-        return $this->status !== self::STATUS_IN_CREATION;
+        return $this->data['status'] !== self::STATUS_IN_CREATION;
     }
+
+     /**
+      * Get the Project Api object.
+      *
+      * @return \Textmaster\Api\Project
+      */
+     protected function getApi()
+     {
+         return $this->client->project();
+     }
 }
