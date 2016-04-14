@@ -32,7 +32,7 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * @var string
      */
-    protected $status;
+    protected $status = self::STATUS_IN_CREATION;
 
     /**
      * @var string
@@ -73,6 +73,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setTitle($title)
     {
+        $this->failIfImmutable();
         $this->title = $title;
 
         return $this;
@@ -91,6 +92,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setDescription($description)
     {
+        $this->failIfImmutable();
         $this->description = $description;
 
         return $this;
@@ -109,6 +111,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setInstructions($instructions)
     {
+        $this->failIfImmutable();
         $this->instructions = $instructions;
 
         return $this;
@@ -135,6 +138,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setOriginalContent($content)
     {
+        $this->failIfImmutable();
         $this->originalContent = $content;
 
         return $this;
@@ -153,6 +157,6 @@ class Document extends AbstractObject implements DocumentInterface
      */
     protected function isImmutable()
     {
-        return $this->status === self::STATUS_IN_CREATION;
+        return $this->status !== self::STATUS_IN_CREATION;
     }
 }
