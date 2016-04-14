@@ -157,7 +157,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldLaunchProject($projectId)
     {
-        $result = $this->api->launch($projectId);
+        $result = $this->api->asyncLaunch($projectId);
 
         $this->assertEquals('Project for functional test', $result['name']);
         $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);

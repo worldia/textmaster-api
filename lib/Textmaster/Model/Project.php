@@ -231,7 +231,7 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    protected function isImmutable()
+    public function isImmutable()
     {
         return $this->status !== self::STATUS_IN_CREATION;
     }

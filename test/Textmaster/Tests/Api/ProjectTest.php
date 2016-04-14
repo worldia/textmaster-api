@@ -11,7 +11,7 @@ class ProjectTest extends TestCase
     {
         $expectedArray = array(
             array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2')
+            array('id' => 2, 'name' => 'Test project 2'),
         );
 
         $api = $this->getApiMock();
@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
     {
         $expectedArray = array(
             array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2')
+            array('id' => 2, 'name' => 'Test project 2'),
         );
 
         $api = $this->getApiMock();
@@ -199,7 +199,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/launch')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->launch(1, false));
+        $this->assertEquals($expectedArray, $api->launch(1));
     }
 
     /**
@@ -215,7 +215,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/async_launch')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->launch(1));
+        $this->assertEquals($expectedArray, $api->asyncLaunch(1));
     }
 
     /**

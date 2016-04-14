@@ -81,7 +81,7 @@ abstract class AbstractObject
      *
      * @throws ObjectImmutableException
      */
-    protected function failIfImmutable()
+    public function failIfImmutable()
     {
         if (!$this->isImmutable()) {
             return;
@@ -99,7 +99,7 @@ abstract class AbstractObject
      *
      * @return bool
      */
-    abstract protected function isImmutable();
+    abstract public function isImmutable();
 
     /**
      * Get properties.
