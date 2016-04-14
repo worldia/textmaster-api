@@ -45,7 +45,9 @@ class ObjectResultPagerTest extends \PHPUnit_Framework_TestCase
         $objectClass = 'Textmaster\Model\Project';
         $resultPager = new \Textmaster\ObjectResultPager($clientMock, 'projects', $objectClass);
         $resultPager->initialize($apiMock, 'all');
-        $project = $resultPager->getPagination()['projects'][0];
+        $pagination = $resultPager->getPagination();
+        $projects = $pagination['projects'];
+        $project = $projects[0];
 
         $this->assertEquals($objectClass, get_class($project));
         $this->assertEquals(1, $project->getId());
