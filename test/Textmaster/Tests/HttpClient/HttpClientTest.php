@@ -6,7 +6,6 @@ use Textmaster\Client;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\HttpClient\Message\ResponseMediator;
 use Guzzle\Http\Message\Response;
-use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Client as GuzzleClient;
 
 class HttpClientTest extends \PHPUnit_Framework_TestCase
@@ -17,7 +16,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldBeAbleToPassOptionsToConstructor()
     {
         $httpClient = new TestHttpClient(array(
-            'timeout' => 33
+            'timeout' => 33,
         ), $this->getBrowserMock());
 
         $this->assertEquals(33, $httpClient->getOption('timeout'));
@@ -59,9 +58,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoGETRequest()
     {
-        $path       = '/some/path';
+        $path = '/some/path';
         $parameters = array('a' => 'b');
-        $headers    = array('c' => 'd');
+        $headers = array('c' => 'd');
 
         $client = $this->getBrowserMock();
 
@@ -74,9 +73,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoPOSTRequest()
     {
-        $path       = '/some/path';
-        $body       = 'a = b';
-        $headers    = array('c' => 'd');
+        $path = '/some/path';
+        $body = 'a = b';
+        $headers = array('c' => 'd');
 
         $client = $this->getBrowserMock();
         $client->expects($this->once())
@@ -92,7 +91,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoPOSTRequestWithoutContent()
     {
-        $path       = '/some/path';
+        $path = '/some/path';
 
         $client = $this->getBrowserMock();
         $client->expects($this->once())
@@ -108,9 +107,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoPATCHRequest()
     {
-        $path       = '/some/path';
-        $body       = 'a = b';
-        $headers    = array('c' => 'd');
+        $path = '/some/path';
+        $body = 'a = b';
+        $headers = array('c' => 'd');
 
         $client = $this->getBrowserMock();
 
@@ -123,9 +122,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoDELETERequest()
     {
-        $path       = '/some/path';
-        $body       = 'a = b';
-        $headers    = array('c' => 'd');
+        $path = '/some/path';
+        $body = 'a = b';
+        $headers = array('c' => 'd');
 
         $client = $this->getBrowserMock();
 
@@ -138,8 +137,8 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoPUTRequest()
     {
-        $path       = '/some/path';
-        $headers    = array('c' => 'd');
+        $path = '/some/path';
+        $headers = array('c' => 'd');
 
         $client = $this->getBrowserMock();
 
@@ -152,9 +151,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoCustomRequest()
     {
-        $path       = '/some/path';
-        $body       = 'a = b';
-        $options    = array('c' => 'd');
+        $path = '/some/path';
+        $body = 'a = b';
+        $options = array('c' => 'd');
 
         $client = $this->getBrowserMock();
 
@@ -167,9 +166,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldHandlePagination()
     {
-        $path       = '/some/path';
-        $body       = 'a = b';
-        $headers    = array('c' => 'd');
+        $path = '/some/path';
+        $body = 'a = b';
+        $headers = array('c' => 'd');
 
         $response = new Response(200);
         $response->addHeader('Link', "<page1>; rel=\"page2\", \n<page3>; rel=\"page4\"");
@@ -187,9 +186,9 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAllowToReturnRawContent()
     {
-        $path       = '/some/path';
+        $path = '/some/path';
         $parameters = array('a = b');
-        $headers    = array('c' => 'd');
+        $headers = array('c' => 'd');
 
         $message = $this->getMock('Guzzle\Http\Message\Response', array(), array(200));
         $message->expects($this->once())
@@ -204,7 +203,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient = new TestHttpClient(array(), $client);
         $response = $httpClient->get($path, $parameters, $headers);
 
-        $this->assertEquals("Just raw context", $response->getBody());
+        $this->assertEquals('Just raw context', $response->getBody());
         $this->assertInstanceOf('Guzzle\Http\Message\MessageInterface', $response);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Textmaster\Tests\Api;
 
-class TransactionTest extends TestCase
+class BillingTest extends TestCase
 {
     /**
      * @test
@@ -32,8 +32,7 @@ class TransactionTest extends TestCase
                     'money_amount' => 48,
                     'type' => 'Transaction::CreditPurchase::BuyingACreditBundle',
                     'url' => '/clients/transactions/5492bca20ed4c0c25c000e69.pdf',
-                    'issued_at' =>
-                    array(
+                    'issued_at' => array(
                         'day' => 18,
                         'month' => 12,
                         'year' => 2014,
@@ -63,8 +62,7 @@ class TransactionTest extends TestCase
                     'invoice_num' => '20141218-85E3-FM8',
                     'money_amount' => -1.95918367,
                     'type' => 'Transaction::ProjectSpending::LaunchingAProject',
-                    'issued_at' =>
-                    array(
+                    'issued_at' => array(
                         'day' => 18,
                         'month' => 12,
                         'year' => 2014,
@@ -88,7 +86,7 @@ class TransactionTest extends TestCase
      */
     public function shouldShowAllContracts()
     {
-        $expectedArray = array (
+        $expectedArray = array(
             'negotiated_contracts' => array(
                 array(
                     'id' => '561d19360ed4c037ac000543',

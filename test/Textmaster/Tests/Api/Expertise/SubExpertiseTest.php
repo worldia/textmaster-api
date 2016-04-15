@@ -11,15 +11,15 @@ class SubExpertiseTest extends TestCase
      */
     public function shouldShowAllSubExpertises()
     {
-        $expectedArray = array (
-            array (
+        $expectedArray = array(
+            array(
                 'id' => '561d1b770ed4c03ab4000ea7',
                 'name' => 'General',
                 'code' => 'general',
                 'client_pricing' => 10,
                 'client_pricing_in_locale' => 0,
             ),
-            array (
+            array(
                 'id' => '561d1b770ed4c03ab4000eaa',
                 'name' => 'Banking',
                 'code' => 'banking',
@@ -42,7 +42,7 @@ class SubExpertiseTest extends TestCase
      */
     public function shouldShowSubExpertise()
     {
-        $expectedArray = array (
+        $expectedArray = array(
             'id' => '561d1b770ed4c03ab4000e9e',
             'name' => 'General',
             'code' => 'general',

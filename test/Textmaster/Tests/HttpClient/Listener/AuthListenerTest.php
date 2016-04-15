@@ -2,8 +2,6 @@
 
 namespace Textmaster\Tests\HttpClient\Listener;
 
-use Guzzle\Http\Message\Request;
-use Textmaster\Client;
 use Textmaster\HttpClient\Listener\AuthListener;
 
 class AuthListenerTest extends \PHPUnit_Framework_TestCase

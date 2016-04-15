@@ -9,7 +9,7 @@ class AuthorTest extends TestCase
      */
     public function shouldShowAllAuthors()
     {
-        $expectedArray = array (
+        $expectedArray = array(
             'authors' => array(
                 array('ident' => 'A-7B1E-FM', 'id' => '53d7bf6353ecaaf8aa00001e'),
                 array('ident' => 'A-7B2E-FM', 'id' => '53d7bf6353ecaaf8aa00002e'),

@@ -6,29 +6,29 @@ use Textmaster\Tests\Api\TestCase;
 
 class AuthorTest extends TestCase
 {
-    protected $authorResult = array (
-        'my_authors' => array (
+    protected $authorResult = array(
+        'my_authors' => array(
             array(
                 'description' => 'description',
-                'tags' => array (),
+                'tags' => array(),
                 'status' => 'my_textmaster',
                 'id' => '53d7bf8053ecaaf8aa0005ba',
                 'author_id' => '53d7bf7f53ecaaf8aa00056f',
                 'author_ref' => 'A-7B6F-FM',
                 'latest_activity' => '2014-07-29 18:35:52 +0300',
-                'created_at' => array ('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
-                'updated_at' => array ('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
+                'created_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
+                'updated_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
             ),
              array(
                 'description' => 'description',
-                'tags' => array (),
+                'tags' => array(),
                 'status' => 'uncategorized',
                 'id' => '53d7bf8053ecaaf8aa0005bb',
                 'author_id' => '53d7bf7f53ecaaf8aa00057f',
                 'author_ref' => 'A-7B7F-FM',
                 'latest_activity' => '2014-07-29 18:35:52 +0300',
-                'created_at' => array ('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
-                'updated_at' => array ('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
+                'created_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
+                'updated_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:32 +0300'),
             ),
         ),
         'total_pages' => 0,

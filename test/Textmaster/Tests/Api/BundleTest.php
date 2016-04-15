@@ -39,7 +39,7 @@ class BundleTest extends TestCase
                 'id' => '51a54ca04403ba63b7000015',
                 'created_at' => array('day' => 29, 'month' => 5, 'year' => 2013, 'full' => '2013-05-29 03:32:32 +0300'),
                 'updated_at' => array('day' => 8, 'month' => 4, 'year' => 2014, 'full' => '2014-04-08 17:01:11 +0300'),
-            )
+            ),
         );
 
         $api = $this->getApiMock();
