@@ -173,6 +173,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
     protected function getResponse($content)
     {
         $body = EntityBody::factory(json_encode($content, true));
+
         return new Response(200, array('Content-Type' => 'application/json'), $body);
     }
 }
@@ -180,7 +181,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 class AbstractApiTestInstance extends AbstractApi
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -188,7 +189,7 @@ class AbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function post($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -196,7 +197,7 @@ class AbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function postRaw($path, $body, $requestHeaders = array())
     {
@@ -204,7 +205,7 @@ class AbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function patch($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -212,7 +213,7 @@ class AbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function put($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -220,7 +221,7 @@ class AbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -231,7 +232,7 @@ class AbstractApiTestInstance extends AbstractApi
 class ExposedAbstractApiTestInstance extends AbstractApi
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -239,7 +240,7 @@ class ExposedAbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function post($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -247,7 +248,7 @@ class ExposedAbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function patch($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -255,7 +256,7 @@ class ExposedAbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function put($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -263,7 +264,7 @@ class ExposedAbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($path, array $parameters = array(), $requestHeaders = array())
     {
@@ -271,7 +272,7 @@ class ExposedAbstractApiTestInstance extends AbstractApi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function head($path, array $parameters = array(), $requestHeaders = array())
     {

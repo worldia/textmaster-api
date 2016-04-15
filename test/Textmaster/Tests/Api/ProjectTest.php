@@ -11,7 +11,7 @@ class ProjectTest extends TestCase
     {
         $expectedArray = array(
             array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2')
+            array('id' => 2, 'name' => 'Test project 2'),
         );
 
         $api = $this->getApiMock();
@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
     {
         $expectedArray = array(
             array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2')
+            array('id' => 2, 'name' => 'Test project 2'),
         );
 
         $api = $this->getApiMock();

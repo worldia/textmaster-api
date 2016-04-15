@@ -78,7 +78,7 @@ class DocumentTest extends TestCase
     {
         $expectedArray = array(
             array('id' => 1, 'name' => 'Test document 1'),
-            array('id' => 2, 'name' => 'Test document 2')
+            array('id' => 2, 'name' => 'Test document 2'),
         );
 
         $api = $this->getApiMock();
@@ -120,7 +120,7 @@ class DocumentTest extends TestCase
             ->will($this->returnValue($expectedArray));
 
         $this->assertEquals($expectedArray, $api->create(1, array(
-            'name' => 'Test document 3'
+            'name' => 'Test document 3',
         )));
     }
 
@@ -138,7 +138,7 @@ class DocumentTest extends TestCase
             ->will($this->returnValue($expectedArray));
 
         $this->assertEquals($expectedArray, $api->update(1, 3, array(
-            'name' => 'Test document 3'
+            'name' => 'Test document 3',
         )));
     }
 

@@ -62,7 +62,6 @@ class TemplateTest extends TestCase
         $this->assertEquals($expectedArray, $api->byName('2_paragraphs'));
     }
 
-
     protected function getApiClass()
     {
         return 'Textmaster\Api\Template';
