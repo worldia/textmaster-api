@@ -10,8 +10,9 @@ use Textmaster\Model\ProjectInterface;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
-    // As launch project is done asynchronously we need a project to be paused and resumed.
-    const TEST_PROJECT_ID = '57065757f41f44001100000e';
+    // As launch project is done asynchronously we need a project to be paused and archived.
+    const TO_PAUSE_PROJECT_ID = '57065757f41f44001100000e';
+    const TO_ARCHIVE_PROJECT_ID = '57109f596765d4000c0002df';
 
     /**
      * Project api.
@@ -195,13 +196,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @depends shouldCancelProject
      */
-    public function shouldArchiveProject($projectId)
+    public function shouldArchiveProject()
     {
-        $result = $this->api->archive($projectId);
+        $result = $this->api->archive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertEquals('Project for functional test', $result['name']);
+        $this->assertEquals('Project to be archived', $result['name']);
         $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertEquals('premium', $result['options']['language_level']);
         $this->assertEquals('en', $result['language_from']);
@@ -210,19 +210,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
         $this->assertEquals(ProjectInterface::STATUS_CANCELED, $result['status']);
         $this->assertEquals('api', $result['creation_channel']);
-
-        return $projectId;
     }
 
     /**
      * @test
-     * @depends shouldArchiveProject
      */
-    public function shouldUnarchiveProject($projectId)
+    public function shouldUnarchiveProject()
     {
-        $result = $this->api->unarchive($projectId);
+        $result = $this->api->unarchive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertEquals('Project for functional test', $result['name']);
+        $this->assertEquals('Project to be archived', $result['name']);
         $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertEquals('premium', $result['options']['language_level']);
         $this->assertEquals('en', $result['language_from']);
@@ -231,8 +228,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
         $this->assertEquals(ProjectInterface::STATUS_CANCELED, $result['status']);
         $this->assertEquals('api', $result['creation_channel']);
-
-        $this->api->archive($projectId);
     }
 
     /**
@@ -240,7 +235,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldPauseProject()
     {
-        $result = $this->api->pause(self::TEST_PROJECT_ID);
+        $result = $this->api->pause(self::TO_PAUSE_PROJECT_ID);
 
         $this->assertEquals('worldia_test', $result['name']);
         $this->assertEquals('fr', $result['language_from']);
@@ -253,7 +248,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldResumeProject()
     {
-        $result = $this->api->resume(self::TEST_PROJECT_ID);
+        $result = $this->api->resume(self::TO_PAUSE_PROJECT_ID);
 
         $this->assertEquals('worldia_test', $result['name']);
         $this->assertEquals('fr', $result['language_from']);
