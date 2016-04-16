@@ -36,12 +36,12 @@ Now we can use autoloader from Composer by:
 ```json
 {
     "require": {
-        "cdaguerre/textmaster-api": "~1.4"
+        "cdaguerre/php-textmaster-api": "~1.4"
     }
 }
 ```
 
-> `php-textmaster-api` follows the PSR-0 convention names for its classes, which means you can easily integrate `php-textmaster-api` classes loading in your own autoloader.
+> `php-textmaster-api` follows the PSR-4 convention names for its classes, which means you can easily integrate `php-textmaster-api` classes loading in your own autoloader.
 
 ## Using Laravel?
 
