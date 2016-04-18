@@ -2,69 +2,29 @@
 
 namespace Textmaster\Model;
 
+use Pagerfanta\Pagerfanta;
+use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\PagerfantaAdapter;
 
 class Project extends AbstractObject implements ProjectInterface
 {
     /**
-     * @var string
+     * @var \Textmaster\Api\Project
      */
-    protected $id;
+    protected $api;
 
     /**
      * @var string
      */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $activity;
-
-    /**
-     * @var string
-     */
-    protected $status = self::STATUS_IN_CREATION;
-
-    /**
-     * @var string
-     */
-    protected $languageFrom;
-
-    /**
-     * @var string
-     */
-    protected $languageTo;
-
-    /**
-     * @var string
-     */
-    protected $category;
-
-    /**
-     * @var string
-     */
-    protected $briefing;
-
-    /**
-     * @var array
-     */
-    protected $options;
+    protected $apiName = 'project';
 
     /**
      * {@inheritdoc}
      */
-    protected $propertyMap = array(
-        'project_briefing' => 'briefing',
-        'ctype' => 'activity',
-    );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    protected function getCreationStatus()
     {
-        return $this->id;
+        return ProjectInterface::STATUS_IN_CREATION;
     }
 
     /**
@@ -72,7 +32,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->data['name'];
     }
 
     /**
@@ -81,7 +41,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setName($name)
     {
         $this->failIfImmutable();
-        $this->name = $name;
+        $this->data['name'] = $name;
 
         return $this;
     }
@@ -91,24 +51,24 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getActivity()
     {
-        return $this->activity;
+        return $this->data['ctype'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setActivity($type)
+    public function setActivity($activity)
     {
         $this->failIfImmutable();
 
-        if (!in_array($type, self::getAllowedActivities())) {
+        if (!in_array($activity, self::getAllowedActivities())) {
             throw new InvalidArgumentException(sprintf(
-                'Type must me one of "%s".',
+                'Activity must me one of "%s".',
                 implode('","', self::getAllowedActivities())
             ));
         }
 
-        $this->activity = $type;
+        $this->data['ctype'] = $activity;
 
         return $this;
     }
@@ -130,7 +90,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getStatus()
     {
-        return $this->status;
+        return $this->data['status'];
     }
 
     /**
@@ -138,7 +98,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getLanguageFrom()
     {
-        return $this->languageFrom;
+        return $this->data['language_from'];
     }
 
     /**
@@ -147,7 +107,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setLanguageFrom($language)
     {
         $this->failIfImmutable();
-        $this->languageFrom = $language;
+        $this->data['language_from'] = $language;
 
         return $this;
     }
@@ -157,7 +117,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getLanguageTo()
     {
-        return $this->languageTo;
+        return $this->data['language_to'];
     }
 
     /**
@@ -166,7 +126,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setLanguageTo($language)
     {
         $this->failIfImmutable();
-        $this->languageTo = $language;
+        $this->data['language_to'] = $language;
 
         return $this;
     }
@@ -176,7 +136,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getCategory()
     {
-        return $this->category;
+        return $this->data['category'];
     }
 
     /**
@@ -185,7 +145,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setCategory($code)
     {
         $this->failIfImmutable();
-        $this->category = $code;
+        $this->data['category'] = $code;
 
         return $this;
     }
@@ -195,7 +155,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getBriefing()
     {
-        return $this->briefing;
+        return $this->data['project_briefing'];
     }
 
     /**
@@ -204,7 +164,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setBriefing($briefing)
     {
         $this->failIfImmutable();
-        $this->briefing = $briefing;
+        $this->data['project_briefing'] = $briefing;
 
         return $this;
     }
@@ -214,7 +174,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getOptions()
     {
-        return $this->options;
+        return $this->data['options'];
     }
 
     /**
@@ -223,7 +183,7 @@ class Project extends AbstractObject implements ProjectInterface
     public function setOptions(array $options)
     {
         $this->failIfImmutable();
-        $this->options = $options;
+        $this->data['options'] = $options;
 
         return $this;
     }
@@ -233,6 +193,59 @@ class Project extends AbstractObject implements ProjectInterface
      */
     protected function isImmutable()
     {
-        return $this->status !== self::STATUS_IN_CREATION;
+        return $this->data['status'] !== self::STATUS_IN_CREATION;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocuments(array $where = array(), array $order = array())
+    {
+        $adapter = new PagerfantaAdapter($this->api->documents($this->getId()), $where, $order);
+
+        return new Pagerfanta($adapter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDocument($originalContent, $title = null, $instructions = null)
+    {
+        $this->failIfImmutable();
+        $this->failIfUnsaved();
+
+        $document = new Document($this->client, array('project_id' => $this->getId()));
+        $document
+            ->setOriginalContent($originalContent)
+            ->setTitle($title)
+            ->setInstructions($instructions);
+        $document->save();
+
+        return $document;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function launch()
+    {
+        $this->failIfImmutable();
+        $this->failIfUnsaved();
+
+        $this->data = $this->api->launch($this->getId());
+
+        return $this;
+    }
+
+    /**
+     * Fail if unsaved.
+     *
+     * @throws BadMethodCallException
+     */
+    private function failIfUnsaved()
+    {
+        if (null === $this->getId()) {
+            throw new BadMethodCallException('Project is unsaved.');
+        }
     }
 }

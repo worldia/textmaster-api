@@ -2,6 +2,9 @@
 
 namespace Textmaster\Model;
 
+use Pagerfanta\Pagerfanta;
+use Textmaster\Exception\ObjectImmutableException;
+
 interface ProjectInterface
 {
     const ACTIVITY_TRANSLATION = 'translation';
@@ -161,4 +164,32 @@ interface ProjectInterface
      * @return array
      */
     public static function getAllowedActivities();
+
+    /**
+     * Get documents.
+     *
+     * @param array $where criteria to filter documents.
+     * @param array $order criteria to order documents.
+     *
+     * @return Pagerfanta
+     */
+    public function getDocuments(array $where = array(), array $order = array());
+
+    /**
+     * Create a document.
+     *
+     * @param string      $originalContent
+     * @param string|null $title
+     * @param string|null $instructions
+     *
+     * @return DocumentInterface
+     */
+    public function createDocument($originalContent, $title = null, $instructions = null);
+
+    /**
+     * Launch the project asynchronously.
+     *
+     * @return ProjectInterface
+     */
+    public function launch();
 }

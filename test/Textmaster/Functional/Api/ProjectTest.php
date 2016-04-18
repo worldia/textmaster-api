@@ -28,7 +28,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $httpClient = new HttpClient(array('base_url' => 'http://api.sandbox.textmaster.com/%s'));
         $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
         $client = new Client($httpClient);
-
         $this->api = $client->project();
     }
 
@@ -141,8 +140,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'title' => 'Document for functional test',
             'original_content' => 'Text to translate.',
             'word_count' => 3,
+            'project_id' => $projectId,
         );
-        $result = $this->api->documents()->create($projectId, $params);
+        $result = $this->api->documents($projectId)->create($params);
 
         $this->assertEquals('Document for functional test', $result['title']);
         $this->assertEquals('Text to translate.', $result['original_content']);
