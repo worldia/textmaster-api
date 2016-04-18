@@ -81,14 +81,14 @@ interface DocumentInterface
     /**
      * Get original content.
      *
-     * @return string
+     * @return string|array
      */
     public function getOriginalContent();
 
     /**
      * Get original content.
      *
-     * @param string $content
+     * @param string|array $content
      *
      * @return DocumentInterface
      */

@@ -118,6 +118,14 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setOriginalContent($content)
     {
+        $this->failIfImmutable();
+
+        if (is_array($content)) {
+            $this->checkArrayContent($content);
+        } elseif (!is_string($content)) {
+            throw new InvalidArgumentException('Original content must be of type "string" or "array".');
+        }
+
         return $this->setProperty('original_content', $content);
     }
 
@@ -145,5 +153,21 @@ class Document extends AbstractObject implements DocumentInterface
     protected function getApi()
     {
         return $this->client->projects()->documents($this->data['project_id']);
+    }
+
+    /**
+     * Check the given array respect Textmaster standard for array content.
+     *
+     * @param array $content
+     */
+    private function checkArrayContent(array $content)
+    {
+        foreach ($content as $value) {
+            if (!is_array($value) || !array_key_exists('original_phrase', $value)) {
+                throw new InvalidArgumentException(
+                    'Original content of type "array" must only contains arrays with key "original_phrase".'
+                );
+            }
+        }
     }
 }
