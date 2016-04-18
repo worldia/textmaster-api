@@ -1,6 +1,6 @@
 # PHP Textmaster API
 
-[![Build Status](https://travis-ci.com/cdaguerre/php-textmaster-api.svg?token=4dDhVzWiZtpfbs4qv8Fs&branch=master)](https://travis-ci.com/cdaguerre/php-textmaster-api) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/badges/quality-score.png?b=master&s=1235dc20e89c2f666102eccdd73143c5ebebc215)](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/badges/coverage.png?b=master&s=7db4bcbdc4a4be122157f92433745a895c1ec26d)](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/?branch=master)
+[![Build Status](https://travis-ci.org/cdaguerre/php-textmaster-api.svg?branch=master)](https://travis-ci.org/cdaguerre/php-textmaster-api) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/badges/quality-score.png?b=master&s=1235dc20e89c2f666102eccdd73143c5ebebc215)](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/badges/coverage.png?b=master&s=7db4bcbdc4a4be122157f92433745a895c1ec26d)](https://scrutinizer-ci.com/g/cdaguerre/php-textmaster-api/?branch=master)
 
 A simple Object Oriented wrapper for Textmaster API, written with PHP5.
 
@@ -36,12 +36,12 @@ Now we can use autoloader from Composer by:
 ```json
 {
     "require": {
-        "cdaguerre/textmaster-api": "~1.4"
+        "cdaguerre/php-textmaster-api": "~1.4"
     }
 }
 ```
 
-> `php-textmaster-api` follows the PSR-0 convention names for its classes, which means you can easily integrate `php-textmaster-api` classes loading in your own autoloader.
+> `php-textmaster-api` follows the PSR-4 convention names for its classes, which means you can easily integrate `php-textmaster-api` classes loading in your own autoloader.
 
 ## Using Laravel?
 
