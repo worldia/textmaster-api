@@ -2,7 +2,10 @@
 
 namespace Textmaster\Api\Project;
 
+use Textmaster\Client;
 use Textmaster\Api\AbstractApi;
+use Textmaster\Api\FilterableApiInterface;
+use Textmaster\Api\ObjectApiInterface;
 use Textmaster\Api\Project\Document\SupportMessage;
 
 /**
@@ -12,20 +15,35 @@ use Textmaster\Api\Project\Document\SupportMessage;
  *
  * @author Christian Daguerre <christian@daguer.re>
  */
-class Document extends AbstractApi
+class Document extends AbstractApi implements ObjectApiInterface, FilterableApiInterface
 {
+    /**
+     * @var string
+     */
+    protected $projectId;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $projectId
+     */
+    public function __construct(Client $client, $projectId)
+    {
+        parent::__construct($client);
+
+        $this->projectId = $projectId;
+    }
+
     /**
      * List all documents.
      *
      * @link https://fr.textmaster.com/documentation#documents-list-all-documents-in-a-project
      *
-     * @param string $projectId
-     *
      * @return array
      */
-    public function all($projectId)
+    public function all()
     {
-        return $this->get($this->getPath($projectId));
+        return $this->get($this->getPath());
     }
 
     /**
@@ -33,14 +51,19 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-filter-documents-by-status
      *
-     * @param string $projectId
-     * @param array  $params
+     * @param array $where
+     * @param array $order
      *
      * @return array
      */
-    public function filter($projectId, array $params)
+    public function filter(array $where = array(), array $order = array())
     {
-        return $this->get($this->getPath($projectId).'/filter', $params);
+        $params = array();
+
+        empty($where) ?: $params['where'] = json_encode($where);
+        empty($order) ?: $params['order'] = json_encode($order);
+
+        return $this->get($this->getPath().'/filter', $params);
     }
 
     /**
@@ -48,14 +71,13 @@ class Document extends AbstractApi
      *
      * @link https://www.textmaster.com/documentation#documents-get-a-document
      *
-     * @param string $projectId
      * @param string $documentId
      *
      * @return array
      */
-    public function show($projectId, $documentId)
+    public function show($documentId)
     {
-        return $this->get($this->getPath($projectId, $documentId));
+        return $this->get($this->getPath($documentId));
     }
 
     /**
@@ -63,14 +85,13 @@ class Document extends AbstractApi
      *
      * @link https://www.textmaster.com/documentation#documents-create-a-document
      *
-     * @param string $projectId
-     * @param array  $params
+     * @param array $params
      *
      * @return array
      */
-    public function create($projectId, array $params)
+    public function create(array $params)
     {
-        return $this->post($this->getPath($projectId), array('document' => $params));
+        return $this->post($this->getPath(), array('document' => $params));
     }
 
     /**
@@ -78,15 +99,14 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-update-a-document
      *
-     * @param string $projectId
      * @param string $documentId
      * @param array  $params
      *
      * @return array
      */
-    public function update($projectId, $documentId, array $params)
+    public function update($documentId, array $params)
     {
-        return $this->put($this->getPath($projectId, $documentId), $params);
+        return $this->put($this->getPath($documentId), $params);
     }
 
     /**
@@ -94,14 +114,13 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-delete-a-document
      *
-     * @param string $projectId
      * @param string $documentId
      *
      * @return array
      */
-    public function remove($projectId, $documentId)
+    public function remove($documentId)
     {
-        return $this->delete($this->getPath($projectId, $documentId));
+        return $this->delete($this->getPath($documentId));
     }
 
     /**
@@ -109,14 +128,13 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-complete-document
      *
-     * @param string      $projectId
      * @param string      $documentId
      * @param null|string $satisfaction One of 'neutral', 'positive' or 'negative'
      * @param null|string $message
      *
      * @return array
      */
-    public function complete($projectId, $documentId, $satisfaction = null, $message = null)
+    public function complete($documentId, $satisfaction = null, $message = null)
     {
         $params = array();
 
@@ -127,7 +145,7 @@ class Document extends AbstractApi
             $params['message'] = $message;
         }
 
-        return $this->put($this->getPath($projectId, $documentId).'/complete', $params);
+        return $this->put($this->getPath($documentId).'/complete', $params);
     }
 
     /**
@@ -135,14 +153,13 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-complete-multiple-documents
      *
-     * @param string      $projectId
      * @param array       $documentIds
      * @param null|string $satisfaction One of 'neutral', 'positive' or 'negative'
      * @param null|string $message
      *
      * @return array
      */
-    public function batchComplete($projectId, array $documentIds, $satisfaction = null, $message = null)
+    public function batchComplete(array $documentIds, $satisfaction = null, $message = null)
     {
         $params = array(
             'documents' => $documentIds,
@@ -155,7 +172,7 @@ class Document extends AbstractApi
             $params['message'] = $message;
         }
 
-        return $this->post('clients/projects/'.rawurlencode($projectId).'/batch/documents/complete', $params);
+        return $this->post('clients/projects/'.rawurlencode($this->projectId).'/batch/documents/complete', $params);
     }
 
     /**
@@ -163,14 +180,13 @@ class Document extends AbstractApi
      *
      * @link https://fr.textmaster.com/documentation#documents-create-multiple-new-documents
      *
-     * @param string $projectId
-     * @param array  $documents
+     * @param array $documents
      *
      * @return array
      */
-    public function batchCreate($projectId, array $documents)
+    public function batchCreate(array $documents)
     {
-        return $this->post('clients/projects/'.rawurlencode($projectId).'/batch/documents', array('documents' => $documents));
+        return $this->post('clients/projects/'.rawurlencode($this->projectId).'/batch/documents', array('documents' => $documents));
     }
 
     /**
@@ -186,21 +202,20 @@ class Document extends AbstractApi
     /**
      * Get api path.
      *
-     * @param string      $projectId
      * @param null|string $documentId
      *
      * @return string
      */
-    protected function getPath($projectId, $documentId = null)
+    protected function getPath($documentId = null)
     {
         if (null !== $documentId) {
             return sprintf(
                 'clients/projects/%s/documents/%s',
-                rawurlencode($projectId),
+                rawurlencode($this->projectId),
                 rawurlencode($documentId)
             );
         }
 
-        return sprintf('clients/projects/%s/documents', rawurlencode($projectId));
+        return sprintf('clients/projects/%s/documents', rawurlencode($this->projectId));
     }
 }

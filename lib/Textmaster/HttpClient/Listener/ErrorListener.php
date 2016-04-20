@@ -34,8 +34,9 @@ class ErrorListener
 
         if ($response->isClientError() || $response->isServerError()) {
             $content = ResponseMediator::getContent($response);
+            $message = isset($content['errors']) ? serialize($content['errors']) : serialize($content);
 
-            throw new ErrorException(isset($content['message']) ? $content['message'] : $content, $response->getStatusCode());
+            throw new ErrorException($message, $response->getStatusCode());
         };
     }
 }

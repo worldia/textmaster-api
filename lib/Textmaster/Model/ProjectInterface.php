@@ -2,6 +2,10 @@
 
 namespace Textmaster\Model;
 
+use Pagerfanta\Pagerfanta;
+use Textmaster\Exception\BadMethodCallException;
+use Textmaster\Exception\ObjectImmutableException;
+
 interface ProjectInterface
 {
     const ACTIVITY_TRANSLATION = 'translation';
@@ -39,6 +43,13 @@ interface ProjectInterface
      * @throws ObjectImmutableException If project was already launched
      */
     public function setName($name);
+
+    /**
+     * Get list of all allowed activities.
+     *
+     * @return array
+     */
+    public static function getAllowedActivities();
 
     /**
      * Get activity type.
@@ -156,9 +167,28 @@ interface ProjectInterface
     public function setOptions(array $options);
 
     /**
-     * Get allowed values for activity.
+     * Get documents.
      *
-     * @return array
+     * @param array $where criteria to filter documents.
+     * @param array $order criteria to order documents.
+     *
+     * @return Pagerfanta
      */
-    public static function getAllowedActivities();
+    public function getDocuments(array $where = array(), array $order = array());
+
+    /**
+     * Create a document.
+     *
+     * @return DocumentInterface
+     *
+     * @throws BadMethodCallException If the project has no id.
+     */
+    public function createDocument();
+
+    /**
+     * Launch the project asynchronously.
+     *
+     * @return ProjectInterface
+     */
+    public function launch();
 }
