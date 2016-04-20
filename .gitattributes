@@ -6,4 +6,4 @@
 /.gitignore export-ignore
 /.travis.yml export-ignore
 /phpunit.xml.dist export-ignore
-/README.markdown export-ignore
+/README.md export-ignore
