@@ -16,6 +16,14 @@ interface DocumentInterface
     const STATUS_COUNTING_WORDS = 'counting_words';
     const STATUS_QUALITY = 'quality_control';
 
+    const SATISFACTION_NEUTRAL = 'neutral';
+    const SATISFACTION_POSITIVE = 'positive';
+    const SATISFACTION_NEGATIVE = 'negative';
+
+    const WORD_COUNT_RULE_PERCENTAGE = 0;
+    const WORD_COUNT_RULE_MIN = 1;
+    const WORD_COUNT_RULE_MAX = 2;
+
     /**
      * Get id.
      *
@@ -81,14 +89,14 @@ interface DocumentInterface
     /**
      * Get original content.
      *
-     * @return string
+     * @return string|array
      */
     public function getOriginalContent();
 
     /**
      * Get original content.
      *
-     * @param string $content
+     * @param string|array $content
      *
      * @return DocumentInterface
      */
@@ -98,4 +106,65 @@ interface DocumentInterface
      * @return string
      */
     public function getTranslatedContent();
+
+    /**
+     * @return int
+     */
+    public function getWordCount();
+
+    /**
+     * Get API callback values.
+     *
+     * @return array
+     */
+    public function getCallback();
+
+    /**
+     * Set API callback values.
+     *
+     * @param array $callback
+     *
+     * @return DocumentInterface
+     */
+    public function setCallback(array $callback);
+
+    /**
+     * Get custom data.
+     *
+     * @return mixed
+     */
+    public function getCustomData();
+
+    /**
+     * Set custom data.
+     *
+     * @param mixed $customData
+     *
+     * @return DocumentInterface
+     */
+    public function setCustomData($customData);
+
+    /**
+     * Complete the document.
+     *
+     * @param string $satisfaction
+     * @param string $message
+     *
+     * @return DocumentInterface
+     */
+    public function complete($satisfaction = null, $message = null);
+
+    /**
+     * Get allowed status.
+     *
+     * @return array
+     */
+    public static function getAllowedStatus();
+
+    /**
+     * Get allowed satisfaction.
+     *
+     * @return array
+     */
+    public static function getAllowedSatisfaction();
 }

@@ -119,8 +119,6 @@ abstract class AbstractObject
      * @param string $property
      * @param mixed  $value
      *
-     * @return AbstractObject
-     *
      * @throws ObjectImmutableException
      */
     protected function setProperty($property, $value)

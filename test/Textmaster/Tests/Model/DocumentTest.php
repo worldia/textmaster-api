@@ -26,7 +26,15 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $updateValues = array(
             'id' => '123456',
             'title' => 'New Title',
-            'status' => DocumentInterface::STATUS_IN_CREATION,
+            'status' => DocumentInterface::STATUS_IN_REVIEW,
+            'original_content' => 'Text to translate.',
+            'instructions' => 'Translating instructions.',
+            'project_id' => $projectId,
+        );
+        $completeValues = array(
+            'id' => '123456',
+            'title' => 'New Title',
+            'status' => DocumentInterface::STATUS_COMPLETED,
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
@@ -45,7 +53,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $clientMock = $this->getMock('Textmaster\Client', array('projects'));
         $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents', 'show'), array($clientMock));
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update'), array($clientMock, $projectId), '', false);
+        $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update', 'complete'), array($clientMock, $projectId), '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
@@ -62,6 +70,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $documentApiMock->method('update')
             ->willReturn($updateValues);
 
+        $documentApiMock->method('complete')
+            ->willReturn($completeValues);
+
         $this->clientMock = $clientMock;
     }
 
@@ -73,12 +84,14 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $title = 'Document 1';
         $originalContent = 'Text to translate.';
         $instructions = 'Translating instructions.';
+        $customData = array('Custom data can be any type');
 
         $document = new Document($this->clientMock);
         $document
             ->setTitle($title)
             ->setOriginalContent($originalContent)
             ->setInstructions($instructions)
+            ->setCustomData($customData)
         ;
 
         $this->assertNull($document->getId());
@@ -86,6 +99,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($title, $document->getTitle());
         $this->assertEquals($originalContent, $document->getOriginalContent());
         $this->assertEquals($instructions, $document->getInstructions());
+        $this->assertEquals($customData, $document->getCustomData());
     }
 
     /**
@@ -172,23 +186,150 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function shouldSetArrayOriginalContent()
+    {
+        $originalContent = array(
+            'translation1' => array('original_phrase' => 'Text to translate.'),
+            'translation2' => array('original_phrase' => 'An other text to translate.'),
+        );
+
+        $document = new Document($this->clientMock);
+        $document->setOriginalContent($originalContent);
+
+        $this->assertEquals($originalContent, $document->getOriginalContent());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCountWords()
+    {
+        $originalContent = array(
+            'translation1' => array('original_phrase' => 'Text 1 to translate.'),
+            'translation2' => array('original_phrase' => 'An other text to translate.'),
+        );
+
+        $document = new Document($this->clientMock);
+        $document->setOriginalContent($originalContent);
+
+        $this->assertEquals(9, $document->getWordCount());
+
+        $document->setOriginalContent('A single phrase to translate.');
+
+        $this->assertEquals(5, $document->getWordCount());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetCallback()
+    {
+        $callback = array(
+            DocumentInterface::STATUS_CANCELED => array('url' => 'http://my.host/canceled_callback'),
+            DocumentInterface::STATUS_IN_REVIEW => array('url' => 'http://my.host/in_review_callback'),
+        );
+
+        $document = new Document($this->clientMock);
+        $document->setCallback($callback);
+
+        $this->assertEquals($callback, $document->getCallback());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldComplete()
+    {
+        $projectId = '654321';
+        $valuesToCreate = array(
+            'id' => '123456',
+            'project_id' => $projectId,
+        );
+
+        $document = new Document($this->clientMock, $valuesToCreate);
+        $document->save();
+        $document->complete(DocumentInterface::SATISFACTION_POSITIVE, 'Good job!');
+
+        $this->assertEquals(DocumentInterface::STATUS_COMPLETED, $document->getStatus());
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
+     */
+    public function shouldNotSetBadArrayOriginalContent()
+    {
+        $originalContent = array(
+            'translation1' => array('original_phrase' => 'Text to translate.'),
+            'translation2' => array('bad_key' => 'An other text to translate.'),
+        );
+
+        $document = new Document($this->clientMock);
+        $document->setOriginalContent($originalContent);
+    }
+
+    /**
+     * @test
      * @expectedException \Textmaster\Exception\ObjectImmutableException
      */
     public function shouldBeImmutable()
     {
         $projectId = '654321';
-        $values = array(
+        $valuesToCreate = array(
             'id' => '123456',
-            'title' => 'Document 1',
-            'status' => DocumentInterface::STATUS_IN_PROGRESS,
-            'original_content' => 'Text to translate.',
-            'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
         );
 
-        $clientMock = $this->getMock('Textmaster\Client');
-
-        $document = new Document($clientMock, $values);
+        $document = new Document($this->clientMock, $valuesToCreate);
+        $document->save();
         $document->setTitle('Change title on immutable');
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
+     */
+    public function shouldNotSetWrongCallback()
+    {
+        $callback = array(
+            'NOT_A_DOCUMENT_STATUS' => array('url' => 'http://my.host/bad_callback'),
+        );
+
+        $document = new Document($this->clientMock);
+        $document->setCallback($callback);
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
+     */
+    public function shouldNotCompleteWithWrongSatisfaction()
+    {
+        $projectId = '654321';
+        $valuesToCreate = array(
+            'id' => '123456',
+            'project_id' => $projectId,
+        );
+
+        $document = new Document($this->clientMock, $valuesToCreate);
+        $document->save();
+        $document->complete('Wrong satisfaction value');
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\BadMethodCallException
+     */
+    public function shouldNotCompleteNotInReview()
+    {
+        $projectId = '654321';
+        $valuesToCreate = array(
+            'id' => '123456',
+            'project_id' => $projectId,
+        );
+
+        $document = new Document($this->clientMock, $valuesToCreate);
+        $document->complete();
     }
 }
