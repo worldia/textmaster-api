@@ -49,4 +49,20 @@ class Manager
 
         return new Pagerfanta(new PagerfantaAdapter($api, $where, $order));
     }
+
+    /**
+     * Get document by project id and id.
+     *
+     * @param string $projectId the project's id
+     * @param string $id        the document's id
+     *
+     * @return Model\DocumentInterface
+     */
+    public function getDocument($projectId, $id)
+    {
+        return new Model\Document(
+            $this->client,
+            array('project_id' => $projectId, 'id' => $id)
+        );
+    }
 }
