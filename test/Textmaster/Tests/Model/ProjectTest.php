@@ -8,17 +8,59 @@ use Textmaster\Model\ProjectInterface;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
+    protected $clientMock;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $showValues = array(
+            'id' => '123456',
+            'name' => 'Project 1',
+            'status' => ProjectInterface::STATUS_IN_CREATION,
+            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
+            'language_from' => 'fr',
+            'language_to' => 'en',
+            'category' => 'C014',
+            'project_briefing' => 'Lorem ipsum...',
+            'options' => array('language_level' => 'premium'),
+        );
+        $updateValues = array(
+            'id' => '123456',
+            'name' => 'Project Beta',
+            'status' => ProjectInterface::STATUS_IN_CREATION,
+            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
+            'language_from' => 'fr',
+            'language_to' => 'en',
+            'category' => 'C014',
+            'project_briefing' => 'Lorem ipsum...',
+            'options' => array('language_level' => 'premium'),
+        );
+
+        $clientMock = $this->getMock('Textmaster\Client', array('api'));
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('show', 'update'), array($clientMock));
+        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', array('filter', 'getClient'));
+
+        $clientMock->method('api')
+            ->willReturn($projectApiMock);
+
+        $projectApiMock->method('show')
+            ->willReturn($showValues);
+
+        $projectApiMock->method('update')
+            ->willReturn($updateValues);
+
+        $projectApiMock->method('documents')
+            ->willReturn($documentApiMock);
+
+        $this->clientMock = $clientMock;
+    }
+
     /**
      * @test
      */
     public function shouldCreateEmpty()
     {
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array(), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
         $name = 'Project 1';
         $status = ProjectInterface::STATUS_IN_CREATION;
         $activity = ProjectInterface::ACTIVITY_TRANSLATION;
@@ -28,7 +70,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $briefing = 'Lorem ipsum...';
         $options = array('language_level' => 'premium');
 
-        $project = new Project($clientMock);
+        $project = new Project($this->clientMock);
         $project
             ->setName($name)
             ->setActivity($activity)
@@ -55,7 +97,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateFromValues()
     {
-        $id = 1;
+        $id = '123456';
         $name = 'Project 1';
         $status = ProjectInterface::STATUS_IN_CREATION;
         $activity = ProjectInterface::ACTIVITY_TRANSLATION;
@@ -77,13 +119,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'options' => $options,
         );
 
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array(), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
-        $project = new Project($clientMock, $values);
+        $project = new Project($this->clientMock, $values);
 
         $this->assertEquals($id, $project->getId());
         $this->assertEquals($name, $project->getName());
@@ -101,47 +137,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldUpdate()
     {
-        $id = 1;
-        $name = 'Project Alpha';
-        $newName = 'Project Beta';
-        $status = ProjectInterface::STATUS_IN_CREATION;
-        $activity = ProjectInterface::ACTIVITY_TRANSLATION;
-        $languageFrom = 'fr';
-        $languageTo = 'en';
-        $category = 'C014';
-        $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
+        $name = 'Project 1';
 
-        $values = array(
-            'id' => $id,
-            'name' => $newName,
-            'status' => $status,
-            'ctype' => $activity,
-            'language_from' => $languageFrom,
-            'language_to' => $languageTo,
-            'category' => $category,
-            'project_briefing' => $briefing,
-            'options' => $options,
-        );
-
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array('update'), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
-        $apiMock->method('update')
-            ->willReturn($values);
-
-        $values['name'] = $name;
-        $project = new Project($clientMock, $values);
+        $project = new Project($this->clientMock, '123456');
 
         $this->assertEquals($name, $project->getName());
 
-        $project->setName($newName);
+        $project->setName('Project Beta');
         $project->save();
 
-        $this->assertEquals($newName, $project->getName());
+        $this->assertEquals('Project Beta', $project->getName());
     }
 
     /**
@@ -149,39 +154,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetDocuments()
     {
-        $id = 1;
-        $name = 'Project 1';
-        $status = ProjectInterface::STATUS_IN_CREATION;
-        $activity = ProjectInterface::ACTIVITY_TRANSLATION;
-        $languageFrom = 'fr';
-        $languageTo = 'en';
-        $category = 'C014';
-        $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
-
-        $values = array(
-            'id' => $id,
-            'name' => $name,
-            'status' => $status,
-            'ctype' => $activity,
-            'language_from' => $languageFrom,
-            'language_to' => $languageTo,
-            'category' => $category,
-            'project_briefing' => $briefing,
-            'options' => $options,
-        );
-
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents'), array($clientMock));
-        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', array('filter', 'getClient'));
-
-        $clientMock->method('api')
-            ->willReturn($projectApiMock);
-
-        $projectApiMock->method('documents')
-            ->willReturn($documentApiMock);
-
-        $project = new Project($clientMock, $values);
+        $project = new Project($this->clientMock, '123456');
         $pager = $project->getDocuments();
 
         $this->assertEquals('Pagerfanta\Pagerfanta', get_class($pager));
@@ -192,110 +165,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateDocument()
     {
-        $id = 1;
-        $name = 'Project 1';
-        $status = ProjectInterface::STATUS_IN_CREATION;
-        $activity = ProjectInterface::ACTIVITY_TRANSLATION;
-        $languageFrom = 'fr';
-        $languageTo = 'en';
-        $category = 'C014';
-        $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
-
-        $values = array(
-            'id' => $id,
-            'name' => $name,
-            'status' => $status,
-            'ctype' => $activity,
-            'language_from' => $languageFrom,
-            'language_to' => $languageTo,
-            'category' => $category,
-            'project_briefing' => $briefing,
-            'options' => $options,
-        );
-
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents'), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($projectApiMock);
-
-        $project = new Project($clientMock, $values);
+        $project = new Project($this->clientMock, '123456');
         $document = $project->createDocument();
 
         $this->assertEquals('Textmaster\Model\Document', get_class($document));
         $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
-    }
-
-    /**
-     * @test
-     * @expectedException \Textmaster\Exception\ObjectImmutableException
-     */
-    public function shouldBeImmutable()
-    {
-        $id = 1;
-        $name = 'Project 1';
-        $status = ProjectInterface::STATUS_IN_PROGRESS;
-        $activity = ProjectInterface::ACTIVITY_TRANSLATION;
-        $languageFrom = 'fr';
-        $languageTo = 'en';
-        $category = 'C014';
-        $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
-
-        $values = array(
-            'id' => $id,
-            'name' => $name,
-            'status' => $status,
-            'ctype' => $activity,
-            'language_from' => $languageFrom,
-            'language_to' => $languageTo,
-            'category' => $category,
-            'project_briefing' => $briefing,
-            'options' => $options,
-        );
-
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array(), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
-        $project = new Project($clientMock, $values);
-
-        $project->setName('New name');
-    }
-
-    /**
-     * @test
-     * @expectedException \Textmaster\Exception\InvalidArgumentException
-     */
-    public function shouldNotSetWrongActivity()
-    {
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array(), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
-        $project = new Project($clientMock);
-        $project->setActivity('wrong activity name');
-    }
-
-    /**
-     * @test
-     * @expectedException \Textmaster\Exception\BadMethodCallException
-     */
-    public function shouldNotCreateDocumentOnUnsaved()
-    {
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $apiMock = $this->getMock('Textmaster\Api\Project', array(), array($clientMock));
-
-        $clientMock->method('api')
-            ->willReturn($apiMock);
-
-        $project = new Project($clientMock);
-        $project->createDocument();
     }
 
     /**
@@ -310,5 +184,40 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($allowedActivities, Project::getAllowedActivities());
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\ObjectImmutableException
+     */
+    public function shouldBeImmutable()
+    {
+        $values = array(
+            'id' => 'ID-IMMUTABLE',
+            'status' => ProjectInterface::STATUS_IN_PROGRESS,
+        );
+
+        $project = new Project($this->clientMock, $values);
+        $project->setName('New name');
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
+     */
+    public function shouldNotSetWrongActivity()
+    {
+        $project = new Project($this->clientMock, '123456');
+        $project->setActivity('wrong activity name');
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\BadMethodCallException
+     */
+    public function shouldNotCreateDocumentOnUnsaved()
+    {
+        $project = new Project($this->clientMock);
+        $project->createDocument();
     }
 }

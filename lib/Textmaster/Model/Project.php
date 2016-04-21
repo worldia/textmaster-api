@@ -220,6 +220,6 @@ class Project extends AbstractObject implements ProjectInterface
       */
      protected function getApi()
      {
-         return $this->client->project();
+         return $this->client->projects();
      }
 }
