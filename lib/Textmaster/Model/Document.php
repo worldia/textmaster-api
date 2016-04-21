@@ -3,6 +3,7 @@
 namespace Textmaster\Model;
 
 use Textmaster\Client;
+use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
 
 class Document extends AbstractObject implements DocumentInterface
@@ -12,6 +13,8 @@ class Document extends AbstractObject implements DocumentInterface
      */
     protected $data = array(
         'status' => DocumentInterface::STATUS_IN_CREATION,
+        'word_count_rule' => DocumentInterface::WORD_COUNT_RULE_PERCENTAGE,
+        'word_count' => 0,
     );
 
     /**
@@ -21,6 +24,8 @@ class Document extends AbstractObject implements DocumentInterface
         'title',
         'instructions',
         'original_content',
+        'callback',
+        'custom_data',
     );
 
     /**
@@ -118,7 +123,17 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setOriginalContent($content)
     {
-        return $this->setProperty('original_content', $content);
+        if (is_array($content)) {
+            $this->checkArrayContent($content);
+        } elseif (!is_string($content)) {
+            throw new InvalidArgumentException('Original content must be of type "string" or "array".');
+        }
+
+        $this->setProperty('original_content', $content);
+
+        $this->countWords();
+
+        return $this;
     }
 
     /**
@@ -127,6 +142,111 @@ class Document extends AbstractObject implements DocumentInterface
     public function getTranslatedContent()
     {
         return $this->data['translated_content'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWordCount()
+    {
+        return $this->data['word_count'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCallback()
+    {
+        return $this->data['callback'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCallback(array $callback)
+    {
+        $result = array_diff(array_keys($callback), self::getAllowedStatus());
+        if (0 < count($result)) {
+            throw new InvalidArgumentException(sprintf(
+                'Key for array callback should be a document status. Wrong values: %s',
+                implode(', ', $result)
+            ));
+        }
+
+        $this->data['callback'] = $callback;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomData()
+    {
+        return $this->data['custom_data'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomData($customData)
+    {
+        return $this->setProperty('custom_data', $customData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function complete($satisfaction = null, $message = null)
+    {
+        if (self::STATUS_IN_REVIEW !== $this->getStatus()) {
+            throw new BadMethodCallException(sprintf(
+                'Can only complete a document in review. Status is "%s".',
+                $this->getStatus()
+            ));
+        }
+
+        $satisfactions = self::getAllowedSatisfaction();
+        if (null !== $satisfaction && !in_array($satisfaction, $satisfactions)) {
+            throw new InvalidArgumentException(sprintf(
+                'Satisfaction must me one of "%s".',
+                implode('","', $satisfactions)
+            ));
+        }
+
+        $this->data = $this->getApi()->complete($this->getId(), $satisfaction, $message);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getAllowedStatus()
+    {
+        return array(
+            self::STATUS_IN_CREATION,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_WAITING_ASSIGNMENT,
+            self::STATUS_IN_REVIEW,
+            self::STATUS_COMPLETED,
+            self::STATUS_INCOMPLETE,
+            self::STATUS_PAUSED,
+            self::STATUS_CANCELED,
+            self::STATUS_COPYSCAPE,
+            self::STATUS_COUNTING_WORDS,
+            self::STATUS_QUALITY,
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getAllowedSatisfaction()
+    {
+        return array(
+            self::SATISFACTION_NEGATIVE,
+            self::SATISFACTION_NEUTRAL,
+            self::SATISFACTION_POSITIVE,
+        );
     }
 
     /**
@@ -145,5 +265,51 @@ class Document extends AbstractObject implements DocumentInterface
     protected function getApi()
     {
         return $this->client->projects()->documents($this->data['project_id']);
+    }
+
+    /**
+     * Check the given array respect Textmaster standard for array content.
+     *
+     * @param array $content
+     */
+    private function checkArrayContent(array $content)
+    {
+        foreach ($content as $value) {
+            if (!is_array($value) || !array_key_exists('original_phrase', $value)) {
+                throw new InvalidArgumentException(
+                    'Original content of type "array" must only contains array with key "original_phrase".'
+                );
+            }
+        }
+    }
+
+    /**
+     * Count words in original content.
+     */
+    private function countWords()
+    {
+        if (is_string($this->data['original_content'])) {
+            $this->data['word_count'] = $this->count($this->data['original_content']);
+
+            return;
+        }
+
+        foreach ($this->data['original_content'] as $value) {
+            $this->data['word_count'] += $this->count($value['original_phrase']);
+        }
+    }
+
+    /**
+     * Count words (including numbers) in the given string.
+     *
+     * @param string $input
+     *
+     * @return int
+     */
+    private function count($input)
+    {
+        $res = preg_split('/\s+/', $input);
+
+        return count($res);
     }
 }
