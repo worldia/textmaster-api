@@ -32,7 +32,7 @@ class AuthListener
     {
         $this->key = $key;
         $this->secret = $secret;
-        $this->date = new \DateTime();
+        $this->date = new \DateTime('now', new \DateTimeZone('UTC'));
 
         if ($date) {
             $this->date = $date;

@@ -34,7 +34,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getName()
     {
-        return $this->data['name'];
+        return $this->getProperty('name');
     }
 
     /**
@@ -50,7 +50,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getLanguageFrom()
     {
-        return $this->data['language_from'];
+        return $this->getProperty('language_from');
     }
 
     /**
@@ -66,7 +66,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getLanguageTo()
     {
-        return $this->data['language_to'];
+        return $this->getProperty('language_to');
     }
 
     /**
@@ -82,7 +82,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getCategory()
     {
-        return $this->data['category'];
+        return $this->getProperty('category');
     }
 
     /**
@@ -98,7 +98,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getBriefing()
     {
-        return $this->data['project_briefing'];
+        return $this->getProperty('project_briefing');
     }
 
     /**
@@ -114,7 +114,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getOptions()
     {
-        return $this->data['options'];
+        return $this->getProperty('options');
     }
 
     /**
@@ -142,7 +142,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getActivity()
     {
-        return $this->data['ctype'];
+        return $this->getProperty('ctype');
     }
 
     /**
@@ -166,7 +166,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function getStatus()
     {
-        return $this->data['status'];
+        return $this->getProperty('status');
     }
 
     /**
