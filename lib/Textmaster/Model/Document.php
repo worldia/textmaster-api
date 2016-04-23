@@ -75,7 +75,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getTitle()
     {
-        return $this->data['title'];
+        return $this->getProperty('title');
     }
 
     /**
@@ -91,7 +91,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getInstructions()
     {
-        return $this->data['instructions'];
+        return $this->getProperty('instructions');
     }
 
     /**
@@ -107,7 +107,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getStatus()
     {
-        return $this->data['status'];
+        return $this->getProperty('status');
     }
 
     /**
@@ -115,7 +115,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getOriginalContent()
     {
-        return $this->data['original_content'];
+        return $this->getProperty('original_content');
     }
 
     /**
@@ -141,7 +141,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getTranslatedContent()
     {
-        return $this->data['translated_content'];
+        return $this->getProperty('translated_content');
     }
 
     /**
@@ -149,7 +149,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getWordCount()
     {
-        return $this->data['word_count'];
+        return $this->getProperty('word_count');
     }
 
     /**
@@ -157,7 +157,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getCallback()
     {
-        return $this->data['callback'];
+        return $this->getProperty('callback');
     }
 
     /**
@@ -181,7 +181,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getCustomData()
     {
-        return $this->data['custom_data'];
+        return $this->getProperty('custom_data');
     }
 
     /**

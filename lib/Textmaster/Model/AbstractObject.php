@@ -137,6 +137,22 @@ abstract class AbstractObject
     }
 
     /**
+     * Get property if exists.
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    protected function getProperty($property)
+    {
+        if (array_key_exists($property, $this->data)) {
+            return $this->data[$property];
+        }
+
+        return;
+    }
+
+    /**
      * Whether the object is immutable.
      *
      * @return bool
