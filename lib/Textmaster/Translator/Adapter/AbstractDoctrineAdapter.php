@@ -13,6 +13,7 @@ namespace Textmaster\Translator\Adapter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Manager;
 
@@ -38,15 +39,6 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
      */
     public function supports($subject)
     {
-        if ($subject instanceof DocumentInterface) {
-            try {
-                $this->getEntityFromDocument($document);
-
-                return true;
-            } catch (\Exeption $e) {
-            }
-        }
-
         return $subject instanceof $this->interface;
     }
 
@@ -55,13 +47,14 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
      */
     public function complete(DocumentInterface $document)
     {
-        $properties = $document->getTranslatedContent();
-        $language = $document->getProject()->getLanguageTo();
         $subject = $this->getEntityFromDocument($document);
 
-        if (!$subject instanceof $this->interface) {
+        if (!$this->supports($subject)) {
             throw new UnexpectedTypeException($subject, $this->interface);
         }
+
+        $properties = $document->getTranslatedContent();
+        $language = $document->getProject()->getLanguageTo();
 
         $this->applyTranslation($subject, $properties, $language);
 
@@ -70,6 +63,13 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
         return $subject;
     }
 
+    /**
+     * Get doctrine entity from document parameters.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed
+     */
     protected function getEntityFromDocument(DocumentInterface $document)
     {
         $params = $document->getCustomData('adapter');

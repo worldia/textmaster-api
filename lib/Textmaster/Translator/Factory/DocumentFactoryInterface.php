@@ -9,16 +9,19 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Textmaster\Translator\Provider;
+namespace Textmaster\Translator\Factory;
 
-interface MappingProviderInterface
+use Textmaster\Model\DocumentInterface;
+
+interface DocumentFactoryInterface
 {
     /**
-     * Get an array of properties that are to be translated for the given subject.
+     * Get or create a document.
      *
      * @param mixed $subject
+     * @param mixed $params
      *
-     * @return array of properties to be translated.
+     * @return DocumentInterface
      */
-    public function getProperties($subject);
+    public function createDocument($subject, $params = null);
 }

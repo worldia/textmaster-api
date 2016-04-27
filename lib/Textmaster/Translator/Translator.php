@@ -11,19 +11,14 @@
 
 namespace Textmaster\Translator;
 
-use Textmaster\Manager;
 use Textmaster\Model\DocumentInterface;
-use Textmaster\Model\ProjectInterface;
+use Textmaster\Translator\Factory\DocumentFactoryInterface;
 use Textmaster\Translator\Provider\MappingProviderInterface;
 use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\Exception\UnexpectedTypeException;
 
 class Translator implements TranslatorInterface
 {
-    /**
-     * @var Manager
-     */
-    protected $textmaster;
-
     /**
      * @var Adapter\AdapterInterface[]
      */
@@ -35,38 +30,36 @@ class Translator implements TranslatorInterface
     protected $mappingProvider;
 
     /**
+     * @var DocumentFactoryInterface|null
+     */
+    protected $documentFactory;
+
+    /**
      * Constructor.
      *
-     * @param Manager                    $textmaster
-     * @param Adapter\AdapterInterface[] $adapters
-     * @param MappingProviderInterface   $mappingProvider
+     * @param Adapter\AdapterInterface[]    $adapters
+     * @param MappingProviderInterface      $mappingProvider
+     * @param DocumentFactoryInterface|null $documentFactory
      */
-    public function __construct(Manager $textmaster, array $adapters, MappingProviderInterface $mappingProvider)
-    {
-        $this->textmaster = $textmaster;
+    public function __construct(
+        array $adapters,
+        MappingProviderInterface $mappingProvider,
+        DocumentFactoryInterface $documentFactory = null
+    ) {
         $this->adapters = $adapters;
         $this->mappingProvider = $mappingProvider;
+        $this->documentFactory = $documentFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create($subject, $documentOrProject)
+    public function create($subject, $documentOrParams = null)
     {
-        if ($documentOrProject instanceof DocumentInterface) {
-            $document = $documentOrProject;
-        } elseif ($documentOrProject instanceof ProjectInterface) {
-            $document = $documentOrProject->createDocument();
-        } elseif (is_string($documentOrProject)) {
-            $document = $this->textmaster->getProject($documentOrProject)->createDocument();
-        } elseif (is_array($documentOrProject)) {
-            $project = $this->textmaster->getProject($documentOrProject);
-            $project->save();
-            $document = $project->createDocument();
-        }
+        $document = $documentOrParams;
 
-        if (!isset($document)) {
-            throw new InvalidArgumentException('Couldnt determine document.');
+        if (!$document instanceof DocumentInterface) {
+            $document = $this->getDocumentFactory()->createDocument($subject, $documentOrParams);
         }
 
         $properties = $this->mappingProvider->getProperties($subject);
@@ -86,11 +79,22 @@ class Translator implements TranslatorInterface
     public function complete(DocumentInterface $document)
     {
         foreach ($this->adapters as $adapter) {
-            if ($adapter->supports($subject)) {
+            try {
                 return $adapter->complete($document);
+            } catch (UnexpectedTypeException $e) {
+                continue;
             }
         }
 
         throw new InvalidArgumentException(sprintf('No adapter found for "%s".', get_class($subject)));
+    }
+
+    private function getDocumentFactory()
+    {
+        if (null === $this->documentFactory) {
+            throw new InvalidArgumentException('No document factory provided.');
+        }
+
+        return $this->documentFactory;
     }
 }

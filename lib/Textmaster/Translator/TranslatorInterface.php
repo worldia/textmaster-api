@@ -12,19 +12,19 @@
 namespace Textmaster\Translator;
 
 use Textmaster\Model\DocumentInterface;
-use Textmaster\Model\ProjectInterface;
 
 interface TranslatorInterface
 {
     /**
      * Launch a translation.
      *
-     * @param mixed                                     $subject
-     * @param ProjectInterface|DocumentInterface|string $documentOrProject
+     * @param mixed                   $subject
+     * @param mixed|DocumentInterface $documentOrParams Either pass a document instance
+     *                                                  or parameters to pass on to a defined DocumentFactoryInterface
      *
      * @return DocumentInterface
      */
-    public function create($subject, $documentOrProject);
+    public function create($subject, $documentOrParams = null);
 
     /**
      * Complete a translation.

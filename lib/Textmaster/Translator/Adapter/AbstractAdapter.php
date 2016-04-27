@@ -52,14 +52,14 @@ abstract class AbstractAdapter implements AdapterInterface
      * Set properties on given subject.
      *
      * @param object $subject
-     * @param array  $properties Array of 'property' => 'value' pairs.
+     * @param array  $properties Array of 'property' => array('translated_phrase' => value') pairs.
      */
     protected function setProperties($subject, array $properties)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($properties as $property => $content) {
-            $accessor->setValue($subject, $property, $content);
+            $accessor->setValue($subject, $property, $content['translated_phrase']);
         }
     }
 
@@ -69,7 +69,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param object $subject
      * @param array  $properties Array of 'properties'
      *
-     * @return array
+     * @return array of 'property' => array('original_phrase' => 'value')
      */
     protected function getProperties($subject, array $properties)
     {
@@ -77,7 +77,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $data = array();
 
         foreach ($properties as $property) {
-            $data[$property] = $accessor->getValue($subject, $property);
+            $data[$property] = array('original_phrase' => $accessor->getValue($subject, $property));
         }
 
         return $data;
