@@ -277,17 +277,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ),
             'language_from' => 'fr-fr',
             'language_to' => 'en-us',
-            'total_word_count' => 4000,
+            'total_word_count' => 4001,
         );
 
         $totalCosts = array(
             0 => array(
                 'currency' => 'EUR',
-                'amount' => 240,
+                'amount' => 240.3,
             ),
             1 => array(
                 'currency' => 'credits',
-                'amount' => 240000,
+                'amount' => 240300,
             ),
         );
 
@@ -295,7 +295,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('fr', $result['language_from']);
         $this->assertSame('en', $result['language_to']);
-        $this->assertSame(4000, $result['total_word_count']);
+        $this->assertSame(4001, $result['total_word_count']);
         $this->assertSame($totalCosts, $result['total_costs']);
     }
 }
