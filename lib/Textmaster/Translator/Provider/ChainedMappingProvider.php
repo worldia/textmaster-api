@@ -33,7 +33,7 @@ class ChainedMappingProvider implements MappingProviderInterface
      */
     public function getProperties($subject)
     {
-        foreach ($providers as $provider) {
+        foreach ($this->providers as $provider) {
             try {
                 return $provider->getProperties($subject);
             } catch (MappingNotFoundException $e) {

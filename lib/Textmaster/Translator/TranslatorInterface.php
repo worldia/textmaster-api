@@ -11,13 +11,15 @@
 
 namespace Textmaster\Translator;
 
+use Textmaster\Model\DocumentInterface;
+use Textmaster\Model\ProjectInterface;
+
 interface TranslatorInterface
 {
     /**
      * Launch a translation.
      *
      * @param mixed                                     $subject
-     * @param array                                     $properties
      * @param ProjectInterface|DocumentInterface|string $documentOrProject
      *
      * @return DocumentInterface

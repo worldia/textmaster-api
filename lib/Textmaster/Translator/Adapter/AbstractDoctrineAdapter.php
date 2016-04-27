@@ -26,7 +26,6 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     /**
      * Constructor.
      *
-     * @param Manager         $textmaster
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -37,13 +36,28 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}
      */
+    public function supports($subject)
+    {
+        if ($subject instanceof DocumentInterface) {
+            try {
+                $this->getEntityFromDocument($document);
+
+                return true;
+            } catch (\Exeption $e) {
+            }
+        }
+
+        return $subject instanceof $this->interface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function complete(DocumentInterface $document)
     {
         $properties = $document->getTranslatedContent();
         $language = $document->getProject()->getLanguageTo();
-
-        $params = $document->getCustomData('adapter');
-        $subject = $this->getRepository($params['class'])->find($params['id']);
+        $subject = $this->getEntityFromDocument($document);
 
         if (!$subject instanceof $this->interface) {
             throw new UnexpectedTypeException($subject, $this->interface);
@@ -54,6 +68,13 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
         $this->persist($subject);
 
         return $subject;
+    }
+
+    protected function getEntityFromDocument(DocumentInterface $document)
+    {
+        $params = $document->getCustomData('adapter');
+
+        return $this->getRepository($params['class'])->find($params['id']);
     }
 
     /**

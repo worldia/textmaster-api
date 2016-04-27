@@ -183,7 +183,7 @@ class Document extends AbstractObject implements DocumentInterface
     {
         $data = $this->getProperty('custom_data');
 
-        if ($key && isset($data[$key])) {
+        if (null !== $key && isset($data[$key])) {
             return $data[$key];
         }
 
@@ -195,7 +195,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setCustomData($customData, $key = null)
     {
-        if ($key) {
+        if (null !== $key) {
             $customData = array_merge($this->getCustomData(), array($key => $customData));
         }
 

@@ -35,7 +35,7 @@ class ArrayBasedMappingProvider implements MappingProviderInterface
     {
         $class = get_class($subject);
 
-        if (!isset($mappings[$class]) || !is_array($mappings[$class])) {
+        if (!isset($this->mappings[$class]) || !is_array($this->mappings[$class])) {
             throw new MappingNotFoundException($subject);
         }
 

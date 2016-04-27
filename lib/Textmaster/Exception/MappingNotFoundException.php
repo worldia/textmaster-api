@@ -14,8 +14,7 @@ namespace Textmaster\Exception;
 class MappingNotFoundException extends \InvalidArgumentException
 {
     /**
-     * @param mixed  $value
-     * @param string $expectedType
+     * @param mixed $value
      */
     public function __construct($value)
     {
