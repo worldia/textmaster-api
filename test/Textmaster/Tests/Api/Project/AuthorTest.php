@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api\Project;
 
 use Textmaster\Tests\Api\TestCase;
@@ -50,7 +59,7 @@ class AuthorTest extends TestCase
             ->with('clients/projects/1/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->all(1));
+        $this->assertSame($this->authorResult, $api->all(1));
     }
 
     /**
@@ -64,7 +73,7 @@ class AuthorTest extends TestCase
             ->with('clients/projects/1/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->all(1, 'blacklisted'));
+        $this->assertSame($this->authorResult, $api->all(1, 'blacklisted'));
     }
 
     protected function getApiClass()

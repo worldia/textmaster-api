@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Api\User;
 
 use Textmaster\Api\AbstractApi;
@@ -27,11 +36,11 @@ class Callback extends AbstractApi
      */
     public function set($userId, $event, $url, $format)
     {
-        if (!in_array($event, array('waiting_assignment', 'completed'))) {
+        if (!in_array($event, array('waiting_assignment', 'completed'), true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback event.', $event));
         }
 
-        if (!in_array($format, array('json', 'xml'))) {
+        if (!in_array($format, array('json', 'xml'), true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback format.', $format));
         }
 

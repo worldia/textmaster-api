@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api\Project;
 
 use Textmaster\Tests\Api\TestCase;
@@ -68,7 +77,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->all(1));
+        $this->assertSame($expectedArray, $api->all(1));
     }
 
     /**
@@ -87,7 +96,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/filter')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->filter());
+        $this->assertSame($expectedArray, $api->filter());
     }
 
     /**
@@ -103,7 +112,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/1')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->show(1));
+        $this->assertSame($expectedArray, $api->show(1));
     }
 
     /**
@@ -119,7 +128,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->create(array(
+        $this->assertSame($expectedArray, $api->create(array(
             'name' => 'Test document 3',
             'project_id' => 1,
         )));
@@ -138,7 +147,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->update(3, array(
+        $this->assertSame($expectedArray, $api->update(3, array(
             'name' => 'Test document 3',
             'project_id' => 1,
         )));
@@ -157,7 +166,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->remove(3));
+        $this->assertSame($expectedArray, $api->remove(3));
     }
 
     /**
@@ -173,7 +182,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->complete(3));
+        $this->assertSame($expectedArray, $api->complete(3));
     }
 
     /**
@@ -189,7 +198,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->complete(3, 'positive'));
+        $this->assertSame($expectedArray, $api->complete(3, 'positive'));
     }
 
     /**
@@ -205,7 +214,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->complete(3, null, 'Good job'));
+        $this->assertSame($expectedArray, $api->complete(3, null, 'Good job'));
     }
 
     /**
@@ -224,7 +233,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->batchComplete(array(3, 4)));
+        $this->assertSame($expectedArray, $api->batchComplete(array(3, 4)));
     }
 
     /**
@@ -243,7 +252,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->batchComplete(array(3, 4), 'positive', 'Good job!'));
+        $this->assertSame($expectedArray, $api->batchComplete(array(3, 4), 'positive', 'Good job!'));
     }
 
     /**
@@ -262,7 +271,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->batchCreate(array(
+        $this->assertSame($expectedArray, $api->batchCreate(array(
             array('name' => 'Test document 3'),
             array('name' => 'Test document 4'),
         )));

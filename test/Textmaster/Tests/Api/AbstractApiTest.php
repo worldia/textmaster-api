@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api;
 
-use Textmaster\Api\AbstractApi;
-use Guzzle\Http\Message\Response;
 use Guzzle\Http\EntityBody;
+use Guzzle\Http\Message\Response;
+use Textmaster\Api\AbstractApi;
 
 class AbstractApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +35,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->get('/path', array('param1' => 'param1value'), array('header1' => 'header1value')));
+        $this->assertSame($expectedArray, $api->get('/path', array('param1' => 'param1value'), array('header1' => 'header1value')));
     }
 
     /**
@@ -47,7 +56,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->post('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
+        $this->assertSame($expectedArray, $api->post('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
     }
 
     /**
@@ -68,7 +77,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->patch('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
+        $this->assertSame($expectedArray, $api->patch('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
     }
 
     /**
@@ -89,7 +98,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->put('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
+        $this->assertSame($expectedArray, $api->put('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
     }
 
     /**
@@ -110,7 +119,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->delete('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
+        $this->assertSame($expectedArray, $api->delete('/path', array('param1' => 'param1value'), array('option1' => 'option1value')));
     }
 
     /**
@@ -131,7 +140,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertEquals($expectedArray, $api->head('/path', array('param1' => 'param1value')));
+        $this->assertSame($expectedArray, $api->head('/path', array('param1' => 'param1value')));
     }
 
     protected function getAbstractApiObject($client)

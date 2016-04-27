@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api;
 
 class AuthorTest extends TestCase
@@ -28,7 +37,7 @@ class AuthorTest extends TestCase
             ->with('clients/authors')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->find(array(
+        $this->assertSame($expectedArray, $api->find(array(
             'language_from' => 'fr-FR',
             'language_to' => 'de-DE',
         )));

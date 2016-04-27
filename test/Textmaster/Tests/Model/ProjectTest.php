@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Model;
 
 use Textmaster\Model\DocumentInterface;
@@ -82,14 +91,14 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertNull($project->getId());
-        $this->assertEquals($name, $project->getName());
-        $this->assertEquals($status, $project->getStatus());
-        $this->assertEquals($activity, $project->getActivity());
-        $this->assertEquals($languageFrom, $project->getLanguageFrom());
-        $this->assertEquals($languageTo, $project->getLanguageTo());
-        $this->assertEquals($category, $project->getCategory());
-        $this->assertEquals($briefing, $project->getBriefing());
-        $this->assertEquals($options, $project->getOptions());
+        $this->assertSame($name, $project->getName());
+        $this->assertSame($status, $project->getStatus());
+        $this->assertSame($activity, $project->getActivity());
+        $this->assertSame($languageFrom, $project->getLanguageFrom());
+        $this->assertSame($languageTo, $project->getLanguageTo());
+        $this->assertSame($category, $project->getCategory());
+        $this->assertSame($briefing, $project->getBriefing());
+        $this->assertSame($options, $project->getOptions());
     }
 
     /**
@@ -121,15 +130,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $project = new Project($this->clientMock, $values);
 
-        $this->assertEquals($id, $project->getId());
-        $this->assertEquals($name, $project->getName());
-        $this->assertEquals($status, $project->getStatus());
-        $this->assertEquals($activity, $project->getActivity());
-        $this->assertEquals($languageFrom, $project->getLanguageFrom());
-        $this->assertEquals($languageTo, $project->getLanguageTo());
-        $this->assertEquals($category, $project->getCategory());
-        $this->assertEquals($briefing, $project->getBriefing());
-        $this->assertEquals($options, $project->getOptions());
+        $this->assertSame($id, $project->getId());
+        $this->assertSame($name, $project->getName());
+        $this->assertSame($status, $project->getStatus());
+        $this->assertSame($activity, $project->getActivity());
+        $this->assertSame($languageFrom, $project->getLanguageFrom());
+        $this->assertSame($languageTo, $project->getLanguageTo());
+        $this->assertSame($category, $project->getCategory());
+        $this->assertSame($briefing, $project->getBriefing());
+        $this->assertSame($options, $project->getOptions());
     }
 
     /**
@@ -141,12 +150,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $project = new Project($this->clientMock, '123456');
 
-        $this->assertEquals($name, $project->getName());
+        $this->assertSame($name, $project->getName());
 
         $project->setName('Project Beta');
         $project->save();
 
-        $this->assertEquals('Project Beta', $project->getName());
+        $this->assertSame('Project Beta', $project->getName());
     }
 
     /**
@@ -157,7 +166,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $project = new Project($this->clientMock, '123456');
         $pager = $project->getDocuments();
 
-        $this->assertEquals('Pagerfanta\Pagerfanta', get_class($pager));
+        $this->assertSame('Pagerfanta\Pagerfanta', get_class($pager));
     }
 
     /**
@@ -168,8 +177,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $project = new Project($this->clientMock, '123456');
         $document = $project->createDocument();
 
-        $this->assertEquals('Textmaster\Model\Document', get_class($document));
-        $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame('Textmaster\Model\Document', get_class($document));
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
     }
 
     /**
@@ -183,7 +192,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ProjectInterface::ACTIVITY_TRANSLATION,
         );
 
-        $this->assertEquals($allowedActivities, Project::getAllowedActivities());
+        $this->assertSame($allowedActivities, Project::getAllowedActivities());
     }
 
     /**

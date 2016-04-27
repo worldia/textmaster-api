@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Api\Project;
 
-use Textmaster\Client;
 use Textmaster\Api\AbstractApi;
 use Textmaster\Api\FilterableApiInterface;
 use Textmaster\Api\ObjectApiInterface;
 use Textmaster\Api\Project\Document\SupportMessage;
+use Textmaster\Client;
 
 /**
  * Documents Api.

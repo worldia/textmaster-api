@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Api\Project;
 
 use Textmaster\Api\AbstractApi;
@@ -42,7 +51,7 @@ class Author extends AbstractApi
     {
         $params = array();
 
-        if (null !== $status && in_array($status, array('my_textmaster', 'blacklisted', 'uncategorized'))) {
+        if (null !== $status && in_array($status, array('my_textmaster', 'blacklisted', 'uncategorized'), true)) {
             $params['status'] = $status;
         }
 

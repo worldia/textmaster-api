@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api;
 
 class CategoryTest extends TestCase
@@ -52,7 +61,7 @@ class CategoryTest extends TestCase
             ->with('public/categories')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->all());
+        $this->assertSame($expectedArray, $api->all());
     }
 
     protected function getApiClass()

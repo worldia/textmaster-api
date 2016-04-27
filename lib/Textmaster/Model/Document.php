@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Model;
 
 use Textmaster\Client;
@@ -205,7 +214,7 @@ class Document extends AbstractObject implements DocumentInterface
         }
 
         $satisfactions = self::getAllowedSatisfaction();
-        if (null !== $satisfaction && !in_array($satisfaction, $satisfactions)) {
+        if (null !== $satisfaction && !in_array($satisfaction, $satisfactions, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Satisfaction must me one of "%s".',
                 implode('","', $satisfactions)
