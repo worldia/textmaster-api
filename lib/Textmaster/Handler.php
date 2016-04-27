@@ -63,7 +63,7 @@ class Handler
      */
     public function handleWebHook(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $data = json_decode($request->getContent(), true);
 
         $eventName = $this->guessEventName($data);
         if (false === $eventName) {
