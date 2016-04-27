@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Model;
 
 use Textmaster\Api\ObjectApiInterface;
@@ -123,7 +132,7 @@ abstract class AbstractObject
      */
     protected function setProperty($property, $value)
     {
-        if ($this->isImmutable() && in_array($property, $this->immutableProperties)) {
+        if ($this->isImmutable() && in_array($property, $this->immutableProperties, true)) {
             throw new ObjectImmutableException(sprintf(
                 'Object of class "%s" with id "%s" is immutable.',
                 get_called_class(),

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api\Expertise;
 
 use Textmaster\Tests\Api\TestCase;
@@ -34,7 +43,7 @@ class SubExpertiseTest extends TestCase
             ->with('public/expertises/1/sub_expertises')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->all(1, 'fr-FR'));
+        $this->assertSame($expectedArray, $api->all(1, 'fr-FR'));
     }
 
     /**
@@ -56,7 +65,7 @@ class SubExpertiseTest extends TestCase
             ->with('public/expertises/1/sub_expertises/2')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->show(1, 2, 'fr-FR'));
+        $this->assertSame($expectedArray, $api->show(1, 2, 'fr-FR'));
     }
 
     protected function getApiClass()

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api\Author;
 
 use Textmaster\Tests\Api\TestCase;
@@ -39,7 +48,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->all());
+        $this->assertSame($this->authorResult, $api->all());
     }
 
     /**
@@ -53,7 +62,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->all('my_textmaster'));
+        $this->assertSame($this->authorResult, $api->all('my_textmaster'));
     }
 
     /**
@@ -76,7 +85,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->add('53d7bf7d53ecaaf8aa00052e', 'my_textmaster'));
+        $this->assertSame($this->authorResult, $api->add('53d7bf7d53ecaaf8aa00052e', 'my_textmaster'));
     }
 
     /**
@@ -90,7 +99,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->add('53d7bf7d53ecaaf8aa00052e', 'my_textmaster', 'Nice author'));
+        $this->assertSame($this->authorResult, $api->add('53d7bf7d53ecaaf8aa00052e', 'my_textmaster', 'Nice author'));
     }
 
     /**
@@ -104,7 +113,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors/53d7bf7d53ecaaf8aa00052e')
             ->will($this->returnValue($this->authorResult));
 
-        $this->assertEquals($this->authorResult, $api->update('53d7bf7d53ecaaf8aa00052e', 'my_textmaster', 'Nice author'));
+        $this->assertSame($this->authorResult, $api->update('53d7bf7d53ecaaf8aa00052e', 'my_textmaster', 'Nice author'));
     }
 
     /**
@@ -129,7 +138,7 @@ class MineTest extends TestCase
             ->with('clients/my_authors/53d7bf7d53ecaaf8aa00052e')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->info('53d7bf7d53ecaaf8aa00052e'));
+        $this->assertSame($expectedArray, $api->info('53d7bf7d53ecaaf8aa00052e'));
     }
 
     /**

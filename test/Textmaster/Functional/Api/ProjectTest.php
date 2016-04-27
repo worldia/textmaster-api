@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Functional\Api;
 
 use Textmaster\Api\Project;
@@ -51,7 +60,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         );
         $result = $this->api->filter($where);
 
-        $this->assertEquals(1, $result['count']);
+        $this->assertSame(1, $result['count']);
     }
 
     /**
@@ -73,15 +82,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->api->create($params);
 
-        $this->assertEquals('Created project for functional test', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_IN_CREATION, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Created project for functional test', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
 
         return $result['id'];
     }
@@ -98,15 +107,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->api->update($projectId, $params);
 
-        $this->assertEquals('Project for functional test', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_IN_CREATION, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
 
         return $result['id'];
     }
@@ -119,15 +128,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->show($projectId);
 
-        $this->assertEquals('Project for functional test', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_IN_CREATION, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
     }
 
     /**
@@ -144,10 +153,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         );
         $result = $this->api->documents($projectId)->create($params);
 
-        $this->assertEquals('Document for functional test', $result['title']);
-        $this->assertEquals('Text to translate.', $result['original_content']);
-        $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $result['status']);
-        $this->assertEquals($projectId, $result['project_id']);
+        $this->assertSame('Document for functional test', $result['title']);
+        $this->assertSame('Text to translate.', $result['original_content']);
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $result['status']);
+        $this->assertSame($projectId, $result['project_id']);
 
         return $projectId;
     }
@@ -160,15 +169,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->launch($projectId);
 
-        $this->assertEquals('Project for functional test', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_IN_CREATION, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
 
         return $projectId;
     }
@@ -181,15 +190,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->cancel($projectId);
 
-        $this->assertEquals('Project for functional test', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_CANCELED, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
 
         return $projectId;
     }
@@ -201,15 +210,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->archive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertEquals('Project to be archived', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_CANCELED, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project to be archived', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
     }
 
     /**
@@ -219,15 +228,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->unarchive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertEquals('Project to be archived', $result['name']);
-        $this->assertEquals(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertEquals('premium', $result['options']['language_level']);
-        $this->assertEquals('en', $result['language_from']);
-        $this->assertEquals('fr', $result['language_to']);
-        $this->assertEquals('C021', $result['category']);
-        $this->assertEquals('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertEquals(ProjectInterface::STATUS_CANCELED, $result['status']);
-        $this->assertEquals('api', $result['creation_channel']);
+        $this->assertSame('Project to be archived', $result['name']);
+        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
+        $this->assertSame('premium', $result['options']['language_level']);
+        $this->assertSame('en', $result['language_from']);
+        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('C021', $result['category']);
+        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
+        $this->assertSame('api', $result['creation_channel']);
     }
 
     /**
@@ -237,10 +246,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->pause(self::TO_PAUSE_PROJECT_ID);
 
-        $this->assertEquals('worldia_test', $result['name']);
-        $this->assertEquals('fr', $result['language_from']);
-        $this->assertEquals('en', $result['language_to']);
-        $this->assertEquals(ProjectInterface::STATUS_PAUSED, $result['status']);
+        $this->assertSame('worldia_test', $result['name']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
+        $this->assertSame(ProjectInterface::STATUS_PAUSED, $result['status']);
     }
 
     /**
@@ -250,10 +259,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->resume(self::TO_PAUSE_PROJECT_ID);
 
-        $this->assertEquals('worldia_test', $result['name']);
-        $this->assertEquals('fr', $result['language_from']);
-        $this->assertEquals('en', $result['language_to']);
-        $this->assertEquals(ProjectInterface::STATUS_IN_PROGRESS, $result['status']);
+        $this->assertSame('worldia_test', $result['name']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
+        $this->assertSame(ProjectInterface::STATUS_IN_PROGRESS, $result['status']);
     }
 
     /**
@@ -268,25 +277,25 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ),
             'language_from' => 'fr-fr',
             'language_to' => 'en-us',
-            'total_word_count' => 4000,
+            'total_word_count' => 4001,
         );
 
         $totalCosts = array(
             0 => array(
                 'currency' => 'EUR',
-                'amount' => 240,
+                'amount' => 240.06,
             ),
             1 => array(
                 'currency' => 'credits',
-                'amount' => 240000,
+                'amount' => 240060,
             ),
         );
 
         $result = $this->api->quote($params);
 
-        $this->assertEquals('fr', $result['language_from']);
-        $this->assertEquals('en', $result['language_to']);
-        $this->assertEquals(4000, $result['total_word_count']);
-        $this->assertEquals($totalCosts, $result['total_costs']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
+        $this->assertSame(4001, $result['total_word_count']);
+        $this->assertSame($totalCosts, $result['total_costs']);
     }
 }

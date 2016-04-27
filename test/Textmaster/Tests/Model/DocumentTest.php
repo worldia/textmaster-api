@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Model;
 
 use Textmaster\Model\Document;
@@ -95,11 +104,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertNull($document->getId());
-        $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
-        $this->assertEquals($title, $document->getTitle());
-        $this->assertEquals($originalContent, $document->getOriginalContent());
-        $this->assertEquals($instructions, $document->getInstructions());
-        $this->assertEquals($customData, $document->getCustomData());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame($title, $document->getTitle());
+        $this->assertSame($originalContent, $document->getOriginalContent());
+        $this->assertSame($instructions, $document->getInstructions());
+        $this->assertSame($customData, $document->getCustomData());
     }
 
     /**
@@ -119,11 +128,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new Document($this->clientMock, $values);
 
-        $this->assertEquals('123456', $document->getId());
-        $this->assertEquals('Document 1', $document->getTitle());
-        $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
-        $this->assertEquals('Text to translate.', $document->getOriginalContent());
-        $this->assertEquals('Translating instructions.', $document->getInstructions());
+        $this->assertSame('123456', $document->getId());
+        $this->assertSame('Document 1', $document->getTitle());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame('Text to translate.', $document->getOriginalContent());
+        $this->assertSame('Translating instructions.', $document->getInstructions());
     }
 
     /**
@@ -139,11 +148,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new Document($this->clientMock, $valuesToCreate);
 
-        $this->assertEquals('123456', $document->getId());
-        $this->assertEquals('Document 1', $document->getTitle());
-        $this->assertEquals(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
-        $this->assertEquals('Text to translate.', $document->getOriginalContent());
-        $this->assertEquals('Translating instructions.', $document->getInstructions());
+        $this->assertSame('123456', $document->getId());
+        $this->assertSame('Document 1', $document->getTitle());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame('Text to translate.', $document->getOriginalContent());
+        $this->assertSame('Translating instructions.', $document->getInstructions());
     }
 
     /**
@@ -158,12 +167,12 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         );
 
         $document = new Document($this->clientMock, $valuesToCreate);
-        $this->assertEquals('Document 1', $document->getTitle());
+        $this->assertSame('Document 1', $document->getTitle());
 
         $document->setTitle('New Title');
         $document->save();
 
-        $this->assertEquals('New Title', $document->getTitle());
+        $this->assertSame('New Title', $document->getTitle());
     }
 
     /**
@@ -180,8 +189,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document = new Document($this->clientMock, $valuesToCreate);
         $project = $document->getProject();
 
-        $this->assertEquals('Textmaster\Model\Project', get_class($project));
-        $this->assertEquals($projectId, $project->getId());
+        $this->assertSame('Textmaster\Model\Project', get_class($project));
+        $this->assertSame($projectId, $project->getId());
     }
 
     /**
@@ -197,7 +206,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document = new Document($this->clientMock);
         $document->setOriginalContent($originalContent);
 
-        $this->assertEquals($originalContent, $document->getOriginalContent());
+        $this->assertSame($originalContent, $document->getOriginalContent());
     }
 
     /**
@@ -213,11 +222,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document = new Document($this->clientMock);
         $document->setOriginalContent($originalContent);
 
-        $this->assertEquals(9, $document->getWordCount());
+        $this->assertSame(9, $document->getWordCount());
 
         $document->setOriginalContent('A single phrase to translate.');
 
-        $this->assertEquals(5, $document->getWordCount());
+        $this->assertSame(5, $document->getWordCount());
     }
 
     /**
@@ -233,7 +242,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document = new Document($this->clientMock);
         $document->setCallback($callback);
 
-        $this->assertEquals($callback, $document->getCallback());
+        $this->assertSame($callback, $document->getCallback());
     }
 
     /**
@@ -251,7 +260,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->save();
         $document->complete(DocumentInterface::SATISFACTION_POSITIVE, 'Good job!');
 
-        $this->assertEquals(DocumentInterface::STATUS_COMPLETED, $document->getStatus());
+        $this->assertSame(DocumentInterface::STATUS_COMPLETED, $document->getStatus());
     }
 
     /**

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api;
 
 class LocaleTest extends TestCase
@@ -30,7 +39,7 @@ class LocaleTest extends TestCase
             ->with('public/locales')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->all());
+        $this->assertSame($expectedArray, $api->all());
     }
 
     /**
@@ -75,7 +84,7 @@ class LocaleTest extends TestCase
             ->with('public/reference_pricings/en-US')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->referencePricings('en-US'));
+        $this->assertSame($expectedArray, $api->referencePricings('en-US'));
     }
 
     /**
@@ -97,7 +106,7 @@ class LocaleTest extends TestCase
             ->with('public/countries/fr_FR')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->countries('fr_FR'));
+        $this->assertSame($expectedArray, $api->countries('fr_FR'));
     }
 
     protected function getApiClass()

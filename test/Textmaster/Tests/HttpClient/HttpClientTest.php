@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\HttpClient;
 
+use Guzzle\Http\Client as GuzzleClient;
+use Guzzle\Http\Message\Response;
 use Textmaster\Client;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\HttpClient\Message\ResponseMediator;
-use Guzzle\Http\Message\Response;
-use Guzzle\Http\Client as GuzzleClient;
 
 class HttpClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,8 +28,8 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
             'timeout' => 33,
         ), $this->getBrowserMock());
 
-        $this->assertEquals(33, $httpClient->getOption('timeout'));
-        $this->assertEquals('v1', $httpClient->getOption('api_version'));
+        $this->assertSame(33, $httpClient->getOption('timeout'));
+        $this->assertSame('v1', $httpClient->getOption('api_version'));
     }
 
     /**
@@ -31,7 +40,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient = new TestHttpClient(array(), $this->getBrowserMock());
         $httpClient->setOption('timeout', 666);
 
-        $this->assertEquals(666, $httpClient->getOption('timeout'));
+        $this->assertSame(666, $httpClient->getOption('timeout'));
     }
 
     /**
@@ -178,7 +187,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient = new HttpClient(array(), $client);
         $httpClient->request($path, $body, 'HEAD', $headers);
 
-        $this->assertEquals(array('page2' => 'page1', 'page4' => 'page3'), ResponseMediator::getPagination($response));
+        $this->assertSame(array('page2' => 'page1', 'page4' => 'page3'), ResponseMediator::getPagination($response));
     }
 
     /**
@@ -203,7 +212,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient = new TestHttpClient(array(), $client);
         $response = $httpClient->get($path, $parameters, $headers);
 
-        $this->assertEquals('Just raw context', $response->getBody());
+        $this->assertSame('Just raw context', $response->getBody());
         $this->assertInstanceOf('Guzzle\Http\Message\MessageInterface', $response);
     }
 

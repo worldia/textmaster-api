@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests;
 
 use Textmaster\Client;
-use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\BadMethodCallException;
+use Textmaster\Exception\InvalidArgumentException;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -118,7 +127,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client();
         $client->setOption('api_version', 'v1');
 
-        $this->assertEquals($client->getOption('api_version'), 'v1');
+        $this->assertSame($client->getOption('api_version'), 'v1');
     }
 
     /**

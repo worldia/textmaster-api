@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Tests\Api;
 
 class ProjectTest extends TestCase
@@ -20,7 +29,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->all());
+        $this->assertSame($expectedArray, $api->all());
     }
 
     /**
@@ -39,7 +48,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/filter')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->filter(array('name' => 'Test')));
+        $this->assertSame($expectedArray, $api->filter(array('name' => 'Test')));
     }
 
     /**
@@ -55,7 +64,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->show(1));
+        $this->assertSame($expectedArray, $api->show(1));
     }
 
     /**
@@ -71,7 +80,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->create(array('name' => 'Test project')));
+        $this->assertSame($expectedArray, $api->create(array('name' => 'Test project')));
     }
 
     /**
@@ -87,7 +96,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->create(array('name' => 'Test project'), 12345));
+        $this->assertSame($expectedArray, $api->create(array('name' => 'Test project'), 12345));
     }
 
     /**
@@ -103,7 +112,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->update(1, array('name' => 'Test project'), 12345));
+        $this->assertSame($expectedArray, $api->update(1, array('name' => 'Test project'), 12345));
     }
 
     /**
@@ -119,7 +128,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/cancel')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->cancel(1));
+        $this->assertSame($expectedArray, $api->cancel(1));
     }
 
     /**
@@ -135,7 +144,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/archive')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->archive(1));
+        $this->assertSame($expectedArray, $api->archive(1));
     }
 
     /**
@@ -151,7 +160,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/unarchive')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->unarchive(1));
+        $this->assertSame($expectedArray, $api->unarchive(1));
     }
 
     /**
@@ -167,7 +176,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/pause')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->pause(1));
+        $this->assertSame($expectedArray, $api->pause(1));
     }
 
     /**
@@ -183,7 +192,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/resume')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->resume(1));
+        $this->assertSame($expectedArray, $api->resume(1));
     }
 
     /**
@@ -199,7 +208,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1/async_launch')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->launch(1));
+        $this->assertSame($expectedArray, $api->launch(1));
     }
 
     /**
@@ -215,7 +224,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/quotation')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertEquals($expectedArray, $api->quote(array('words' => 320)));
+        $this->assertSame($expectedArray, $api->quote(array('words' => 320)));
     }
 
     /**

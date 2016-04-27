@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Functional;
 
 use Textmaster\Client;
@@ -32,7 +41,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($this->client);
         $project = $manager->getProject(self::TEST_PROJECT_ID);
 
-        $this->assertTrue(in_array('Textmaster\Model\ProjectInterface', class_implements($project)));
+        $this->assertTrue(in_array('Textmaster\Model\ProjectInterface', class_implements($project), true));
     }
 
     /**
@@ -43,7 +52,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($this->client);
         $project = $manager->getProject();
 
-        $this->assertTrue(in_array('Textmaster\Model\ProjectInterface', class_implements($project)));
+        $this->assertTrue(in_array('Textmaster\Model\ProjectInterface', class_implements($project), true));
         $this->assertNull($project->getId());
     }
 
@@ -55,7 +64,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($this->client);
         $pager = $manager->getProjects();
 
-        $this->assertEquals('Pagerfanta\Pagerfanta', get_class($pager));
+        $this->assertSame('Pagerfanta\Pagerfanta', get_class($pager));
         $this->assertGreaterThan(1, $pager->count());
     }
 
@@ -71,8 +80,8 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($this->client);
         $pager = $manager->getProjects($where);
 
-        $this->assertEquals('Pagerfanta\Pagerfanta', get_class($pager));
-        $this->assertEquals(1, $pager->count());
+        $this->assertSame('Pagerfanta\Pagerfanta', get_class($pager));
+        $this->assertSame(1, $pager->count());
     }
 
     /**
@@ -86,8 +95,8 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $documents = $pager->getCurrentPageResults();
         $document = $documents[0];
 
-        $this->assertEquals('Pagerfanta\Pagerfanta', get_class($pager));
-        $this->assertEquals(1, $pager->count());
-        $this->assertTrue(in_array('Textmaster\Model\DocumentInterface', class_implements($document)));
+        $this->assertSame('Pagerfanta\Pagerfanta', get_class($pager));
+        $this->assertSame(1, $pager->count());
+        $this->assertTrue(in_array('Textmaster\Model\DocumentInterface', class_implements($document), true));
     }
 }
