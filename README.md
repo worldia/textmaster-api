@@ -1,6 +1,6 @@
 # PHP Textmaster API v1 client
 
-[![Build Status](https://api.travis-ci.com/worldia/php-textmaster-api.svg?token=Q8y3gRp4jqWYsvqpVV1z&branch=master)](https://travis-ci.com/worldia/php-textmaster-api) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/worldia/php-textmaster-api/badges/quality-score.png?b=master&s=3014bb9f0c312da6ab7e9b8cd50830d8e5254319)](https://scrutinizer-ci.com/g/worldia/php-textmaster-api/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/worldia/php-textmaster-api/badges/coverage.png?b=master&s=b8b6ebabd4ae08eccffd5b4e6e0ee7040f4b382c)](https://scrutinizer-ci.com/g/worldia/php-textmaster-api/?branch=master)
+[![Build Status](https://api.travis-ci.com/worldia/textmaster-api.svg?token=4dDhVzWiZtpfbs4qv8Fs&branch=master)](https://travis-ci.com/worldia/php-textmaster-api) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/worldia/textmaster-api/badges/quality-score.png?b=master&s=5eb2f3076cee19862c32136126712889f1740df8)](https://scrutinizer-ci.com/g/worldia/textmaster-api/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/worldia/textmaster-api/badges/coverage.png?b=master&s=5eb2f3076cee19862c32136126712889f1740df8)](https://scrutinizer-ci.com/g/worldia/textmaster-api/?branch=master)
 
 A simple Object Oriented wrapper for Textmaster API, written with PHP5.
 
