@@ -31,7 +31,7 @@ class AuthListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new AuthListener($key, $secret, $date);
         $listener->onRequestBeforeSend($this->getEventMock($request));
 
-        $this->assertSame($expected, $request->getHeader('SIGNATURE'));
+        $this->assertSame($expected, $request->getHeader('SIGNATURE')->__toString());
     }
 
     private function getEventMock($request = null)
