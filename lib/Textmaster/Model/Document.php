@@ -179,16 +179,26 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomData()
+    public function getCustomData($key = null)
     {
-        return $this->getProperty('custom_data');
+        $data = $this->getProperty('custom_data');
+
+        if ($key && isset($data[$key])) {
+            return $data[$key];
+        }
+
+        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCustomData($customData)
+    public function setCustomData($customData, $key = null)
     {
+        if ($key) {
+            $customData = array_merge($this->getCustomData(), array($key => $customData));
+        }
+
         return $this->setProperty('custom_data', $customData);
     }
 
