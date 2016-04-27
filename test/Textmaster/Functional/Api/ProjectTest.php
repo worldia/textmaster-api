@@ -283,11 +283,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $totalCosts = array(
             0 => array(
                 'currency' => 'EUR',
-                'amount' => 240.3,
+                'amount' => 240.06,
             ),
             1 => array(
                 'currency' => 'credits',
-                'amount' => 240300,
+                'amount' => 240060,
             ),
         );
 
