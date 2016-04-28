@@ -23,5 +23,6 @@ if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader
 }
 
 $loader->add('Textmaster\Tests', __DIR__);
+$loader->add('Sylius\Component\Resource', __DIR__.'/../vendor/sylius');
 
 return $loader;
