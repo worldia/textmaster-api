@@ -12,15 +12,20 @@
 namespace Textmaster\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Textmaster\Model\ProjectInterface;
 
-class ProjectEvent extends GenericEvent
+class CallbackEvent extends GenericEvent
 {
-    /**
-     * @return ProjectInterface
-     */
-    public function getProject()
+    private $name;
+
+    public function __construct($name, $subject, $data)
     {
-        return $this->subject;
+        parent::__construct($subject, $data);
+
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

@@ -107,11 +107,12 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function get($path, array $parameters = array(), $requestHeaders = array())
     {
-        if (null !== $this->perPage && !isset($parameters['per_page'])) {
-            $parameters['per_page'] = $this->perPage;
-        }
-        if (isset($this->page) && !isset($parameters['page'])) {
-            $parameters['page'] = $this->page;
+        $defaultParams = array('page' => 'page', 'per_page' => 'perPage');
+
+        foreach ($defaultParams as $snake => $camel) {
+            if (isset($this->$camel) && !isset($parameters[$snake])) {
+                $parameters[$snake] = $this->$camel;
+            }
         }
 
         $this->page = null;

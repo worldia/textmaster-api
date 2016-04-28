@@ -14,7 +14,6 @@ namespace Textmaster;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Model\Document;
 use Textmaster\Model\Project;
 
@@ -31,15 +30,24 @@ class Handler
     protected $client;
 
     /**
+     * @var array
+     */
+    protected $classes = array(
+        'document' => 'Textmaster\Model\Document',
+        'project' => 'Textmaster\Model\Project',
+    );
+
+    /**
      * Constructor.
      *
      * @param EventDispatcherInterface $dispatcher
      * @param Client                   $client
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Client $client)
+    public function __construct(EventDispatcherInterface $dispatcher, Client $client, array $classes = array())
     {
         $this->dispatcher = $dispatcher;
         $this->client = $client;
+        $this->classes = array_merge($this->classes, $classes);
     }
 
     /**
@@ -74,55 +82,35 @@ class Handler
     {
         $data = json_decode($request->getContent(), true);
 
-        $eventName = $this->guessEventName($data);
-        if (false === $eventName) {
+        if (!$event = $this->getEvent($data)) {
             return;
         }
 
-        switch ($eventName) {
-            case Events::DOCUMENT_CANCELED:
-            case Events::DOCUMENT_CHECK_PLAGIARISM:
-            case Events::DOCUMENT_CHECK_QUALITY:
-            case Events::DOCUMENT_CHECK_WORDS:
-            case Events::DOCUMENT_COMPLETED:
-            case Events::DOCUMENT_IN_CREATION:
-            case Events::DOCUMENT_IN_PROGRESS:
-            case Events::DOCUMENT_IN_REVIEW:
-            case Events::DOCUMENT_INCOMPLETE:
-            case Events::DOCUMENT_PAUSED:
-            case Events::DOCUMENT_WAITING_ASSIGNMENT:
-            case Events::DOCUMENT_WORDS_COUNTED:
-                $event = new Event\DocumentEvent(new Document($this->client, $data), $data);
-                break;
-            case Events::PROJECT_IN_PROGRESS:
-                $event = new Event\ProjectEvent(new Project($this->client, $data), $data);
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown event "%s" occurred with following data: "%s".',
-                    $eventName,
-                    serialize($data)
-                ));
-        }
-
-        $this->dispatcher->dispatch($eventName, $event);
+        return $this->dispatcher->dispatch($event->getName(), $event);
     }
 
     /**
-     * Guess event name from API result.
+     * Get event name and object from request data.
      *
      * @param array $data
      *
-     * @return string
+     * @return CallbackEvent
      */
-    private function guessEventName(array $data)
+    private function getEvent(array $data)
     {
         if (array_key_exists('name', $data)) {
-            return 'textmaster.project.'.$data['status'];
+            $type = 'document';
         } elseif (array_key_exists('original_content', $data)) {
-            return 'textmaster.document.'.$data['status'];
+            $type = 'project';
         }
 
-        return false;
+        if (!isset($type)) {
+            throw new InvalidArgumentException(sprintf('Couldnt determine callback type from "%s".', serialize($data)));
+        }
+
+        $name = sprintf('textmaster.%s.%s', $type, $data['status']);
+        $resource = new $this->classes[$type]($this->client, $data);
+
+        return new CallbackEvent($name, $resource, $data);
     }
 }
