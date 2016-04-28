@@ -75,26 +75,16 @@ class Handler
         $data = json_decode($request->getContent(), true);
 
         $eventName = $this->guessEventName($data);
+
         if (false === $eventName) {
             return;
         }
 
         switch ($eventName) {
-            case Events::DOCUMENT_CANCELED:
-            case Events::DOCUMENT_CHECK_PLAGIARISM:
-            case Events::DOCUMENT_CHECK_QUALITY:
-            case Events::DOCUMENT_CHECK_WORDS:
-            case Events::DOCUMENT_COMPLETED:
-            case Events::DOCUMENT_IN_CREATION:
-            case Events::DOCUMENT_IN_PROGRESS:
-            case Events::DOCUMENT_IN_REVIEW:
-            case Events::DOCUMENT_INCOMPLETE:
-            case Events::DOCUMENT_PAUSED:
-            case Events::DOCUMENT_WAITING_ASSIGNMENT:
-            case Events::DOCUMENT_WORDS_COUNTED:
+            case in_array($eventName, Events::getDocumentEvents(), true):
                 $event = new Event\DocumentEvent(new Document($this->client, $data), $data);
                 break;
-            case Events::PROJECT_IN_PROGRESS:
+            case in_array($eventName, Events::getProjectEvents(), true):
                 $event = new Event\ProjectEvent(new Project($this->client, $data), $data);
                 break;
             default:
