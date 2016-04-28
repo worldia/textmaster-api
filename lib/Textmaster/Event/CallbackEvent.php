@@ -15,6 +15,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CallbackEvent extends GenericEvent
 {
+    private $name;
+
     public function __construct($name, $subject, $data)
     {
         parent::__construct($subject, $data);

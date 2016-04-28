@@ -83,8 +83,7 @@ class Client
     {
         $name = Inflector::singularize($name);
         $apis = array(
-            'author', 'billing', 'bundle', 'category', 'expertise',
-            'language', 'locale', 'project', 'template', 'user',
+            'author', 'billing', 'bundle', 'category', 'expertise', 'language', 'locale', 'project', 'template', 'user',
         );
 
         if (!in_array($name, $apis, true)) {
