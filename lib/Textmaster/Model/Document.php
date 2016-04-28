@@ -288,6 +288,14 @@ class Document extends AbstractObject implements DocumentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getEventName($action)
+    {
+        return sprintf('textmaster.document.%s', $action);
+    }
+
+    /**
      * Check the given array respect Textmaster standard for array content.
      *
      * @param array $content
