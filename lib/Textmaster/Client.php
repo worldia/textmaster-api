@@ -81,43 +81,34 @@ class Client
     public function api($name)
     {
         switch ($name) {
-            case 'author':
-            case 'authors':
+            case 'author' || 'authors':
                 $api = new Api\Author($this);
                 break;
             case 'billing':
                 $api = new Api\Billing($this);
                 break;
-            case 'bundle':
-            case 'bundles':
+            case 'bundle' || 'bundles':
                 $api = new Api\Bundle($this);
                 break;
-            case 'category':
-            case 'categories':
+            case 'category' || 'categories':
                 $api = new Api\Category($this);
                 break;
-            case 'expertise':
-            case 'expertises':
+            case 'expertise' || 'expertises':
                 $api = new Api\Expertise($this);
                 break;
-            case 'language':
-            case 'languages':
+            case 'language' || 'languages':
                 $api = new Api\Language($this);
                 break;
-            case 'locale':
-            case 'locales':
+            case 'locale' || 'locales':
                 $api = new Api\Locale($this);
                 break;
-            case 'project':
-            case 'projects':
+            case 'project' || 'projects':
                 $api = new Api\Project($this);
                 break;
-            case 'template':
-            case 'templates':
+            case 'template' || 'templates':
                 $api = new Api\Template($this);
                 break;
-            case 'user':
-            case 'users':
+            case 'user' || 'users':
                 $api = new Api\User($this);
                 break;
 
