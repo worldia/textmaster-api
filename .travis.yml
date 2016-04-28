@@ -12,11 +12,10 @@ php:
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
 before_script:
-  - travis_retry composer self-update
-  - travis_retry composer install --no-interaction --prefer-source --dev
+  - composer install --no-interaction --no-progress --dev
 
 script:
   - vendor/bin/phpunit --verbose --coverage-text

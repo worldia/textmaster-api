@@ -112,7 +112,7 @@ interface DocumentInterface
     public function setOriginalContent($content);
 
     /**
-     * @return string
+     * @return string|array
      */
     public function getTranslatedContent();
 
@@ -140,18 +140,21 @@ interface DocumentInterface
     /**
      * Get custom data.
      *
+     * @param string $key To retrieve a specific key
+     *
      * @return mixed
      */
-    public function getCustomData();
+    public function getCustomData($key = null);
 
     /**
      * Set custom data.
      *
-     * @param mixed $customData
+     * @param mixed  $customData
+     * @param string $key
      *
      * @return DocumentInterface
      */
-    public function setCustomData($customData);
+    public function setCustomData($customData, $key = null);
 
     /**
      * Complete the document.
