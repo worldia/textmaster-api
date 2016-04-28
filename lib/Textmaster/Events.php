@@ -134,7 +134,7 @@ final class Events
     public static function getDocumentEvents()
     {
         return array(
-            self::IN_CREATION,
+            self::DOCUMENT_IN_CREATION,
             self::DOCUMENT_WAITING_ASSIGNMENT,
             self::DOCUMENT_IN_PROGRESS,
             self::DOCUMENT_PAUSED,
