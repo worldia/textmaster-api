@@ -58,11 +58,14 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}.
      */
-    protected function getParameters($subject)
+    protected function setSubjectOnDocument($subject, DocumentInterface $document)
     {
-        return array(
-            'class' => get_class($subject),
-            'id' => $subject->getId(),
+        $document->setCustomData(
+            array(
+                'class' => get_class($subject),
+                'id' => $subject->getId(),
+            ),
+            'adapter'
         );
     }
 
