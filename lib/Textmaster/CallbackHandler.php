@@ -14,6 +14,8 @@ namespace Textmaster;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Textmaster\Event\CallbackEvent;
+use Textmaster\Exception\InvalidArgumentException;
 
 class CallbackHandler
 {
