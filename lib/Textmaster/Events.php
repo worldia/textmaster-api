@@ -125,4 +125,39 @@ final class Events
      * Useful for asynchronous launching.
      */
     const PROJECT_IN_PROGRESS = 'textmaster.project.in_progress';
+
+    /**
+     * Get all existing events for documents.
+     *
+     * @return array
+     */
+    public static function getDocumentEvents()
+    {
+        return array(
+            self::IN_CREATION,
+            self::DOCUMENT_WAITING_ASSIGNMENT,
+            self::DOCUMENT_IN_PROGRESS,
+            self::DOCUMENT_PAUSED,
+            self::DOCUMENT_CANCELED,
+            self::DOCUMENT_CHECK_PLAGIARISM,
+            self::DOCUMENT_CHECK_WORDS,
+            self::DOCUMENT_WORDS_COUNTED,
+            self::DOCUMENT_CHECK_QUALITY,
+            self::DOCUMENT_IN_REVIEW,
+            self::DOCUMENT_INCOMPLETE,
+            self::DOCUMENT_COMPLETED,
+        );
+    }
+
+    /**
+     * Get all existing events for projects.
+     *
+     * @return array
+     */
+    public static function getProjectEvents()
+    {
+        return array(
+            self::PROJECT_IN_PROGRESS,
+        );
+    }
 }
