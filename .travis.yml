@@ -19,4 +19,4 @@ before_script:
 
 script:
   - vendor/bin/phpunit --verbose --coverage-text
-  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "5.3" ]; then php vendor/bin/phpunit --verbose --coverage-text --group=sylius; fi;'
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "5.3" ] && [ "$TRAVIS_PHP_VERSION" != "5.4" ]; then php vendor/bin/phpunit --verbose --coverage-text --group=sylius; fi;'
