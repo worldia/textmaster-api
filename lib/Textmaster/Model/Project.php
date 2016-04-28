@@ -14,7 +14,7 @@ namespace Textmaster\Model;
 use Pagerfanta\Pagerfanta;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
-use Textmaster\PagerfantaAdapter;
+use Textmaster\Pagination\PagerfantaAdapter;
 
 class Project extends AbstractObject implements ProjectInterface
 {
@@ -222,13 +222,13 @@ class Project extends AbstractObject implements ProjectInterface
         return $this->data['status'] !== self::STATUS_IN_CREATION;
     }
 
-     /**
-      * Get the Project Api object.
-      *
-      * @return \Textmaster\Api\Project
-      */
-     protected function getApi()
-     {
-         return $this->client->projects();
-     }
+    /**
+     * Get the Project Api object.
+     *
+     * @return \Textmaster\Api\Project
+     */
+    protected function getApi()
+    {
+        return $this->client->projects();
+    }
 }
