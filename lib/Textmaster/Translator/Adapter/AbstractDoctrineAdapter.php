@@ -13,7 +13,6 @@ namespace Textmaster\Translator\Adapter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Manager;
 
@@ -37,26 +36,9 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}
      */
-    public function supports($subject)
-    {
-        return $subject instanceof $this->interface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function complete(DocumentInterface $document)
     {
-        $subject = $this->getEntityFromDocument($document);
-
-        if (!$this->supports($subject)) {
-            throw new UnexpectedTypeException($subject, $this->interface);
-        }
-
-        $properties = $document->getTranslatedContent();
-        $language = $document->getProject()->getLanguageTo();
-
-        $this->applyTranslation($subject, $properties, $language);
+        $subject = parent::complete($document);
 
         $this->persist($subject);
 
@@ -64,13 +46,9 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     }
 
     /**
-     * Get doctrine entity from document parameters.
-     *
-     * @param DocumentInterface $document
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    protected function getEntityFromDocument(DocumentInterface $document)
+    protected function getSubjectFromDocument(DocumentInterface $document)
     {
         $params = $document->getCustomData('adapter');
 
@@ -78,13 +56,15 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     }
 
     /**
-     * Actually perform completion, ie. set translated values on subject's properties.
-     *
-     * @param object $subject
-     * @param array  $properties
-     * @param string $language
+     * {@inheritdoc}.
      */
-    abstract protected function applyTranslation($subject, array $properties, $language);
+    protected function getParameters($subject)
+    {
+        return array(
+            'class' => get_class($subject),
+            'id' => $subject->getId(),
+        );
+    }
 
     /**
      * Get object manager.
@@ -121,16 +101,5 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
 
         $manager->persist($subject);
         $manager->flush();
-    }
-
-    /**
-     * {@inheritdoc}.
-     */
-    protected function getParameters($subject)
-    {
-        return array(
-            'class' => get_class($subject),
-            'id' => $subject->getId(),
-        );
     }
 }

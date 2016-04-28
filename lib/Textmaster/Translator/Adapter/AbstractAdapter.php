@@ -35,11 +35,10 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function create($subject, array $properties, DocumentInterface $document)
     {
-        if (!$subject instanceof $this->interface) {
-            throw new UnexpectedTypeException($subject, $this->interface);
-        }
+        $this->failIfDoesntSupport($subject);
 
-        $content = $this->getProperties($subject, $properties);
+        $language = $document->getProject()->getLanguageFrom();
+        $content = $this->getProperties($subject, $properties, $language);
 
         return $document
             ->setOriginalContent($content)
@@ -49,17 +48,36 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function complete(DocumentInterface $document)
+    {
+        $subject = $this->getSubjectFromDocument($document);
+        $this->failIfDoesntSupport($subject);
+
+        /** @var array $properties */
+        $properties = $document->getTranslatedContent();
+        $language = $document->getProject()->getLanguageTo();
+
+        $this->setProperties($subject, $properties, $language);
+
+        return $subject;
+    }
+
+    /**
      * Set properties on given subject.
      *
      * @param object $subject
      * @param array  $properties Array of 'property' => array('translated_phrase' => value') pairs.
+     * @param string $language
      */
-    protected function setProperties($subject, array $properties)
+    protected function setProperties($subject, array $properties, $language)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
+        $holder = $this->getPropertyHolder($subject, $language);
 
         foreach ($properties as $property => $content) {
-            $accessor->setValue($subject, $property, $content['translated_phrase']);
+            $accessor->setValue($holder, $property, $content['translated_phrase']);
         }
     }
 
@@ -68,20 +86,44 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @param object $subject
      * @param array  $properties Array of 'properties'
+     * @param string $language
      *
      * @return array of 'property' => array('original_phrase' => 'value')
      */
-    protected function getProperties($subject, array $properties)
+    protected function getProperties($subject, array $properties, $language)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
+        $holder = $this->getPropertyHolder($subject, $language);
+
         $data = array();
 
         foreach ($properties as $property) {
-            $data[$property] = array('original_phrase' => $accessor->getValue($subject, $property));
+            $data[$property] = array('original_phrase' => $accessor->getValue($holder, $property));
         }
 
         return $data;
     }
+
+    /**
+     * Get subject from document.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed
+     */
+    abstract protected function getSubjectFromDocument(DocumentInterface $document);
+
+    /**
+     * Get object holding translated properties:
+     * 1/ Used to get values in source language
+     * 2/ Used to set values in destination language.
+     *
+     * @param object $subject
+     * @param string $language
+     *
+     * @return mixed
+     */
+    abstract protected function getPropertyHolder($subject, $language);
 
     /**
      * Get parameters to be stored in document hash
@@ -92,4 +134,18 @@ abstract class AbstractAdapter implements AdapterInterface
      * @return array
      */
     abstract protected function getParameters($subject);
+
+    /**
+     * Throw exception if the adapter doesn't support the subject.
+     *
+     * @param mixed $subject
+     *
+     * @throws UnexpectedTypeException
+     */
+    protected function failIfDoesntSupport($subject)
+    {
+        if (!$this->supports($subject)) {
+            throw new UnexpectedTypeException($subject, $this->interface);
+        }
+    }
 }
