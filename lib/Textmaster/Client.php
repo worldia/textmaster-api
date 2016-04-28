@@ -11,6 +11,8 @@
 
 namespace Textmaster;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Textmaster\Api\ApiInterface;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
@@ -62,13 +64,19 @@ class Client
     private $httpClient;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * Instantiate a new Textmaster client.
      *
      * @param null|HttpClientInterface $httpClient Textmaster http client
      */
-    public function __construct(HttpClientInterface $httpClient = null)
+    public function __construct(HttpClientInterface $httpClient = null, EventDispatcherInterface $dispatcher = null)
     {
         $this->httpClient = $httpClient;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -157,6 +165,26 @@ class Client
     public function setHttpClient(HttpClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        if (null === $this->dispatcher) {
+            $this->dispatcher = new EventDispatcher();
+        }
+
+        return $this->dispatcher;
+    }
+
+    /**
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
     }
 
     /**

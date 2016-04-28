@@ -231,4 +231,12 @@ class Project extends AbstractObject implements ProjectInterface
      {
          return $this->client->projects();
      }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getEventName($action)
+    {
+        return sprintf('textmaster.project.%s', $action);
+    }
 }
