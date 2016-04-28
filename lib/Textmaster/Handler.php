@@ -74,40 +74,30 @@ class Handler
     {
         $data = json_decode($request->getContent(), true);
 
-        if (false === $eventName = $this->guessEventName($data)) {
-            return;
+        if ($event = $this->getEvent($data)) {
+            return $this->dispatcher->dispatch($eventName, $event);
         }
 
-        if (in_array($eventName, Events::getDocumentEvents(), true)) {
-            $event = new Event\DocumentEvent(new Document($this->client, $data), $data);
-        } elseif (in_array($eventName, Events::getProjectEvents(), true)) {
-            $event = new Event\ProjectEvent(new Project($this->client, $data), $data);
-        }
-
-        if (!isset($event)) {
-            throw new InvalidArgumentException(sprintf(
-                'Unknown event "%s" occurred with following data: "%s".',
-                $eventName,
-                serialize($data)
-            ));
-        }
-
-        $this->dispatcher->dispatch($eventName, $event);
+        throw new InvalidArgumentException(sprintf(
+            'Unknown event "%s" occurred with following data: "%s".',
+            $eventName,
+            serialize($data)
+        ));
     }
 
     /**
-     * Guess event name from API result.
+     * Get event from API result.
      *
      * @param array $data
      *
      * @return string
      */
-    private function guessEventName(array $data)
+    private function getEvent(array $data)
     {
         if (array_key_exists('name', $data)) {
-            return 'textmaster.project.'.$data['status'];
+            return new Event\ProjectEvent(new Project($this->client, $data), $data);
         } elseif (array_key_exists('original_content', $data)) {
-            return 'textmaster.document.'.$data['status'];
+            return new Event\DocumentEvent(new Document($this->client, $data), $data);
         }
 
         return false;
