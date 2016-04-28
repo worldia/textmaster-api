@@ -5,6 +5,9 @@ namespace Textmaster\Tests\Translator\Adapter;
 use Textmaster\Tests\Mock\MockTranslation;
 use Textmaster\Translator\Adapter\SyliusTranslatableAdapter;
 
+/**
+ * @group sylius
+ */
 class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
