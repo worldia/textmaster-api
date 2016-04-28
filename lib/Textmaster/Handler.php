@@ -74,25 +74,22 @@ class Handler
     {
         $data = json_decode($request->getContent(), true);
 
-        $eventName = $this->guessEventName($data);
-
-        if (false === $eventName) {
+        if (false === $eventName = $this->guessEventName($data)) {
             return;
         }
 
-        switch ($eventName) {
-            case in_array($eventName, Events::getDocumentEvents(), true):
-                $event = new Event\DocumentEvent(new Document($this->client, $data), $data);
-                break;
-            case in_array($eventName, Events::getProjectEvents(), true):
-                $event = new Event\ProjectEvent(new Project($this->client, $data), $data);
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown event "%s" occurred with following data: "%s".',
-                    $eventName,
-                    serialize($data)
-                ));
+        if (in_array($eventName, Events::getDocumentEvents(), true)) {
+            $event = new Event\DocumentEvent(new Document($this->client, $data), $data);
+        } elseif (in_array($eventName, Events::getProjectEvents(), true)) {
+            $event = new Event\ProjectEvent(new Project($this->client, $data), $data);
+        }
+
+        if (!isset($event)) {
+            throw new InvalidArgumentException(sprintf(
+                'Unknown event "%s" occurred with following data: "%s".',
+                $eventName,
+                serialize($data)
+            ));
         }
 
         $this->dispatcher->dispatch($eventName, $event);
