@@ -14,7 +14,6 @@ namespace Textmaster;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Model\Document;
 use Textmaster\Model\Project;
 
@@ -31,15 +30,24 @@ class Handler
     protected $client;
 
     /**
+     * @var array
+     */
+    protected $classes = array(
+        'document' => 'Textmaster\Model\Document',
+        'project' => 'Textmaster\Model\Project',
+    );
+
+    /**
      * Constructor.
      *
      * @param EventDispatcherInterface $dispatcher
      * @param Client                   $client
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Client $client)
+    public function __construct(EventDispatcherInterface $dispatcher, Client $client, array $classes = array())
     {
         $this->dispatcher = $dispatcher;
         $this->client = $client;
+        $this->classes = array_merge($this->classes, $classes);
     }
 
     /**
@@ -74,32 +82,35 @@ class Handler
     {
         $data = json_decode($request->getContent(), true);
 
-        if ($event = $this->getEvent($data)) {
-            return $this->dispatcher->dispatch($eventName, $event);
+        if (!$event = $this->getEvent($data)) {
+            return;
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Unknown event "%s" occurred with following data: "%s".',
-            $eventName,
-            serialize($data)
-        ));
+        return $this->dispatcher->dispatch($event->getName(), $event);
     }
 
     /**
-     * Get event from API result.
+     * Get event name and object from request data.
      *
      * @param array $data
      *
-     * @return string
+     * @return CallbackEvent
      */
     private function getEvent(array $data)
     {
         if (array_key_exists('name', $data)) {
-            return new Event\ProjectEvent(new Project($this->client, $data), $data);
+            $type = 'document';
         } elseif (array_key_exists('original_content', $data)) {
-            return new Event\DocumentEvent(new Document($this->client, $data), $data);
+            $type = 'project';
         }
 
-        return false;
+        if (!isset($type)) {
+            throw new InvalidArgumentException(sprintf('Couldnt determine callback type from "%s".', serialize($data)));
+        }
+
+        $name = sprintf('textmaster.%s.%s', $type, $data['status']);
+        $resource = new $this->classes[$type]($this->client, $data);
+
+        return new CallbackEvent($name, $resource, $data);
     }
 }
