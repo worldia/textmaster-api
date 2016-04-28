@@ -92,7 +92,7 @@ class CallbackHandler
     }
 
     /**
-     * Get event from API result.
+     * Get event name and object from request data.
      *
      * @param array $data
      *
