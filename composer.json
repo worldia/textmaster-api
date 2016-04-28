@@ -24,7 +24,9 @@
         "phpunit/phpunit":         "~4.0",
         "fabpot/php-cs-fixer":     "^1.11",
         "pagerfanta/pagerfanta":   "^1.0",
-        "symfony/http-foundation": "^2.7"
+        "symfony/http-foundation": "^2.7",
+        "sylius/resource":         "@dev",
+        "doctrine/orm":            "^2.3"
     },
     "suggest": {
         "symfony/http-foundation": "To use the callback handler",

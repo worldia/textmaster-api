@@ -13,8 +13,8 @@ namespace Textmaster\Translator\Adapter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Textmaster\Model\DocumentInterface;
-use Textmaster\Manager;
 
 abstract class AbstractDoctrineAdapter extends AbstractAdapter
 {

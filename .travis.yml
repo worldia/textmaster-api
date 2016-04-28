@@ -12,10 +12,11 @@ php:
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
 before_script:
-  - composer install --no-interaction --no-progress --dev
+  - composer install --no-interaction --no-progress --prefer-dist
 
 script:
   - vendor/bin/phpunit --verbose --coverage-text
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "5.3" ] && [ "$TRAVIS_PHP_VERSION" != "5.4" ]; then php vendor/bin/phpunit --verbose --coverage-text --group=sylius; fi;'
