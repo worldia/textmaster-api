@@ -40,11 +40,9 @@ abstract class AbstractAdapter implements AdapterInterface
         $language = $document->getProject()->getLanguageFrom();
         $content = $this->getProperties($subject, $properties, $language);
 
-        return $document
-            ->setOriginalContent($content)
-            ->setCustomData($this->getParameters($subject), 'adapter')
-            ->save()
-        ;
+        $this->setSubjectOnDocument($subject, $document);
+
+        return $document->setOriginalContent($content)->save();
     }
 
     /**
@@ -105,37 +103,6 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * Get subject from document.
-     *
-     * @param DocumentInterface $document
-     *
-     * @return mixed
-     */
-    abstract protected function getSubjectFromDocument(DocumentInterface $document);
-
-    /**
-     * Get object holding translated properties:
-     * 1/ Used to get values in source language
-     * 2/ Used to set values in destination language.
-     *
-     * @param object $subject
-     * @param string $language
-     *
-     * @return mixed
-     */
-    abstract protected function getPropertyHolder($subject, $language);
-
-    /**
-     * Get parameters to be stored in document hash
-     * to allow retrieval later on.
-     *
-     * @param object $subject
-     *
-     * @return array
-     */
-    abstract protected function getParameters($subject);
-
-    /**
      * Throw exception if the adapter doesn't support the subject.
      *
      * @param mixed $subject
@@ -148,4 +115,34 @@ abstract class AbstractAdapter implements AdapterInterface
             throw new UnexpectedTypeException($subject, $this->interface);
         }
     }
+
+    /**
+     * Get subject from document.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed
+     */
+    abstract protected function getSubjectFromDocument(DocumentInterface $document);
+
+    /**
+     * Attach the subject to the document so it can be retrieved
+     * through the above getter later on.
+     *
+     * @param object            $subject
+     * @param DocumentInterface $document
+     */
+    abstract protected function setSubjectOnDocument($subject, DocumentInterface $document);
+
+    /**
+     * Get object holding translated properties:
+     * 1/ Used to get values in source language
+     * 2/ Used to set values in destination language.
+     *
+     * @param object $subject
+     * @param string $language
+     *
+     * @return mixed
+     */
+    abstract protected function getPropertyHolder($subject, $language);
 }
