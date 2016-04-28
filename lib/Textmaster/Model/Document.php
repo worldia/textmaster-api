@@ -15,6 +15,7 @@ class Document extends AbstractObject implements DocumentInterface
         'status' => DocumentInterface::STATUS_IN_CREATION,
         'word_count_rule' => DocumentInterface::WORD_COUNT_RULE_PERCENTAGE,
         'word_count' => 0,
+        'custom_data' => array(),
     );
 
     /**
@@ -196,7 +197,7 @@ class Document extends AbstractObject implements DocumentInterface
     public function setCustomData($customData, $key = null)
     {
         if (null !== $key) {
-            $customData = array_merge($this->getCustomData(), array($key => $customData));
+            $customData = array_merge($this->getCustomData() ?: array(), array($key => $customData));
         }
 
         return $this->setProperty('custom_data', $customData);

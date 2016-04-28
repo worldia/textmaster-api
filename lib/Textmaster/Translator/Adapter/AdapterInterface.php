@@ -12,7 +12,6 @@
 namespace Textmaster\Translator\Adapter;
 
 use Textmaster\Model\DocumentInterface;
-use Textmaster\Model\ProjectInterface;
 
 interface AdapterInterface
 {
@@ -26,13 +25,13 @@ interface AdapterInterface
     /**
      * Launch a translation.
      *
-     * @param mixed                                     $subject
-     * @param array                                     $properties
-     * @param ProjectInterface|DocumentInterface|string $documentOrProject
+     * @param mixed             $subject
+     * @param array             $properties
+     * @param DocumentInterface $document
      *
      * @return DocumentInterface
      */
-    public function create($subject, array $properties, $documentOrProject);
+    public function create($subject, array $properties, DocumentInterface $document);
 
     /**
      * Complete a translation.

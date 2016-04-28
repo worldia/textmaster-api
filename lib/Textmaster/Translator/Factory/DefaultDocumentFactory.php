@@ -15,7 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Model\ProjectInterface;
 
-class DefaultDocumentFactory implements DocumentProviderInterface
+class DefaultDocumentFactory implements DocumentFactoryInterface
 {
     /**
      * {@inheritdoc}
