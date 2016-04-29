@@ -9,8 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Textmaster;
+namespace Textmaster\Pagination;
 
+use Doctrine\Common\Inflector\Inflector;
 use Pagerfanta\Adapter\AdapterInterface;
 use Textmaster\Api\FilterableApiInterface;
 use Textmaster\Exception\InvalidArgumentException;
@@ -38,13 +39,11 @@ class PagerfantaAdapter implements AdapterInterface
     protected $asObjects;
 
     /**
-     * Class map in the form of 'resource_name' => 'Object class'.
-     *
      * @var array
      */
     protected $classes = array(
-      'projects' => 'Textmaster\Model\Project',
-      'documents' => 'Textmaster\Model\Document',
+      'project' => 'Textmaster\Model\Project',
+      'document' => 'Textmaster\Model\Document',
     );
 
     /**
@@ -54,13 +53,20 @@ class PagerfantaAdapter implements AdapterInterface
      * @param array                  $where
      * @param array                  $order
      * @param bool                   $asObjects
+     * @param array                  $classes
      */
-    public function __construct(FilterableApiInterface $api, array $where = array(), array $order = array(), $asObjects = true)
-    {
+    public function __construct(
+        FilterableApiInterface $api,
+        array $where = array(),
+        array $order = array(),
+        $asObjects = true,
+        array $classes = array()
+    ) {
         $this->api = $api;
         $this->where = $where;
         $this->order = $order;
         $this->asObjects = $asObjects;
+        $this->classes = array_merge($this->classes, $classes);
     }
 
     /**
@@ -119,8 +125,10 @@ class PagerfantaAdapter implements AdapterInterface
     private function toObjects(array $result, $resource)
     {
         $objects = array();
+        $singular = Inflector::singularize($resource);
+
         foreach ($result[$resource] as $values) {
-            $object = new $this->classes[$resource]($this->api->getClient(), $values);
+            $object = new $this->classes[$singular]($this->api->getClient(), $values);
             $objects[] = $object;
         }
 

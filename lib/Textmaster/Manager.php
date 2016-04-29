@@ -13,6 +13,7 @@ namespace Textmaster;
 
 use Pagerfanta\Pagerfanta;
 use Textmaster\Api\FilterableApiInterface;
+use Textmaster\Pagination\PagerfantaAdapter;
 
 class Manager
 {
@@ -22,13 +23,23 @@ class Manager
     protected $client;
 
     /**
+     * @var array
+     */
+    protected $classes = array(
+        'document' => 'Textmaster\Model\Document',
+        'project' => 'Textmaster\Model\Project',
+    );
+
+    /**
      * Constructor.
      *
      * @param Client $client
+     * @param array  $classes
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client, array $classes = array())
     {
         $this->client = $client;
+        $this->classes = array_merge($this->classes, $classes);
     }
 
     /**
@@ -40,7 +51,7 @@ class Manager
      */
     public function getProject($id = null)
     {
-        return new Model\Project($this->client, $id);
+        return new $this->classes['project']($this->client, $id);
     }
 
     /**
@@ -56,7 +67,7 @@ class Manager
         /** @var FilterableApiInterface $api */
         $api = $this->client->api('projects');
 
-        return new Pagerfanta(new PagerfantaAdapter($api, $where, $order));
+        return new Pagerfanta(new PagerfantaAdapter($api, $where, $order, true, $this->classes));
     }
 
     /**
@@ -69,7 +80,7 @@ class Manager
      */
     public function getDocument($projectId, $id)
     {
-        return new Model\Document(
+        return new $this->classes['document'](
             $this->client,
             array('project_id' => $projectId, 'id' => $id)
         );
