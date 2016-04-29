@@ -76,11 +76,11 @@ class Translator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function complete(DocumentInterface $document)
+    public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
         foreach ($this->adapters as $adapter) {
             try {
-                return $adapter->complete($document);
+                return $adapter->complete($document, $satisfaction, $message);
             } catch (UnexpectedTypeException $e) {
                 continue;
             }

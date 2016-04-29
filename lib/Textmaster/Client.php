@@ -72,7 +72,8 @@ class Client
     /**
      * Instantiate a new Textmaster client.
      *
-     * @param null|HttpClientInterface $httpClient Textmaster http client
+     * @param null|HttpClientInterface      $httpClient Textmaster http client
+     * @param null|EventDispatcherInterface $dispatcher Event dispatcher
      */
     public function __construct(HttpClientInterface $httpClient = null, EventDispatcherInterface $dispatcher = null)
     {

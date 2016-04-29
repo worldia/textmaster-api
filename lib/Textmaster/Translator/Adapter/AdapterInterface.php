@@ -37,8 +37,19 @@ interface AdapterInterface
      * Complete a translation.
      *
      * @param DocumentInterface $document
+     * @param string            $satisfaction
+     * @param string            $message
      *
      * @return mixed
      */
-    public function complete(DocumentInterface $document);
+    public function complete(DocumentInterface $document, $satisfaction = null, $message = null);
+
+    /**
+     * Get subject from document.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed
+     */
+    public function getSubjectFromDocument(DocumentInterface $document);
 }

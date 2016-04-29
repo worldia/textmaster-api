@@ -18,6 +18,11 @@ use Textmaster\Exception\InvalidArgumentException;
 class Document extends AbstractObject implements DocumentInterface
 {
     /**
+     * @var ProjectInterface
+     */
+    protected $project;
+
+    /**
      * @var array
      */
     protected $data = array(
@@ -69,7 +74,11 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getProject()
     {
-        return new Project($this->client, $this->data['project_id']);
+        if (null === $this->project) {
+            $this->project = new Project($this->client, $this->data['project_id']);
+        }
+
+        return $this->project;
     }
 
     /**
@@ -77,6 +86,8 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setProject(ProjectInterface $project)
     {
+        $this->project = $project;
+
         return $this->setProperty('project_id', $project->getId());
     }
 
@@ -233,7 +244,7 @@ class Document extends AbstractObject implements DocumentInterface
         }
 
         $this->data = $this->getApi()->complete($this->getId(), $satisfaction, $message);
-        $this->dispatchEvent('complete', $this->data);
+        $this->dispatchEvent($this->data);
 
         return $this;
     }
@@ -291,9 +302,9 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    protected function getEventName($action)
+    protected function getEventNamePrefix()
     {
-        return sprintf('textmaster.document.%s', $action);
+        return 'textmaster.document';
     }
 
     /**

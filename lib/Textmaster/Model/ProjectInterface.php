@@ -176,6 +176,22 @@ interface ProjectInterface
     public function setOptions(array $options);
 
     /**
+     * Get API callback values.
+     *
+     * @return array
+     */
+    public function getCallback();
+
+    /**
+     * Set API callback values.
+     *
+     * @param array $callback
+     *
+     * @return ProjectInterface
+     */
+    public function setCallback(array $callback);
+
+    /**
      * Get documents.
      *
      * @param array $where criteria to filter documents.
