@@ -1,19 +1,13 @@
 {
-    "name": "worldia/php-textmaster-api",
+    "name": "worldia/textmaster-api",
     "type": "library",
     "description": "Textmaster API v1 client",
-    "homepage": "https://github.com/worldia/php-textmaster-api",
+    "homepage": "https://github.com/worldia/textmaster-api",
     "keywords": ["textmaster", "translation", "api"],
     "license": "UNLICENSED",
     "authors": [
-        {
-            "name": "Christian Daguerre",
-            "email": "christian@daguer.re"
-        },
-        {
-            "name": "Pierre Ducoudray",
-            "email": "pducoudray@worldia.com"
-        }
+        { "name": "Christian Daguerre", "email": "christian@daguer.re" },
+        { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
     ],
     "require": {
         "php":                     ">=5.3.3",
@@ -25,7 +19,7 @@
         "fabpot/php-cs-fixer":     "^1.11",
         "pagerfanta/pagerfanta":   "^1.0",
         "symfony/http-foundation": "^2.7",
-        "sylius/resource":         "@dev",
+        "sylius/resource":         "^0.17",
         "doctrine/orm":            "^2.3"
     },
     "suggest": {
