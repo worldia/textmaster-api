@@ -1,33 +1,30 @@
 {
-    "name": "worldia/php-textmaster-api",
+    "name": "worldia/textmaster-api",
     "type": "library",
     "description": "Textmaster API v1 client",
-    "homepage": "https://github.com/worldia/php-textmaster-api",
+    "homepage": "https://github.com/worldia/textmaster-api",
     "keywords": ["textmaster", "translation", "api"],
     "license": "UNLICENSED",
     "authors": [
-        {
-            "name": "Christian Daguerre",
-            "email": "christian@daguer.re"
-        },
-        {
-            "name": "Pierre Ducoudray",
-            "email": "pducoudray@worldia.com"
-        }
+        { "name": "Christian Daguerre", "email": "christian@daguer.re" },
+        { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
     ],
     "require": {
         "php":                     ">=5.3.3",
         "ext-curl":                "*",
-        "guzzle/guzzle":           "~3.7",
-        "pagerfanta/pagerfanta":   "^1.0",
-        "symfony/http-foundation": "^2.7",
-        "doctrine/inflector":      "^1.1"
+        "guzzle/guzzle":           "~3.7"
     },
     "require-dev": {
-        "phpunit/phpunit":     "~4.0",
-        "fabpot/php-cs-fixer": "^1.11",
-        "sylius/resource":     "@dev",
-        "doctrine/orm":        "^2.3"
+        "phpunit/phpunit":         "~4.0",
+        "fabpot/php-cs-fixer":     "^1.11",
+        "pagerfanta/pagerfanta":   "^1.0",
+        "symfony/http-foundation": "^2.7",
+        "sylius/resource":         "@dev",
+        "doctrine/orm":            "^2.3"
+    },
+    "suggest": {
+        "symfony/http-foundation": "To use the callback handler",
+        "pagerfanta/pagerfanta":   "To use the manager"
     },
     "autoload": {
         "psr-4": { "Textmaster\\": "lib/Textmaster/" }
