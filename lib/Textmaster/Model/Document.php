@@ -233,6 +233,7 @@ class Document extends AbstractObject implements DocumentInterface
         }
 
         $this->data = $this->getApi()->complete($this->getId(), $satisfaction, $message);
+        $this->dispatchEvent('complete', $this->data);
 
         return $this;
     }

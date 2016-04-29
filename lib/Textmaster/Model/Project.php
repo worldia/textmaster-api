@@ -210,6 +210,7 @@ class Project extends AbstractObject implements ProjectInterface
         }
 
         $this->data = $this->getApi()->launch($this->getId());
+        $this->dispatchEvent('launch', $this->data);
 
         return $this;
     }
