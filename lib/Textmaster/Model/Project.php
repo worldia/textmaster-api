@@ -201,7 +201,7 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function launch()
+    final public function launch()
     {
         if ($this->isImmutable() || null === $this->getId()) {
             throw new BadMethodCallException(

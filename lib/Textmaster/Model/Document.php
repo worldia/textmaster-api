@@ -215,7 +215,7 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function complete($satisfaction = null, $message = null)
+    final public function complete($satisfaction = null, $message = null)
     {
         if (self::STATUS_IN_REVIEW !== $this->getStatus()) {
             throw new BadMethodCallException(sprintf(
