@@ -222,13 +222,21 @@ class Project extends AbstractObject implements ProjectInterface
         return $this->data['status'] !== self::STATUS_IN_CREATION;
     }
 
+     /**
+      * Get the Project Api object.
+      *
+      * @return \Textmaster\Api\Project
+      */
+     protected function getApi()
+     {
+         return $this->client->projects();
+     }
+
     /**
-     * Get the Project Api object.
-     *
-     * @return \Textmaster\Api\Project
+     * {@inheritdoc}
      */
-    protected function getApi()
+    protected function getEventName($action)
     {
-        return $this->client->projects();
+        return sprintf('textmaster.project.%s', $action);
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Textmaster\Model;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Textmaster\Api\ObjectApiInterface;
 use Textmaster\Client;
 use Textmaster\Exception\BadMethodCallException;
@@ -90,9 +91,10 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function update()
+    final protected function update()
     {
         $this->data = $this->getApi()->update($this->getId(), $this->data);
+        $this->dispatchEvent('update', $this->data);
 
         return $this;
     }
@@ -102,9 +104,10 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function create()
+    final protected function create()
     {
         $this->data = $this->getApi()->create($this->data);
+        $this->dispatchEvent('create', $this->data);
 
         return $this;
     }
@@ -114,9 +117,10 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function refresh()
+    final protected function refresh()
     {
         $this->data = $this->getApi()->show($this->getId());
+        $this->dispatchEvent('load', $this->data);
 
         return $this;
     }
@@ -160,6 +164,30 @@ abstract class AbstractObject
 
         return;
     }
+
+    /**
+     * Dispatch an event.
+     *
+     * @param string $action
+     * @param array  $data   Optional data to dispatch with the event.
+     */
+    protected function dispatchEvent($action, array $data = array())
+    {
+        $name = $this->getEventName($action);
+
+        $event = new GenericEvent($this, $data);
+
+        $this->client->getEventDispatcher()->dispatch($name, $event, $data);
+    }
+
+    /**
+     * Get dispatched event name from action.
+     *
+     * @param string $action
+     *
+     * @return string
+     */
+    abstract protected function getEventName($action);
 
     /**
      * Whether the object is immutable.
