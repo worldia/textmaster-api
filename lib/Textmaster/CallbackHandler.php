@@ -14,10 +14,10 @@ namespace Textmaster;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Textmaster\Model\Document;
-use Textmaster\Model\Project;
+use Textmaster\Event\CallbackEvent;
+use Textmaster\Exception\InvalidArgumentException;
 
-class Handler
+class CallbackHandler
 {
     /**
      * @var EventDispatcherInterface
@@ -42,6 +42,7 @@ class Handler
      *
      * @param EventDispatcherInterface $dispatcher
      * @param Client                   $client
+     * @param array                    $classes
      */
     public function __construct(EventDispatcherInterface $dispatcher, Client $client, array $classes = array())
     {
@@ -76,17 +77,18 @@ class Handler
     /**
      * Raise the appropriate event @see Events.
      *
-     * @param Request $request
+     * @param Request|null $request
      */
-    public function handleWebHook(Request $request)
+    public function handleWebHook(Request $request = null)
     {
-        $data = json_decode($request->getContent(), true);
-
-        if (!$event = $this->getEvent($data)) {
-            return;
+        if (null === $request) {
+            $request = Request::createFromGlobals();
         }
 
-        return $this->dispatcher->dispatch($event->getName(), $event);
+        $data = json_decode($request->getContent(), true);
+        $event = $this->getEvent($data);
+
+        $this->dispatcher->dispatch($event->getName(), $event);
     }
 
     /**
@@ -99,9 +101,9 @@ class Handler
     private function getEvent(array $data)
     {
         if (array_key_exists('name', $data)) {
-            $type = 'document';
-        } elseif (array_key_exists('original_content', $data)) {
             $type = 'project';
+        } elseif (array_key_exists('original_content', $data)) {
+            $type = 'document';
         }
 
         if (!isset($type)) {

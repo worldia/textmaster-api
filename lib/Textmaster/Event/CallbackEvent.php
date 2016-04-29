@@ -15,17 +15,17 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CallbackEvent extends GenericEvent
 {
-    private $name;
+    private $eventName;
 
-    public function __construct($name, $subject, $data)
+    public function __construct($eventName, $subject, $data)
     {
         parent::__construct($subject, $data);
 
-        $this->name = $name;
+        $this->eventName = $eventName;
     }
 
     public function getName()
     {
-        return $this->name;
+        return $this->eventName;
     }
 }
