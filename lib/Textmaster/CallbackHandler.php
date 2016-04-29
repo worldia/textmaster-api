@@ -101,9 +101,9 @@ class CallbackHandler
     private function getEvent(array $data)
     {
         if (array_key_exists('name', $data)) {
-            $type = 'document';
-        } elseif (array_key_exists('original_content', $data)) {
             $type = 'project';
+        } elseif (array_key_exists('original_content', $data)) {
+            $type = 'document';
         }
 
         if (!isset($type)) {
