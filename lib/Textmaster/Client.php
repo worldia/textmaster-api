@@ -11,6 +11,7 @@
 
 namespace Textmaster;
 
+use Doctrine\Common\Inflector\Inflector;
 use Textmaster\Api\ApiInterface;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
@@ -80,52 +81,18 @@ class Client
      */
     public function api($name)
     {
-        switch ($name) {
-            case 'author':
-            case 'authors':
-                $api = new Api\Author($this);
-                break;
-            case 'billing':
-                $api = new Api\Billing($this);
-                break;
-            case 'bundle':
-            case 'bundles':
-                $api = new Api\Bundle($this);
-                break;
-            case 'category':
-            case 'categories':
-                $api = new Api\Category($this);
-                break;
-            case 'expertise':
-            case 'expertises':
-                $api = new Api\Expertise($this);
-                break;
-            case 'language':
-            case 'languages':
-                $api = new Api\Language($this);
-                break;
-            case 'locale':
-            case 'locales':
-                $api = new Api\Locale($this);
-                break;
-            case 'project':
-            case 'projects':
-                $api = new Api\Project($this);
-                break;
-            case 'template':
-            case 'templates':
-                $api = new Api\Template($this);
-                break;
-            case 'user':
-            case 'users':
-                $api = new Api\User($this);
-                break;
+        $name = Inflector::singularize($name);
+        $apis = array(
+            'author', 'billing', 'bundle', 'category', 'expertise', 'language', 'locale', 'project', 'template', 'user',
+        );
 
-            default:
-                throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
+        if (!in_array($name, $apis, true)) {
+            throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
         }
 
-        return $api;
+        $class = sprintf('Textmaster\Api\%s', ucfirst($name));
+
+        return new $class($this);
     }
 
     /**
