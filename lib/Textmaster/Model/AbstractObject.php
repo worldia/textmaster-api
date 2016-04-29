@@ -71,7 +71,7 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    final public function save()
+    public function save()
     {
         try {
             $this->getId() ? $this->update() : $this->create();
