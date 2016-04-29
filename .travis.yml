@@ -20,8 +20,9 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
-  - composer validate
+  - phpenv config-rm xdebug.ini || true
   - composer install --no-interaction --no-progress --prefer-dist
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-text $PHPUNIT_FLAGS
+  - composer validate
+  - vendor/bin/phpunit $PHPUNIT_FLAGS

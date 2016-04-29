@@ -4,7 +4,7 @@
     "description": "Textmaster API v1 client",
     "homepage": "https://github.com/worldia/textmaster-api",
     "keywords": ["textmaster", "translation", "api"],
-    "license": "UNLICENSED",
+    "license": "proprietary",
     "authors": [
         { "name": "Christian Daguerre", "email": "christian@daguer.re" },
         { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
