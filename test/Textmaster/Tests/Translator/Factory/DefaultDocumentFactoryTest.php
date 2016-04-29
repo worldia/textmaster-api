@@ -15,13 +15,13 @@ class DefaultDocumentFactoryTest extends \PHPUnit_Framework_TestCase
         $subjectMock = $this->getMock('SubjectInterface');
         $clientMock = $this->getMock('Textmaster\Client');
 
-        $project = new Project($clientMock, ['id' => '123456', 'name' => 'Project-1']);
-        $params = [
+        $project = new Project($clientMock, array('id' => '123456', 'name' => 'Project-1'));
+        $params = array(
             'project' => $project,
-            'document' => [
+            'document' => array(
                 'title' => 'Super title',
-            ],
-        ];
+            ),
+        );
 
         $factory = new DefaultDocumentFactory();
         $document = $factory->createDocument($subjectMock, $params);
