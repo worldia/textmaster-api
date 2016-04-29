@@ -86,7 +86,7 @@ class Translator implements TranslatorInterface
             }
         }
 
-        throw new InvalidArgumentException(sprintf('No adapter found for "%s".', get_class($subject)));
+        throw new InvalidArgumentException(sprintf('No adapter found for document "%s".', $document->getId()));
     }
 
     private function getDocumentFactory()
