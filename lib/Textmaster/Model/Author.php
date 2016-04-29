@@ -17,12 +17,4 @@ class Author implements AuthorInterface
      * @var string
      */
     protected $id;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getEventName($action)
-    {
-        return sprintf('textmaster.author.%s', $action);
-    }
 }

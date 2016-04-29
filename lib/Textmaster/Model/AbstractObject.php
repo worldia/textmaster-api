@@ -117,7 +117,7 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    final protected function refresh()
+    protected function refresh()
     {
         $this->data = $this->getApi()->show($this->getId());
 
