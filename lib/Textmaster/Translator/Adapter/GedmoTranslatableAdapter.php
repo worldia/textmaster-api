@@ -12,7 +12,7 @@
 namespace Textmaster\Translator\Adapter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gedmo\DoctrineExtensions\Translatable\TranslatableListener;
+use Gedmo\Translatable\TranslatableListener;
 
 class GedmoTranslatableAdapter extends AbstractDoctrineAdapter
 {
@@ -26,7 +26,8 @@ class GedmoTranslatableAdapter extends AbstractDoctrineAdapter
     /**
      * Constructor.
      *
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry      $registry
+     * @param TranslatableListener $listener
      */
     public function __construct(ManagerRegistry $registry, TranslatableListener $listener)
     {
