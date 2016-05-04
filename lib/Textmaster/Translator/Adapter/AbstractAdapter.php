@@ -48,7 +48,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function complete(DocumentInterface $document)
+    public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
         $subject = $this->getSubjectFromDocument($document);
         $this->failIfDoesntSupport($subject);
@@ -58,6 +58,8 @@ abstract class AbstractAdapter implements AdapterInterface
         $language = $document->getProject()->getLanguageTo();
 
         $this->setProperties($subject, $properties, $language);
+
+        $document->complete($satisfaction, $message);
 
         return $subject;
     }
@@ -123,7 +125,7 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @return mixed
      */
-    abstract protected function getSubjectFromDocument(DocumentInterface $document);
+    abstract public function getSubjectFromDocument(DocumentInterface $document);
 
     /**
      * Attach the subject to the document so it can be retrieved

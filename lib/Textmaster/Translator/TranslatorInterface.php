@@ -30,8 +30,19 @@ interface TranslatorInterface
      * Complete a translation.
      *
      * @param DocumentInterface $document
+     * @param string            $satisfaction
+     * @param string            $message
      *
      * @return mixed The subject passed on creation.
      */
-    public function complete(DocumentInterface $document);
+    public function complete(DocumentInterface $document, $satisfaction = null, $message = null);
+
+    /**
+     * Get subject from document.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed
+     */
+    public function getSubjectFromDocument(DocumentInterface $document);
 }

@@ -36,6 +36,7 @@ class Project extends AbstractObject implements ProjectInterface
         'language_to',
         'project_briefing',
         'options',
+        'callback',
     );
 
     /**
@@ -173,6 +174,29 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
+    public function getCallback()
+    {
+        return $this->getProperty('callback');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCallback(array $callback)
+    {
+        if (!array_key_exists(ProjectInterface::STATUS_IN_PROGRESS, $callback)) {
+            throw new InvalidArgumentException(sprintf(
+                'Only key for array callback allowed is "%s"',
+                ProjectInterface::STATUS_IN_PROGRESS
+             ));
+        }
+
+        $this->data['callback'] = $callback;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStatus()
     {
         return $this->getProperty('status');
@@ -222,13 +246,21 @@ class Project extends AbstractObject implements ProjectInterface
         return $this->data['status'] !== self::STATUS_IN_CREATION;
     }
 
+     /**
+      * Get the Project Api object.
+      *
+      * @return \Textmaster\Api\Project
+      */
+     protected function getApi()
+     {
+         return $this->client->projects();
+     }
+
     /**
-     * Get the Project Api object.
-     *
-     * @return \Textmaster\Api\Project
+     * {@inheritdoc}
      */
-    protected function getApi()
+    protected function getEventNamePrefix()
     {
-        return $this->client->projects();
+        return 'textmaster.project';
     }
 }

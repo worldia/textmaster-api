@@ -11,6 +11,7 @@
 
 namespace Textmaster\Model;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Textmaster\Api\ObjectApiInterface;
 use Textmaster\Client;
 use Textmaster\Exception\BadMethodCallException;
@@ -90,9 +91,10 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function update()
+    final protected function update()
     {
         $this->data = $this->getApi()->update($this->getId(), $this->data);
+        $this->dispatchEvent($this->data);
 
         return $this;
     }
@@ -102,9 +104,10 @@ abstract class AbstractObject
      *
      * @return AbstractObject
      */
-    protected function create()
+    final protected function create()
     {
         $this->data = $this->getApi()->create($this->data);
+        $this->dispatchEvent($this->data);
 
         return $this;
     }
@@ -160,6 +163,34 @@ abstract class AbstractObject
 
         return;
     }
+
+    /**
+     * Dispatch an event.
+     *
+     * @param array $data Optional data to dispatch with the event.
+     */
+    protected function dispatchEvent(array $data = array())
+    {
+        $name = $this->getEventNamePrefix().'.'.$this->getStatus();
+
+        $event = new GenericEvent($this, $data);
+
+        $this->client->getEventDispatcher()->dispatch($name, $event);
+    }
+
+    /**
+     * Get dispatched event name prefix from model class.
+     *
+     * @return string
+     */
+    abstract protected function getEventNamePrefix();
+
+    /**
+     * Get object status.
+     *
+     * @return string
+     */
+    abstract protected function getStatus();
 
     /**
      * Whether the object is immutable.

@@ -76,11 +76,11 @@ class Translator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function complete(DocumentInterface $document)
+    public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
         foreach ($this->adapters as $adapter) {
             try {
-                return $adapter->complete($document);
+                return $adapter->complete($document, $satisfaction, $message);
             } catch (UnexpectedTypeException $e) {
                 continue;
             }
@@ -89,6 +89,30 @@ class Translator implements TranslatorInterface
         throw new InvalidArgumentException(sprintf('No adapter found for document "%s".', $document->getId()));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubjectFromDocument(DocumentInterface $document)
+    {
+        foreach ($this->adapters as $adapter) {
+            try {
+                $translatable = $adapter->getSubjectFromDocument($document);
+                if (null !== $translatable) {
+                    return $translatable;
+                }
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('No subject for document "%s"', $document->getId()));
+    }
+
+    /**
+     * Get document factory.
+     *
+     * @return DocumentFactoryInterface
+     */
     private function getDocumentFactory()
     {
         if (null === $this->documentFactory) {

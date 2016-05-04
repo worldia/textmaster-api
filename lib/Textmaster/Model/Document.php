@@ -18,6 +18,11 @@ use Textmaster\Exception\InvalidArgumentException;
 class Document extends AbstractObject implements DocumentInterface
 {
     /**
+     * @var ProjectInterface
+     */
+    protected $project;
+
+    /**
      * @var array
      */
     protected $data = array(
@@ -69,7 +74,11 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getProject()
     {
-        return new Project($this->client, $this->data['project_id']);
+        if (null === $this->project) {
+            $this->project = new Project($this->client, $this->data['project_id']);
+        }
+
+        return $this->project;
     }
 
     /**
@@ -77,6 +86,8 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setProject(ProjectInterface $project)
     {
+        $this->project = $project;
+
         return $this->setProperty('project_id', $project->getId());
     }
 
@@ -215,7 +226,7 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function complete($satisfaction = null, $message = null)
+    final public function complete($satisfaction = null, $message = null)
     {
         if (self::STATUS_IN_REVIEW !== $this->getStatus()) {
             throw new BadMethodCallException(sprintf(
@@ -233,6 +244,7 @@ class Document extends AbstractObject implements DocumentInterface
         }
 
         $this->data = $this->getApi()->complete($this->getId(), $satisfaction, $message);
+        $this->dispatchEvent($this->data);
 
         return $this;
     }
@@ -285,6 +297,14 @@ class Document extends AbstractObject implements DocumentInterface
     protected function getApi()
     {
         return $this->client->projects()->documents($this->data['project_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getEventNamePrefix()
+    {
+        return 'textmaster.document';
     }
 
     /**
