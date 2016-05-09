@@ -18,6 +18,7 @@ use Textmaster\Model\ProjectInterface;
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     protected $clientMock;
+    protected $projectApiMock;
 
     public function setUp()
     {
@@ -47,7 +48,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         );
 
         $clientMock = $this->getMock('Textmaster\Client', array('api'));
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('show', 'update'), array($clientMock));
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('show', 'update', 'launch'), array($clientMock));
         $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', array('filter', 'getClient'));
 
         $clientMock->method('api')
@@ -63,6 +64,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->willReturn($documentApiMock);
 
         $this->clientMock = $clientMock;
+        $this->projectApiMock = $projectApiMock;
     }
 
     /**
@@ -78,6 +80,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $category = 'C014';
         $briefing = 'Lorem ipsum...';
         $options = array('language_level' => 'premium');
+        $callback = array(ProjectInterface::STATUS_IN_PROGRESS => 'http://callback.url');
 
         $project = new Project($this->clientMock);
         $project
@@ -88,6 +91,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->setCategory($category)
             ->setBriefing($briefing)
             ->setOptions($options)
+            ->setCallback($callback)
         ;
 
         $this->assertNull($project->getId());
@@ -99,6 +103,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($category, $project->getCategory());
         $this->assertSame($briefing, $project->getBriefing());
         $this->assertSame($options, $project->getOptions());
+        $this->assertSame($callback, $project->getCallback());
     }
 
     /**
@@ -197,6 +202,19 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function shouldLaunch()
+    {
+        $this->projectApiMock->expects($this->once())
+            ->method('launch')
+            ->willReturn(array());
+
+        $project = new Project($this->clientMock, '123456');
+        $project->launch();
+    }
+
+    /**
+     * @test
      * @expectedException \Textmaster\Exception\ObjectImmutableException
      */
     public function shouldBeImmutable()
@@ -228,5 +246,30 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $project = new Project($this->clientMock);
         $project->createDocument();
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
+     */
+    public function shouldNotSetWrongCallback()
+    {
+        $project = new Project($this->clientMock, '123456');
+        $project->setCallback(array('wrong_callback' => 'bad value'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\BadMethodCallException
+     */
+    public function shouldNotLaunchImmutable()
+    {
+        $values = array(
+            'id' => 'ID-IMMUTABLE',
+            'status' => ProjectInterface::STATUS_IN_PROGRESS,
+        );
+
+        $project = new Project($this->clientMock, $values);
+        $project->launch();
     }
 }

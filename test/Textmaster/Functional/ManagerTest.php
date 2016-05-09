@@ -18,6 +18,7 @@ use Textmaster\Manager;
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_PROJECT_ID = '57065757f41f44001100000e';
+    const TEST_DOCUMENT_ID = '57065d0ef41f44000e00008d';
 
     /**
      * @var Client
@@ -98,5 +99,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Pagerfanta\Pagerfanta', get_class($pager));
         $this->assertSame(1, $pager->count());
         $this->assertTrue(in_array('Textmaster\Model\DocumentInterface', class_implements($document), true));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetDocument()
+    {
+        $manager = new Manager($this->client);
+        $document = $manager->getDocument(self::TEST_PROJECT_ID, self::TEST_DOCUMENT_ID);
+
+        $this->assertSame('document_test_1', $document->getTitle());
     }
 }
