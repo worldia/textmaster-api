@@ -22,6 +22,6 @@ if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader
         'php composer.phar install'.PHP_EOL);
 }
 
-$loader->add('Textmaster\Tests', __DIR__);
+$loader->add('Textmaster\Unit', __DIR__);
 
 return $loader;

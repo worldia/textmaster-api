@@ -20,8 +20,8 @@ use Textmaster\Model\ProjectInterface;
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     // As launch project is done asynchronously we need a project to be paused and archived.
-    const TO_PAUSE_PROJECT_ID = '57065757f41f44001100000e';
-    const TO_ARCHIVE_PROJECT_ID = '57109f596765d4000c0002df';
+    const TO_PAUSE_PROJECT_ID = '5731ac85ca8564000edda2df';
+    const TO_ARCHIVE_PROJECT_ID = '5731ad44ca8564000bdda286';
 
     /**
      * Project api.
@@ -38,6 +38,33 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
         $client = new Client($httpClient);
         $this->api = $client->project();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $httpClient = new HttpClient(array('base_url' => 'http://api.sandbox.textmaster.com/%s'));
+        $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
+        $client = new Client($httpClient);
+        $api = $client->project();
+
+        $where = array(
+            'name' => 'Project for functional test',
+            'status' => array('$in' => array(ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION)),
+            'archived' => false,
+        );
+
+        $result = $api->filter($where);
+        if (is_array($result)) {
+            foreach ($result as $data) {
+                if (!is_array($data)) {
+                    continue;
+                }
+                foreach ($data as $project) {
+                    $api->cancel($project['id']);
+                    $api->archive($project['id']);
+                }
+            }
+        }
     }
 
     /**
@@ -200,6 +227,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
         $this->assertSame('api', $result['creation_channel']);
 
+        $this->api->archive($projectId);
+
         return $projectId;
     }
 
@@ -210,15 +239,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->archive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertSame('Project to be archived', $result['name']);
+        $this->assertSame('worldia/textmaster-api to archive', $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
-        $this->assertSame('C021', $result['category']);
-        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
-        $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
-        $this->assertSame('api', $result['creation_channel']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
     }
 
     /**
@@ -228,15 +253,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->unarchive(self::TO_ARCHIVE_PROJECT_ID);
 
-        $this->assertSame('Project to be archived', $result['name']);
+        $this->assertSame('worldia/textmaster-api to archive', $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
-        $this->assertSame('C021', $result['category']);
-        $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
-        $this->assertSame('api', $result['creation_channel']);
     }
 
     /**
@@ -246,9 +268,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->pause(self::TO_PAUSE_PROJECT_ID);
 
-        $this->assertSame('worldia_test', $result['name']);
+        $this->assertSame('worldia/textmaster-api test to pause', $result['name']);
         $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('en', $result['language_to']);
+        $this->assertSame('de', $result['language_to']);
         $this->assertSame(ProjectInterface::STATUS_PAUSED, $result['status']);
     }
 
@@ -259,9 +281,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->api->resume(self::TO_PAUSE_PROJECT_ID);
 
-        $this->assertSame('worldia_test', $result['name']);
+        $this->assertSame('worldia/textmaster-api test to pause', $result['name']);
         $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('en', $result['language_to']);
+        $this->assertSame('de', $result['language_to']);
         $this->assertSame(ProjectInterface::STATUS_IN_PROGRESS, $result['status']);
     }
 
