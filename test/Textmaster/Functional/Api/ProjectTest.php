@@ -49,7 +49,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $where = array(
             'name' => 'Project for functional test',
-            'status' => ProjectInterface::STATUS_IN_PROGRESS,
+            'status' => array('$in' => array(ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION)),
             'archived' => false,
         );
 
