@@ -28,6 +28,8 @@ interface ProjectInterface
     const STATUS_PAUSED = 'paused';
     const STATUS_CANCELED = 'canceled';
 
+    const CALLBACK_KEY = 'project_in_progress';
+
     /**
      * Get id.
      *
