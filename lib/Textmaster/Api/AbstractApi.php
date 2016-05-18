@@ -11,6 +11,7 @@
 
 namespace Textmaster\Api;
 
+use GuzzleHttp\Psr7\Response;
 use Textmaster\Client;
 use Textmaster\HttpClient\Message\ResponseMediator;
 
@@ -103,11 +104,11 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     GET parameters.
      * @param array  $requestHeaders Request Headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function get($path, array $parameters = array(), $requestHeaders = array())
+    protected function get($path, array $parameters = [], $requestHeaders = [])
     {
-        $defaultParams = array('page' => 'page', 'per_page' => 'perPage');
+        $defaultParams = ['page' => 'page', 'per_page' => 'perPage'];
 
         foreach ($defaultParams as $snake => $camel) {
             if (isset($this->$camel) && !isset($parameters[$snake])) {
@@ -129,13 +130,13 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     HEAD parameters.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\Message\Response
+     * @return Response
      */
-    protected function head($path, array $parameters = array(), $requestHeaders = array())
+    protected function head($path, array $parameters = [], $requestHeaders = [])
     {
-        $response = $this->client->getHttpClient()->request($path, null, 'HEAD', $requestHeaders, array(
+        $response = $this->client->getHttpClient()->request($path, null, 'HEAD', $requestHeaders, [
             'query' => $parameters,
-        ));
+        ]);
 
         return $response;
     }
@@ -147,13 +148,13 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function post($path, array $parameters = array(), $requestHeaders = array())
+    protected function post($path, array $parameters = [], $requestHeaders = [])
     {
         return $this->postRaw(
             $path,
-            $this->createJsonBody($parameters),
+            $parameters,
             $requestHeaders
         );
     }
@@ -165,9 +166,9 @@ abstract class AbstractApi implements ApiInterface
      * @param string $body           Request body.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function postRaw($path, $body, $requestHeaders = array())
+    protected function postRaw($path, $body, $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->post(
             $path,
@@ -185,13 +186,13 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function patch($path, array $parameters = array(), $requestHeaders = array())
+    protected function patch($path, array $parameters = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->patch(
             $path,
-            $this->createJsonBody($parameters),
+            $parameters,
             $requestHeaders
         );
 
@@ -205,13 +206,13 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function put($path, array $parameters = array(), $requestHeaders = array())
+    protected function put($path, array $parameters = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->put(
             $path,
-            $this->createJsonBody($parameters),
+            $parameters,
             $requestHeaders
         );
 
@@ -225,28 +226,16 @@ abstract class AbstractApi implements ApiInterface
      * @param array  $parameters     POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function delete($path, array $parameters = array(), $requestHeaders = array())
+    protected function delete($path, array $parameters = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->delete(
             $path,
-            $this->createJsonBody($parameters),
+            $parameters,
             $requestHeaders
         );
 
         return ResponseMediator::getContent($response);
-    }
-
-    /**
-     * Create a JSON encoded version of an array of parameters.
-     *
-     * @param array $parameters Request parameters
-     *
-     * @return null|string
-     */
-    protected function createJsonBody(array $parameters)
-    {
-        return (count($parameters) === 0) ? null : json_encode($parameters, empty($parameters) ? JSON_FORCE_OBJECT : 0);
     }
 }

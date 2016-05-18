@@ -10,16 +10,16 @@
         { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
     ],
     "require": {
-        "php":                       ">=5.3.3",
+        "php":                       ">=5.5.0",
         "ext-curl":                  "*",
-        "guzzle/guzzle":             "~3.7"
+        "guzzlehttp/guzzle":         "^6.2"
     },
     "require-dev": {
         "phpunit/phpunit":           "~4.0",
         "fabpot/php-cs-fixer":       "^1.11",
         "pagerfanta/pagerfanta":     "^1.0",
         "symfony/http-foundation":   "^2.7",
-        "sylius/resource":           "@dev",
+        "sylius/resource":           "^0.17",
         "doctrine/orm":              "^2.3",
         "gedmo/doctrine-extensions": "^2.4"
     },
@@ -32,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "0.2.x-dev"
         }
     }
 }

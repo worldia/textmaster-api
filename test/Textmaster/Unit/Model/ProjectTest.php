@@ -47,7 +47,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'options' => array('language_level' => 'premium'),
         );
 
-        $clientMock = $this->getMock('Textmaster\Client', array('api'));
+        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(array('api'))->disableOriginalConstructor()->getMock();
         $projectApiMock = $this->getMock('Textmaster\Api\Project', array('show', 'update', 'launch'), array($clientMock));
         $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', array('filter', 'getClient'));
 

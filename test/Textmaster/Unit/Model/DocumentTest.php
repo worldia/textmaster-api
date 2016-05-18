@@ -60,7 +60,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'options' => array('language_level' => 'premium'),
         );
 
-        $clientMock = $this->getMock('Textmaster\Client', array('projects'));
+        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(array('projects'))->disableOriginalConstructor()->getMock();
         $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents', 'show'), array($clientMock));
         $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update', 'complete'), array($clientMock, $projectId), '', false);
 

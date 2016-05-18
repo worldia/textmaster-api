@@ -11,8 +11,7 @@
 
 namespace Textmaster\HttpClient;
 
-use Guzzle\Http\Message\Response;
-use Textmaster\Exception\InvalidArgumentException;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Performs requests on Textmaster API.
@@ -28,7 +27,7 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function get($path, array $parameters = array(), array $headers = array());
+    public function get($path, array $parameters = [], array $headers = []);
 
     /**
      * Send a POST request.
@@ -39,7 +38,7 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function post($path, $body = null, array $headers = array());
+    public function post($path, $body = null, array $headers = []);
 
     /**
      * Send a PATCH request.
@@ -52,7 +51,7 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function patch($path, $body = null, array $headers = array());
+    public function patch($path, $body = null, array $headers = []);
 
     /**
      * Send a PUT request.
@@ -63,7 +62,7 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function put($path, $body, array $headers = array());
+    public function put($path, $body, array $headers = []);
 
     /**
      * Send a DELETE request.
@@ -74,7 +73,7 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function delete($path, $body = null, array $headers = array());
+    public function delete($path, $body = null, array $headers = []);
 
     /**
      * Send a request to the server, receive a response,
@@ -87,30 +86,5 @@ interface HttpClientInterface
      *
      * @return Response
      */
-    public function request($path, $body, $httpMethod = 'GET', array $headers = array());
-
-    /**
-     * Change an option value.
-     *
-     * @param string $name  The option name
-     * @param mixed  $value The value
-     *
-     * @throws InvalidArgumentException
-     */
-    public function setOption($name, $value);
-
-    /**
-     * Set HTTP headers.
-     *
-     * @param array $headers
-     */
-    public function setHeaders(array $headers);
-
-    /**
-     * Authenticate a user for all next requests.
-     *
-     * @param string $key    Textmaster private api key
-     * @param string $secret Textmaster secret
-     */
-    public function authenticate($key, $secret);
+    public function request($path, $body, $httpMethod = 'GET', array $headers = []);
 }

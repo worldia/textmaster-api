@@ -11,20 +11,21 @@
 
 namespace Textmaster\HttpClient;
 
-use Guzzle\Http\Client as GuzzleClient;
-use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Textmaster\Exception\ErrorException;
 use Textmaster\Exception\RuntimeException;
-use Textmaster\HttpClient\Listener\AuthListener;
-use Textmaster\HttpClient\Listener\ErrorListener;
 
 /**
  * Performs requests on Textmaster API. API documentation should be self-explanatory.
- *
- * @author Joseph Bielawski <stloyd@gmail.com>
  */
 class HttpClient implements HttpClientInterface
 {
@@ -33,91 +34,65 @@ class HttpClient implements HttpClientInterface
      */
     protected $client;
 
-    protected $options = array(
-        'base_url' => 'http://api.textmaster.com/%s/clients',
-
-        'user_agent' => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
-        'timeout' => 10,
-
+    /**
+     * @var array
+     */
+    protected $options = [
+        'base_uri' => 'http://api.textmaster.com/%s/clients',
         'api_version' => 'v1',
+        'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
+        'timeout' => 10,
+    ];
 
-        'cache_dir' => null,
-    );
-
-    protected $headers = array();
-
+    /**
+     * @var ResponseInterface
+     */
     private $lastResponse;
+
+    /**
+     * @var RequestInterface
+     */
     private $lastRequest;
 
     /**
-     * @param array           $options
-     * @param ClientInterface $client
+     * HttpClient constructor.
+     *
+     * @param string $key
+     * @param string $secret
+     * @param array  $options
      */
-    public function __construct(array $options = array(), ClientInterface $client = null)
+    public function __construct($key, $secret, array $options = [])
     {
-        $this->options = array_merge($this->options, $options);
-        $client = $client ?: new GuzzleClient(
-            sprintf($this->options['base_url'], $this->options['api_version']),
-            $this->options
-        );
-        $this->client = $client;
+        $date = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
-        $this->clearHeaders();
+        $stack = new HandlerStack();
+        $stack->setHandler(new CurlHandler());
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $date, $secret) {
+            return $request
+                ->withHeader('Apikey', $key)
+                ->withHeader('Date', $date->format('Y-m-d H:i:s'))
+                ->withHeader('Signature', sha1($secret.$date->format('Y-m-d H:i:s')))
+            ;
+        }));
+
+        $this->options = array_merge($this->options, $options, ['handler' => $stack]);
+        $this->options['base_uri'] = sprintf($this->options['base_uri'], $this->options['api_version']);
+
+        $this->client = new Client($this->options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOption($name, $value)
+    public function get($path, array $parameters = [], array $headers = [])
     {
-        $this->options[$name] = $value;
+        return $this->request($path, null, 'GET', $headers, $parameters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setHeaders(array $headers)
-    {
-        $this->headers = array_merge($this->headers, $headers);
-    }
-
-    /**
-     * Clears used headers.
-     */
-    public function clearHeaders()
-    {
-        $this->headers = array(
-            'User-Agent' => sprintf('%s', $this->options['user_agent']),
-            'content-type' => 'application/json',
-        );
-    }
-
-    /**
-     * @param string $eventName
-     */
-    public function addListener($eventName, $listener)
-    {
-        $this->client->getEventDispatcher()->addListener($eventName, $listener);
-    }
-
-    public function addSubscriber(EventSubscriberInterface $subscriber)
-    {
-        $this->client->addSubscriber($subscriber);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get($path, array $parameters = array(), array $headers = array())
-    {
-        return $this->request($path, null, 'GET', $headers, array('query' => $parameters));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function post($path, $body = null, array $headers = array())
+    public function post($path, $body = null, array $headers = [])
     {
         return $this->request($path, $body, 'POST', $headers);
     }
@@ -125,7 +100,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function patch($path, $body = null, array $headers = array())
+    public function patch($path, $body = null, array $headers = [])
     {
         return $this->request($path, $body, 'PATCH', $headers);
     }
@@ -133,7 +108,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($path, $body = null, array $headers = array())
+    public function delete($path, $body = null, array $headers = [])
     {
         return $this->request($path, $body, 'DELETE', $headers);
     }
@@ -141,7 +116,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function put($path, $body, array $headers = array())
+    public function put($path, $body, array $headers = [])
     {
         return $this->request($path, $body, 'PUT', $headers);
     }
@@ -149,13 +124,21 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array())
+    public function request($path, $body = null, $httpMethod = 'GET', array $headers = [], array $parameters = [])
     {
-        $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
+        $options = [];
+        if (null !== $body) {
+            $options[RequestOptions::JSON] = $body;
+            $options['curl']['body_as_string'] = true;
+        }
+        if (!empty($parameters)) {
+            $options[RequestOptions::QUERY] = $parameters;
+        }
 
+        $request = $this->createRequest($httpMethod, $path, $headers);
         try {
-            /** @var \Guzzle\Http\Message\Response $response */
-            $response = $this->client->send($request);
+            /** @var Response $response */
+            $response = $this->client->send($request, $options);
         } catch (\LogicException $e) {
             throw new ErrorException($e->getMessage(), $e->getCode(), $e);
         } catch (\RuntimeException $e) {
@@ -166,16 +149,6 @@ class HttpClient implements HttpClientInterface
         $this->lastResponse = $response;
 
         return $response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function authenticate($key, $secret)
-    {
-        $this->addListener('request.before_send', array(
-            new AuthListener($key, $secret), 'onRequestBeforeSend',
-        ));
     }
 
     /**
@@ -199,20 +172,22 @@ class HttpClient implements HttpClientInterface
      *
      * @param string $httpMethod
      * @param string $path
-     * @param string $body
      * @param array  $headers
-     * @param array  $options
      *
-     * @return \Guzzle\Http\Message\RequestInterface
+     * @return RequestInterface
      */
-    protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array())
+    protected function createRequest($httpMethod, $path, array $headers = [])
     {
-        return $this->client->createRequest(
-            $httpMethod,
-            $path,
-            array_merge($this->headers, $headers),
-            $body,
-            $options
-        );
+        return new Request($httpMethod, $this->getFinalPath($path), $headers);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function getFinalPath($path)
+    {
+        return $this->client->getConfig('base_uri')->getPath().'/'.$path;
     }
 }
