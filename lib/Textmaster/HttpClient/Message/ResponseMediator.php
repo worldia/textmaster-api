@@ -30,7 +30,7 @@ class ResponseMediator
         $body = $response->getBody();
         if ($response->hasHeader('Content-Type') && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0) {
             $content = json_decode($body->getContents(), true);
-            if ($content['errors']) {
+            if (array_key_exists('errors', $content)) {
                 throw new ErrorException(serialize($content['errors']), $response->getStatusCode());
             }
 
