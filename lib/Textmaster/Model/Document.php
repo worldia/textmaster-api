@@ -174,7 +174,7 @@ class Document extends AbstractObject implements DocumentInterface
     {
         $authorWork = $this->getProperty('author_work');
 
-        if (self::TYPE_STANDARD === $this->getType()) {
+        if (self::TYPE_STANDARD === $this->getType() && !empty($authorWork)) {
             $authorWork = $authorWork['free_text'];
         }
 
