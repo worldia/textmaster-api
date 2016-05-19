@@ -29,7 +29,6 @@ interface DocumentInterface
     const SATISFACTION_POSITIVE = 'positive';
     const SATISFACTION_NEGATIVE = 'negative';
 
-    const TYPE_STANDARD = 'standard';
     const TYPE_KEY_VALUE = 'key_value';
 
     const WORD_COUNT_RULE_PERCENTAGE = 0;
@@ -122,15 +121,6 @@ interface DocumentInterface
     public function getType();
 
     /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return DocumentInterface
-     */
-    public function setType($type);
-
-    /**
      * @return string|array
      */
     public function getTranslatedContent();
@@ -198,11 +188,4 @@ interface DocumentInterface
      * @return array
      */
     public static function getAllowedSatisfaction();
-
-    /**
-     * Get allowed type.
-     *
-     * @return array
-     */
-    public static function getAllowedType();
 }
