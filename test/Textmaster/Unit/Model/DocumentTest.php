@@ -101,6 +101,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ->setOriginalContent($originalContent)
             ->setInstructions($instructions)
             ->setCustomData($customData)
+            ->setType(DocumentInterface::TYPE_KEY_VALUE)
         ;
 
         $this->assertNull($document->getId());
@@ -109,6 +110,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($originalContent, $document->getOriginalContent());
         $this->assertSame($instructions, $document->getInstructions());
         $this->assertSame($customData, $document->getCustomData());
+        $this->assertSame(DocumentInterface::TYPE_KEY_VALUE, $document->getType());
     }
 
     /**

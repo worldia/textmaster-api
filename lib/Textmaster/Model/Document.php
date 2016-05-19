@@ -41,6 +41,7 @@ class Document extends AbstractObject implements DocumentInterface
         'original_content',
         'callback',
         'custom_data',
+        'type',
     );
 
     /**
@@ -155,6 +156,30 @@ class Document extends AbstractObject implements DocumentInterface
         $this->countWords();
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->getProperty('type');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setType($type)
+    {
+        $types = self::getAllowedType();
+        if (null !== $type && !in_array($type, $types, true)) {
+            throw new InvalidArgumentException(sprintf(
+                'Type must me one of "%s".',
+                implode('","', $types)
+            ));
+        }
+
+        $this->setProperty('type', $type);
     }
 
     /**
@@ -278,6 +303,17 @@ class Document extends AbstractObject implements DocumentInterface
             self::SATISFACTION_NEGATIVE,
             self::SATISFACTION_NEUTRAL,
             self::SATISFACTION_POSITIVE,
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getAllowedType()
+    {
+        return array(
+            self::TYPE_STANDARD,
+            self::TYPE_KEY_VALUE,
         );
     }
 
