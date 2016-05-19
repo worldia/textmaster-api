@@ -29,6 +29,7 @@ interface DocumentInterface
     const SATISFACTION_POSITIVE = 'positive';
     const SATISFACTION_NEGATIVE = 'negative';
 
+    const TYPE_STANDARD = 'standard';
     const TYPE_KEY_VALUE = 'key_value';
 
     const WORD_COUNT_RULE_PERCENTAGE = 0;
@@ -121,11 +122,15 @@ interface DocumentInterface
     public function getType();
 
     /**
+     * Get translated content.
+     *
      * @return string|array
      */
     public function getTranslatedContent();
 
     /**
+     * Get word count.
+     *
      * @return int
      */
     public function getWordCount();

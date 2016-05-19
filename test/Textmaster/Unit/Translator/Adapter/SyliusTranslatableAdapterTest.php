@@ -87,7 +87,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(array('class' => 'My\Class', 'id' => 1));
         $documentMock->expects($this->once())
             ->method('getTranslatedContent')
-            ->willReturn(array('name' => array('translated_phrase' => 'my translation')));
+            ->willReturn(array('name' => 'my translation'));
         $documentMock->expects($this->once())
             ->method('getProject')
             ->willReturn($projectMock);

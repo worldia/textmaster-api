@@ -30,6 +30,7 @@ class Document extends AbstractObject implements DocumentInterface
         'word_count_rule' => self::WORD_COUNT_RULE_PERCENTAGE,
         'word_count' => 0,
         'custom_data' => array(),
+        'type' => self::TYPE_STANDARD,
     );
 
     /**
@@ -171,7 +172,13 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function getTranslatedContent()
     {
-        return $this->getProperty('translated_content');
+        $authorWork = $this->getProperty('author_work');
+
+        if (self::TYPE_STANDARD === $this->getType()) {
+            $authorWork = $authorWork['free_text'];
+        }
+
+        return $authorWork;
     }
 
     /**

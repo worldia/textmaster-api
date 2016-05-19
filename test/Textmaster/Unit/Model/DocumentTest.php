@@ -91,7 +91,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateEmpty()
     {
         $title = 'Document 1';
-        $originalContent = array(array('original_phrase' => 'Text to translate.'));
+        $originalContent = array('key' => array('original_phrase' => 'Text to translate.'));
         $instructions = 'Translating instructions.';
         $customData = array('Custom data can be any type');
 
@@ -134,6 +134,66 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame('Text to translate.', $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetTranslatedContentForStandard()
+    {
+        $projectId = '654321';
+        $values = array(
+            'id' => '123456',
+            'title' => 'Document 1',
+            'type' => DocumentInterface::TYPE_STANDARD,
+            'status' => DocumentInterface::STATUS_IN_CREATION,
+            'original_content' => 'Text to translate.',
+            'instructions' => 'Translating instructions.',
+            'project_id' => $projectId,
+            'author_work' => array('free_text' => 'Translated text.'),
+        );
+
+        $document = new Document($this->clientMock, $values);
+
+        $this->assertSame('123456', $document->getId());
+        $this->assertSame('Document 1', $document->getTitle());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame('Text to translate.', $document->getOriginalContent());
+        $this->assertSame('Translating instructions.', $document->getInstructions());
+        $this->assertSame('Translated text.', $document->getTranslatedContent());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetTranslatedContentForKeyValue()
+    {
+        $projectId = '654321';
+        $values = array(
+            'id' => '123456',
+            'title' => 'Document 1',
+            'type' => DocumentInterface::TYPE_KEY_VALUE,
+            'status' => DocumentInterface::STATUS_IN_CREATION,
+            'original_content' => array(
+                'key1' => array('original_phrase' => 'Text to translate.'),
+                'key2' => array('original_phrase' => 'Text to translate.'),
+            ),
+            'instructions' => 'Translating instructions.',
+            'project_id' => $projectId,
+            'author_work' => array(
+                'key1' => 'Translated text.',
+                'key2' => 'Translated text.',
+            ),
+        );
+
+        $document = new Document($this->clientMock, $values);
+
+        $this->assertSame('123456', $document->getId());
+        $this->assertSame('Document 1', $document->getTitle());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame($values['original_content'], $document->getOriginalContent());
+        $this->assertSame('Translating instructions.', $document->getInstructions());
+        $this->assertSame($values['author_work'], $document->getTranslatedContent());
     }
 
     /**
