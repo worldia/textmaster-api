@@ -29,6 +29,8 @@ interface DocumentInterface
     const SATISFACTION_POSITIVE = 'positive';
     const SATISFACTION_NEGATIVE = 'negative';
 
+    const TYPE_KEY_VALUE = 'key_value';
+
     const WORD_COUNT_RULE_PERCENTAGE = 0;
     const WORD_COUNT_RULE_MIN = 1;
     const WORD_COUNT_RULE_MAX = 2;
@@ -110,6 +112,13 @@ interface DocumentInterface
      * @return DocumentInterface
      */
     public function setOriginalContent($content);
+
+    /**
+     * Get type.
+     *
+     * @return string
+     */
+    public function getType();
 
     /**
      * @return string|array

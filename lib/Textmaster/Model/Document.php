@@ -26,8 +26,8 @@ class Document extends AbstractObject implements DocumentInterface
      * @var array
      */
     protected $data = array(
-        'status' => DocumentInterface::STATUS_IN_CREATION,
-        'word_count_rule' => DocumentInterface::WORD_COUNT_RULE_PERCENTAGE,
+        'status' => self::STATUS_IN_CREATION,
+        'word_count_rule' => self::WORD_COUNT_RULE_PERCENTAGE,
         'word_count' => 0,
         'custom_data' => array(),
     );
@@ -146,6 +146,7 @@ class Document extends AbstractObject implements DocumentInterface
     {
         if (is_array($content)) {
             $this->checkArrayContent($content);
+            $this->setProperty('type', self::TYPE_KEY_VALUE);
         } elseif (!is_string($content)) {
             throw new InvalidArgumentException('Original content must be of type "string" or "array".');
         }
@@ -155,6 +156,14 @@ class Document extends AbstractObject implements DocumentInterface
         $this->countWords();
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->getProperty('type');
     }
 
     /**

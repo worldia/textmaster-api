@@ -91,7 +91,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateEmpty()
     {
         $title = 'Document 1';
-        $originalContent = 'Text to translate.';
+        $originalContent = array(array('original_phrase' => 'Text to translate.'));
         $instructions = 'Translating instructions.';
         $customData = array('Custom data can be any type');
 
@@ -109,6 +109,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($originalContent, $document->getOriginalContent());
         $this->assertSame($instructions, $document->getInstructions());
         $this->assertSame($customData, $document->getCustomData());
+        $this->assertSame(DocumentInterface::TYPE_KEY_VALUE, $document->getType());
     }
 
     /**
