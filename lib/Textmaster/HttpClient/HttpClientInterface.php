@@ -33,58 +33,58 @@ interface HttpClientInterface
      * Send a POST request.
      *
      * @param string $path    Request path
-     * @param mixed  $body    Request body
+     * @param array  $body    Request body
      * @param array  $headers Reconfigure the request headers for this call only
      *
      * @return Response
      */
-    public function post($path, $body = null, array $headers = []);
+    public function post($path, array $body = [], array $headers = []);
 
     /**
      * Send a PATCH request.
      *
      * @param string $path    Request path
-     * @param mixed  $body    Request body
+     * @param array  $body    Request body
      * @param array  $headers Reconfigure the request headers for this call only
      *
      * @internal param array $parameters Request body
      *
      * @return Response
      */
-    public function patch($path, $body = null, array $headers = []);
+    public function patch($path, array $body = [], array $headers = []);
 
     /**
      * Send a PUT request.
      *
      * @param string $path    Request path
-     * @param mixed  $body    Request body
+     * @param array  $body    Request body
      * @param array  $headers Reconfigure the request headers for this call only
      *
      * @return Response
      */
-    public function put($path, $body, array $headers = []);
+    public function put($path, array $body = [], array $headers = []);
 
     /**
      * Send a DELETE request.
      *
      * @param string $path    Request path
-     * @param mixed  $body    Request body
+     * @param array  $body    Request body
      * @param array  $headers Reconfigure the request headers for this call only
      *
      * @return Response
      */
-    public function delete($path, $body = null, array $headers = []);
+    public function delete($path, array $body = [], array $headers = []);
 
     /**
      * Send a request to the server, receive a response,
      * decode the response and returns an associative array.
      *
      * @param string $path       Request path
-     * @param mixed  $body       Request body
+     * @param array  $body       Request body
      * @param string $httpMethod HTTP method to use
      * @param array  $headers    Request headers
      *
      * @return Response
      */
-    public function request($path, $body, $httpMethod = 'GET', array $headers = []);
+    public function request($path, array $body = [], $httpMethod = 'GET', array $headers = []);
 }

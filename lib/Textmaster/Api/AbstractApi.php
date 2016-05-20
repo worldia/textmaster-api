@@ -145,16 +145,16 @@ abstract class AbstractApi implements ApiInterface
      * Send a POST request with JSON-encoded parameters.
      *
      * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
+     * @param array  $body           POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function post($path, array $parameters = [], $requestHeaders = [])
+    protected function post($path, array $body = [], $requestHeaders = [])
     {
         return $this->postRaw(
             $path,
-            $parameters,
+            $body,
             $requestHeaders
         );
     }
@@ -163,12 +163,12 @@ abstract class AbstractApi implements ApiInterface
      * Send a POST request with raw data.
      *
      * @param string $path           Request path.
-     * @param string $body           Request body.
+     * @param array  $body           Request body.
      * @param array  $requestHeaders Request headers.
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function postRaw($path, $body, $requestHeaders = [])
+    protected function postRaw($path, array $body, $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->post(
             $path,
@@ -183,16 +183,16 @@ abstract class AbstractApi implements ApiInterface
      * Send a PATCH request with JSON-encoded parameters.
      *
      * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
+     * @param array  $body           POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function patch($path, array $parameters = [], $requestHeaders = [])
+    protected function patch($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->patch(
             $path,
-            $parameters,
+            $body,
             $requestHeaders
         );
 
@@ -203,16 +203,16 @@ abstract class AbstractApi implements ApiInterface
      * Send a PUT request with JSON-encoded parameters.
      *
      * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
+     * @param array  $body           POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function put($path, array $parameters = [], $requestHeaders = [])
+    protected function put($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->put(
             $path,
-            $parameters,
+            $body,
             $requestHeaders
         );
 
@@ -223,16 +223,16 @@ abstract class AbstractApi implements ApiInterface
      * Send a DELETE request with JSON-encoded parameters.
      *
      * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
+     * @param array  $body           POST parameters to be JSON encoded.
      * @param array  $requestHeaders Request headers.
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function delete($path, array $parameters = [], $requestHeaders = [])
+    protected function delete($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->delete(
             $path,
-            $parameters,
+            $body,
             $requestHeaders
         );
 

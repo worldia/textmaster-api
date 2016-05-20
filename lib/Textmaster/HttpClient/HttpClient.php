@@ -92,7 +92,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function post($path, $body = null, array $headers = [])
+    public function post($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'POST', $headers);
     }
@@ -100,7 +100,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function patch($path, $body = null, array $headers = [])
+    public function patch($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'PATCH', $headers);
     }
@@ -108,7 +108,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($path, $body = null, array $headers = [])
+    public function delete($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'DELETE', $headers);
     }
@@ -116,7 +116,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function put($path, $body, array $headers = [])
+    public function put($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'PUT', $headers);
     }
@@ -124,7 +124,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function request($path, $body = null, $httpMethod = 'GET', array $headers = [], array $parameters = [])
+    public function request($path, array $body = [], $httpMethod = 'GET', array $headers = [], array $parameters = [])
     {
         $options = [];
         if (null !== $body) {
