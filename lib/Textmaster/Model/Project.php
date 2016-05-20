@@ -184,11 +184,11 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function setCallback(array $callback)
     {
-        if (!array_key_exists(ProjectInterface::STATUS_IN_PROGRESS, $callback)) {
+        if (!array_key_exists(self::CALLBACK_KEY, $callback) || 1 < count($callback)) {
             throw new InvalidArgumentException(sprintf(
                 'Only key for array callback allowed is "%s"',
-                ProjectInterface::STATUS_IN_PROGRESS
-             ));
+                self::CALLBACK_KEY
+            ));
         }
 
         $this->data['callback'] = $callback;
