@@ -36,7 +36,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoPOSTRequest()
     {
         $path = '/some/path';
-        $body = 'a = b';
+        $body = array('a' => 'b');
         $headers = array('c' => 'd');
 
         $httpClient = new HttpClient('key', 'secret', array());
@@ -64,7 +64,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoPATCHRequest()
     {
         $path = '/some/path';
-        $body = 'a = b';
+        $body = array('a' => 'b');
         $headers = array('c' => 'd');
 
         $httpClient = new HttpClient('key', 'secret', array());
@@ -79,7 +79,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoDELETERequest()
     {
         $path = '/some/path';
-        $body = 'a = b';
+        $body = array('a' => 'b');
         $headers = array('c' => 'd');
 
         $httpClient = new HttpClient('key', 'secret', array());

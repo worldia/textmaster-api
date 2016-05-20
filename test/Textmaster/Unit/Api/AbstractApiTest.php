@@ -128,7 +128,7 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
         $httpClient
             ->expects($this->once())
             ->method('request')
-            ->with('/path', null, 'HEAD', array(), array('query' => array('param1' => 'param1value')))
+            ->with('/path', array(), 'HEAD', array(), array('query' => array('param1' => 'param1value')))
             ->will($this->returnValue($expectedArray));
         $client = $this->getClientMock($httpClient);
 

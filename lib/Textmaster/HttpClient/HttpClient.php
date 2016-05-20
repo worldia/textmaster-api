@@ -127,7 +127,7 @@ class HttpClient implements HttpClientInterface
     public function request($path, array $body = [], $httpMethod = 'GET', array $headers = [], array $parameters = [])
     {
         $options = [];
-        if (null !== $body) {
+        if (!empty($body)) {
             $options[RequestOptions::JSON] = $body;
             $options['curl']['body_as_string'] = true;
         }
