@@ -118,4 +118,67 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($translatableMock, $subject);
         $this->assertSame('my translation', $translationMock->getName());
     }
+
+    /**
+     * @test
+     */
+    public function shouldCompare()
+    {
+        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+
+        $objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
+        $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
+        $enTranslationMock = new MockTranslation();
+        $enTranslationMock->setName('Name to translate');
+        $frTranslationMock = new MockTranslation();
+
+        $documentMock->expects($this->once())
+            ->method('getCustomData')
+            ->willReturn(array('class' => 'My\Class', 'id' => 1));
+        $documentMock->expects($this->once())
+            ->method('getOriginalContent')
+            ->willReturn(array('name' => array('original_phrase' => 'Name to translate')));
+        $documentMock->expects($this->once())
+            ->method('getTranslatedContent')
+            ->willReturn(array('name' => 'Le nom à traduire'));
+        $documentMock->expects($this->exactly(2))
+            ->method('getProject')
+            ->willReturn($projectMock);
+
+        $projectMock->expects($this->once())
+            ->method('getLanguageFrom')
+            ->willReturn('en');
+        $projectMock->expects($this->once())
+            ->method('getLanguageTo')
+            ->willReturn('fr');
+
+        $managerRegistryMock->expects($this->once())
+            ->method('getManagerForClass')
+            ->will($this->returnValue($objectManagerMock));
+
+        $objectManagerMock->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($objectRepositoryMock));
+
+        $objectRepositoryMock->expects($this->once())
+            ->method('find')
+            ->willReturn($translatableMock);
+
+        $map = array(
+            array('fr', $frTranslationMock),
+            array('en', $enTranslationMock),
+        );
+        $translatableMock->expects($this->exactly(2))
+            ->method('translate')
+            ->will($this->returnValueMap($map));
+
+        $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
+        $comparison = $adapter->compare($documentMock);
+
+        $this->assertSame(array('name' => ''), $comparison['original']);
+        $this->assertContains('Le nom à traduire', $comparison['translated']['name']);
+    }
 }
