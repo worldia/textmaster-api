@@ -86,7 +86,7 @@ class HttpClient implements HttpClientInterface
      */
     public function get($path, array $parameters = [], array $headers = [])
     {
-        return $this->request($path, null, 'GET', $headers, $parameters);
+        return $this->request($path, [], 'GET', $headers, $parameters);
     }
 
     /**
