@@ -41,7 +41,6 @@ class HttpClient implements HttpClientInterface
         'base_uri' => 'http://api.textmaster.com/%s/clients',
         'api_version' => 'v1',
         'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
-        'timeout' => 10,
     ];
 
     /**
@@ -64,11 +63,13 @@ class HttpClient implements HttpClientInterface
     public function __construct($key, $secret, array $options = [])
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
+        $options = array_merge($this->options, $options);
 
         $stack = new HandlerStack();
         $stack->setHandler(new CurlHandler());
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $date, $secret) {
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $date, $secret, $options) {
             return $request
+                ->withHeader('User-Agent', $options['user_agent'])
                 ->withHeader('Apikey', $key)
                 ->withHeader('Date', $date->format('Y-m-d H:i:s'))
                 ->withHeader('Signature', sha1($secret.$date->format('Y-m-d H:i:s')))
