@@ -29,8 +29,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $httpClient = new HttpClient(array('base_url' => 'http://api.sandbox.textmaster.com/%s'));
-        $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
+        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM', ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
         $this->client = new Client($httpClient);
     }
 
@@ -74,9 +73,9 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldShowFilteredProjects()
     {
-        $where = array(
+        $where = [
             'name' => 'worldia_test',
-        );
+        ];
 
         $manager = new Manager($this->client);
         $pager = $manager->getProjects($where);

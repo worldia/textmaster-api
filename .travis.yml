@@ -8,13 +8,6 @@ php:
   - 7.0
   - hhvm
 
-matrix:
-  include:
-    - php: 5.3
-      env: PHPUNIT_FLAGS='--exclude-group sylius'
-    - php: 5.4
-      env: PHPUNIT_FLAGS='--exclude-group sylius'
-
 cache:
   directories:
     - $HOME/.composer/cache
@@ -25,4 +18,4 @@ before_script:
 
 script:
   - composer validate
-  - vendor/bin/phpunit $PHPUNIT_FLAGS
+  - vendor/bin/phpunit

@@ -34,24 +34,22 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $httpClient = new HttpClient(array('base_url' => 'http://api.sandbox.textmaster.com/%s'));
-        $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
+        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM', ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
         $client = new Client($httpClient);
         $this->api = $client->project();
     }
 
     public static function tearDownAfterClass()
     {
-        $httpClient = new HttpClient(array('base_url' => 'http://api.sandbox.textmaster.com/%s'));
-        $httpClient->authenticate('GFHunwb2DHw', 'gqvE7aZS_JM');
+        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM', ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
         $client = new Client($httpClient);
         $api = $client->project();
 
-        $where = array(
+        $where = [
             'name' => 'Project for functional test',
-            'status' => array('$in' => array(ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION)),
+            'status' => ['$in' => [ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION]],
             'archived' => false,
-        );
+        ];
 
         $result = $api->filter($where);
         if (is_array($result)) {
@@ -82,9 +80,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldShowProjectsFiltered()
     {
-        $where = array(
+        $where = [
             'name' => 'worldia_test',
-        );
+        ];
         $result = $this->api->filter($where);
 
         $this->assertSame(1, $result['count']);
@@ -95,17 +93,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateProject()
     {
-        $params = array(
+        $params = [
             'name' => 'Created project for functional test',
             'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
-            'options' => array(
+            'options' => [
                 'language_level' => 'premium',
-            ),
+            ],
             'language_from' => 'en',
             'language_to' => 'fr',
             'category' => 'C021',
             'project_briefing' => 'This project is only for testing purpose',
-        );
+        ];
 
         $result = $this->api->create($params);
 
@@ -128,9 +126,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldUpdateProject($projectId)
     {
-        $params = array(
+        $params = [
             'name' => 'Project for functional test',
-        );
+        ];
 
         $result = $this->api->update($projectId, $params);
 
@@ -172,12 +170,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddDocument($projectId)
     {
-        $params = array(
+        $params = [
             'title' => 'Document for functional test',
             'original_content' => 'Text to translate.',
             'word_count' => 3,
             'project_id' => $projectId,
-        );
+        ];
         $result = $this->api->documents($projectId)->create($params);
 
         $this->assertSame('Document for functional test', $result['title']);
@@ -292,26 +290,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldQuoteProject()
     {
-        $params = array(
+        $params = [
             'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
-            'options' => array(
+            'options' => [
                 'language_level' => 'premium',
-            ),
+            ],
             'language_from' => 'fr-fr',
             'language_to' => 'en-us',
             'total_word_count' => 4001,
-        );
+        ];
 
-        $totalCosts = array(
-            0 => array(
+        $totalCosts = [
+            0 => [
                 'currency' => 'EUR',
                 'amount' => 240.06,
-            ),
-            1 => array(
+            ],
+            1 => [
                 'currency' => 'credits',
                 'amount' => 240060,
-            ),
-        );
+            ],
+        ];
 
         $result = $this->api->quote($params);
 

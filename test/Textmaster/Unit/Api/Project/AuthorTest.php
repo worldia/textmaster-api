@@ -80,20 +80,15 @@ class AuthorTest extends TestCase
     {
         return 'Textmaster\Api\Project\Author';
     }
+
     /**
      * {@inheritdoc}
      */
     protected function getApiMock()
     {
-        $httpClient = $this->getMock('Guzzle\Http\Client', array('send'));
-        $httpClient
-            ->expects($this->any())
-            ->method('send');
+        $httpClientMock = $this->getMock('Textmaster\HttpClient\HttpClientInterface');
 
-        $mock = $this->getMock('Textmaster\HttpClient\HttpClient', array(), array(array(), $httpClient));
-
-        $client = new \Textmaster\Client($mock);
-        $client->setHttpClient($mock);
+        $client = new \Textmaster\Client($httpClientMock);
 
         return $this->getMockBuilder($this->getApiClass())
             ->setMethods(array('get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'))

@@ -20,16 +20,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldNotHaveToPassHttpClientToConstructor()
-    {
-        $client = new Client();
-
-        $this->assertInstanceOf('Textmaster\HttpClient\HttpClient', $client->getHttpClient());
-    }
-
-    /**
-     * @test
-     */
     public function shouldPassHttpClientInterfaceToConstructor()
     {
         $client = new Client($this->getHttpClientMock());
@@ -39,51 +29,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function shouldAuthenticateUsingAllGivenParameters()
-    {
-        $httpClient = $this->getHttpClientMock();
-        $httpClient->expects($this->once())
-            ->method('authenticate')
-            ->with('key', 'secret');
-
-        $client = new Client($httpClient);
-        $client->authenticate('key', 'secret');
-    }
-
-    /**
-     * @test
-     */
-    public function shouldClearHeadersLazy()
-    {
-        $httpClient = $this->getHttpClientMock(array('clearHeaders'));
-        $httpClient->expects($this->once())->method('clearHeaders');
-
-        $client = new Client($httpClient);
-        $client->clearHeaders();
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSetHeadersLaizly()
-    {
-        $headers = array('header1', 'header2');
-
-        $httpClient = $this->getHttpClientMock();
-        $httpClient->expects($this->once())->method('setHeaders')->with($headers);
-
-        $client = new Client($httpClient);
-        $client->setHeaders($headers);
-    }
-
-    /**
-     * @test
      * @dataProvider getApiClassesProvider
      */
     public function shouldGetApiInstance($apiName, $class)
     {
-        $client = new Client();
+        $client = new Client($this->getHttpClientMock());
 
         $this->assertInstanceOf($class, $client->api($apiName));
     }
@@ -94,7 +44,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetMagicApiInstance($apiName, $class)
     {
-        $client = new Client();
+        $client = new Client($this->getHttpClientMock());
 
         $this->assertInstanceOf($class, $client->$apiName());
     }
@@ -105,7 +55,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotGetApiInstance()
     {
-        $client = new Client();
+        $client = new Client($this->getHttpClientMock());
         $client->api('do_not_exist');
     }
 
@@ -115,39 +65,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotGetMagicApiInstance()
     {
-        $client = new Client();
+        $client = new Client($this->getHttpClientMock());
         $client->doNotExist();
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSetOption()
-    {
-        $client = new Client();
-        $client->setOption('api_version', 'v1');
-
-        $this->assertSame($client->getOption('api_version'), 'v1');
-    }
-
-    /**
-     * @test
-     * @expectedException Textmaster\Exception\InvalidArgumentException
-     */
-    public function shouldThrowExceptionWhenSettingInvalidOption()
-    {
-        $client = new Client();
-        $client->setOption('unexisting', 'value');
-    }
-
-    /**
-     * @test
-     * @expectedException Textmaster\Exception\InvalidArgumentException
-     */
-    public function shouldThrowExceptionWhenGettingInvalidOption()
-    {
-        $client = new Client();
-        $client->getOption('unexisting');
     }
 
     public function getApiClassesProvider()

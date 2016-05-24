@@ -48,18 +48,6 @@ use Textmaster\HttpClient\HttpClientInterface;
 class Client
 {
     /**
-     * @var array
-     */
-    private $options = array(
-        'base_url' => 'http://api.textmaster.com/%s/clients',
-        'api_version' => 'v1',
-        'sandbox' => false,
-        'user_agent' => 'php-textmaster-api (http://github.com/cdaguerre/php-textmaster-api)',
-        'timeout' => 10,
-        'cache_dir' => null,
-    );
-
-    /**
      * @var HttpClientInterface
      */
     private $httpClient;
@@ -72,10 +60,10 @@ class Client
     /**
      * Instantiate a new Textmaster client.
      *
-     * @param null|HttpClientInterface      $httpClient Textmaster http client
+     * @param HttpClientInterface           $httpClient Textmaster http client
      * @param null|EventDispatcherInterface $dispatcher Event dispatcher
      */
-    public function __construct(HttpClientInterface $httpClient = null, EventDispatcherInterface $dispatcher = null)
+    public function __construct(HttpClientInterface $httpClient, EventDispatcherInterface $dispatcher = null)
     {
         $this->httpClient = $httpClient;
         $this->dispatcher = $dispatcher;
@@ -91,9 +79,9 @@ class Client
     public function api($name)
     {
         $name = Inflector::singularize($name);
-        $apis = array(
+        $apis = [
             'author', 'billing', 'bundle', 'category', 'expertise', 'language', 'locale', 'project', 'template', 'user',
-        );
+        ];
 
         if (!in_array($name, $apis, true)) {
             throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
@@ -105,34 +93,11 @@ class Client
     }
 
     /**
-     * Authenticate a user for all next requests.
-     *
-     * @param string $key    Textmaster api key
-     * @param string $secret Textmaster secret
-     */
-    public function authenticate($key, $secret)
-    {
-        $this->getHttpClient()->authenticate($key, $secret);
-    }
-
-    /**
      * @return HttpClient
      */
     public function getHttpClient()
     {
-        if (null === $this->httpClient) {
-            $this->httpClient = new HttpClient($this->options);
-        }
-
         return $this->httpClient;
-    }
-
-    /**
-     * @param HttpClientInterface $httpClient
-     */
-    public function setHttpClient(HttpClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
     }
 
     /**
@@ -156,51 +121,8 @@ class Client
     }
 
     /**
-     * Clears used headers.
-     */
-    public function clearHeaders()
-    {
-        $this->getHttpClient()->clearHeaders();
-    }
-
-    /**
-     * @param array $headers
-     */
-    public function setHeaders(array $headers)
-    {
-        $this->getHttpClient()->setHeaders($headers);
-    }
-
-    /**
      * @param string $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return mixed
-     */
-    public function getOption($name)
-    {
-        $this->validateOptionExistence($name);
-
-        return $this->options[$name];
-    }
-
-    /**
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidArgumentException
-     */
-    public function setOption($name, $value)
-    {
-        $this->validateOptionExistence($name);
-
-        $this->options[$name] = $value;
-    }
-
-    /**
-     * @param string $name
+     * @param string $args
      *
      * @throws BadMethodCallException
      *
@@ -212,16 +134,6 @@ class Client
             return $this->api($name);
         } catch (InvalidArgumentException $e) {
             throw new BadMethodCallException(sprintf('Undefined method called: "%s"', $name));
-        }
-    }
-
-    /**
-     * @param string $name
-     */
-    private function validateOptionExistence($name)
-    {
-        if (!array_key_exists($name, $this->options)) {
-            throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
         }
     }
 }
