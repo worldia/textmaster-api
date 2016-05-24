@@ -175,8 +175,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'type' => DocumentInterface::TYPE_KEY_VALUE,
             'status' => DocumentInterface::STATUS_IN_CREATION,
             'original_content' => array(
-                'key1' => array('original_phrase' => 'Text to translate.'),
-                'key2' => array('original_phrase' => 'Text to translate.'),
+                'key1' => array('original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'),
+                'key2' => array('original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'),
             ),
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,

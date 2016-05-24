@@ -173,12 +173,11 @@ class Document extends AbstractObject implements DocumentInterface
     public function getTranslatedContent()
     {
         $authorWork = $this->getProperty('author_work');
-
         if (self::TYPE_STANDARD === $this->getType() && !empty($authorWork)) {
-            $authorWork = $authorWork['free_text'];
+            return $authorWork['free_text'];
         }
 
-        return $authorWork;
+        return $this->formatTranslatedContent();
     }
 
     /**
@@ -321,6 +320,21 @@ class Document extends AbstractObject implements DocumentInterface
     protected function getEventNamePrefix()
     {
         return 'textmaster.document';
+    }
+
+    /**
+     * Format translated content to an array 'property' => 'value'.
+     *
+     * @return array
+     */
+    protected function formatTranslatedContent()
+    {
+        $data = array();
+        foreach ($this->getOriginalContent() as $property => $value) {
+            $data[$property] = $value['completed_phrase'];
+        }
+
+        return $data;
     }
 
     /**

@@ -35,7 +35,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function create($subject, array $properties, DocumentInterface $document)
     {
-        $this->failIfDoesntSupport($subject);
+        $this->failIfDoesNotSupport($subject);
 
         $language = $document->getProject()->getLanguageFrom();
         $content = $this->getProperties($subject, $properties, $language);
@@ -48,10 +48,38 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
+    public function compare(DocumentInterface $document)
+    {
+        $subject = $this->getSubjectFromDocument($document);
+        $this->failIfDoesNotSupport($subject);
+
+        $original = $this->compareContent(
+            $subject,
+            $document->getOriginalContent(),
+            $document->getProject()->getLanguageFrom(),
+            true
+        );
+
+        $translated = $this->compareContent(
+            $subject,
+            $document->getTranslatedContent(),
+            $document->getProject()->getLanguageTo(),
+            false
+        );
+
+        return array(
+            'original' => $original,
+            'translated' => $translated,
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
         $subject = $this->getSubjectFromDocument($document);
-        $this->failIfDoesntSupport($subject);
+        $this->failIfDoesNotSupport($subject);
 
         /** @var array $properties */
         $properties = $document->getTranslatedContent();
@@ -62,6 +90,37 @@ abstract class AbstractAdapter implements AdapterInterface
         $document->complete($satisfaction, $message);
 
         return $subject;
+    }
+
+    /**
+     * Compare given content with the subject's one in the given language.
+     *
+     * @param mixed  $subject
+     * @param array  $content
+     * @param string $language
+     * @param bool   $original
+     *
+     * @return array
+     */
+    protected function compareContent($subject, array $content, $language, $original = true)
+    {
+        $properties = array_keys($content);
+        $values = $this->getProperties($subject, $properties, $language, false);
+
+        $diffs = array();
+        $renderer = new \Diff_Renderer_Html_SideBySide();
+        foreach ($values as $property => $value) {
+            $a = array($value);
+            $b = array($content[$property]);
+            if ($original) {
+                $b = array($content[$property]['original_phrase']);
+            }
+
+            $diff = new \Diff($a, $b);
+            $diffs[$property] = $diff->render($renderer);
+        }
+
+        return $diffs;
     }
 
     /**
@@ -87,31 +146,37 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param object $subject
      * @param array  $properties Array of 'properties'
      * @param string $language
+     * @param bool   $original   if true return array of 'property' => array('original_phrase' => 'value')
+     *                           else return array of 'property' => 'value'
      *
-     * @return array of 'property' => array('original_phrase' => 'value')
+     * @return array
      */
-    protected function getProperties($subject, array $properties, $language)
+    protected function getProperties($subject, array $properties, $language, $original = true)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $holder = $this->getPropertyHolder($subject, $language);
 
         $data = array();
-
         foreach ($properties as $property) {
-            $data[$property] = array('original_phrase' => $accessor->getValue($holder, $property));
+            $value = $accessor->getValue($holder, $property);
+            if ($original) {
+                $value = array('original_phrase' => $value);
+            }
+
+            $data[$property] = $value;
         }
 
         return $data;
     }
 
     /**
-     * Throw exception if the adapter doesn't support the subject.
+     * Throw exception if the adapter does not support the subject.
      *
      * @param mixed $subject
      *
      * @throws UnexpectedTypeException
      */
-    protected function failIfDoesntSupport($subject)
+    protected function failIfDoesNotSupport($subject)
     {
         if (!$this->supports($subject)) {
             throw new UnexpectedTypeException($subject, $this->interface);
