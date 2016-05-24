@@ -76,6 +76,22 @@ class Translator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
+    public function compare(DocumentInterface $document)
+    {
+        foreach ($this->adapters as $adapter) {
+            try {
+                return $adapter->compare($document);
+            } catch (UnexpectedTypeException $e) {
+                continue;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('No adapter found for document "%s".', $document->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
         foreach ($this->adapters as $adapter) {

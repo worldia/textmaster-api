@@ -130,6 +130,31 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function shouldCompareNoDiff()
+    {
+        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapters = array($adapterMock);
+
+        $expected = array(
+            'original' => array('property1' => 'Original content'),
+            'translated' => array('property1' => 'Translated content'),
+        );
+        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+
+        $adapterMock->expects($this->once())
+            ->method('compare')
+            ->willReturn($expected);
+
+        $translator = new Translator($adapters, $mappingProviderMock);
+        $comparison = $translator->compare($documentMock);
+
+        $this->assertSame($expected, $comparison);
+    }
+
+    /**
+     * @test
      * @expectedException \Textmaster\Exception\InvalidArgumentException
      */
     public function shouldNotCreate()

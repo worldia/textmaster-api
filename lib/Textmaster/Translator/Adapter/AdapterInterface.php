@@ -34,6 +34,15 @@ interface AdapterInterface
     public function create($subject, array $properties, DocumentInterface $document);
 
     /**
+     * Make a comparison between textmaster document and its subject.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return array
+     */
+    public function compare(DocumentInterface $document);
+
+    /**
      * Complete a translation.
      *
      * @param DocumentInterface $document
