@@ -94,7 +94,7 @@ abstract class AbstractObject
     final protected function update()
     {
         $this->data = $this->getApi()->update($this->getId(), $this->data);
-        $this->dispatchEvent($this->data);
+        $this->dispatchEvent($this->getStatus(), $this->data);
 
         return $this;
     }
@@ -107,7 +107,7 @@ abstract class AbstractObject
     final protected function create()
     {
         $this->data = $this->getApi()->create($this->data);
-        $this->dispatchEvent($this->data);
+        $this->dispatchEvent($this->getStatus(), $this->data);
 
         return $this;
     }
@@ -167,14 +167,14 @@ abstract class AbstractObject
     /**
      * Dispatch an event.
      *
-     * @param array $data Optional data to dispatch with the event.
+     * @param string $status
+     * @param array  $data   Optional data to dispatch with the event.
      */
-    protected function dispatchEvent(array $data = array())
+    protected function dispatchEvent($status, array $data = array())
     {
-        $name = $this->getEventNamePrefix().'.'.$this->getStatus();
+        $name = $this->getEventNamePrefix().'.'.$status;
 
         $event = new GenericEvent($this, $data);
-
         $this->client->getEventDispatcher()->dispatch($name, $event);
     }
 
