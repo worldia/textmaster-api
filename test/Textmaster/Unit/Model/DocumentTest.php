@@ -62,7 +62,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(array('projects'))->disableOriginalConstructor()->getMock();
         $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents', 'show'), array($clientMock));
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update', 'complete'), array($clientMock, $projectId), '', false);
+        $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update', 'complete', 'supportMessages'), array($clientMock, $projectId), '', false);
+        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', array('create'), array($clientMock), '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
@@ -81,6 +82,12 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $documentApiMock->method('complete')
             ->willReturn($completeValues);
+
+        $documentApiMock->method('supportMessages')
+            ->willReturn($supportMessageApiMock);
+
+        $supportMessageApiMock->method('create')
+            ->willReturn(null);
 
         $this->clientMock = $clientMock;
     }
@@ -322,6 +329,24 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->complete(DocumentInterface::SATISFACTION_POSITIVE, 'Good job!');
 
         $this->assertSame(DocumentInterface::STATUS_COMPLETED, $document->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReject()
+    {
+        $projectId = '654321';
+        $valuesToCreate = array(
+            'id' => '123456',
+            'project_id' => $projectId,
+        );
+
+        $document = new Document($this->clientMock, $valuesToCreate);
+        $document->save();
+        $document->reject('Bad job!');
+
+        $this->assertSame('123456', $document->getId());
     }
 
     /**

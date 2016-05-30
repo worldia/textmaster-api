@@ -267,6 +267,17 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
+    public function reject($message)
+    {
+        $this->getApi()->supportMessages()->create($this->getProject()->getId(), $this->getId(), $message);
+        $this->dispatchEvent(DocumentInterface::STATUS_INCOMPLETE, $this->data);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getAllowedStatus()
     {
         return array(

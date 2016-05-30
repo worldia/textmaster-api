@@ -181,6 +181,15 @@ interface DocumentInterface
     public function complete($satisfaction = null, $message = null);
 
     /**
+     * Ask for a revision on the document.
+     *
+     * @param string $message
+     *
+     * @return DocumentInterface
+     */
+    public function reject($message);
+
+    /**
      * Get allowed status.
      *
      * @return array
