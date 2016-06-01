@@ -38,7 +38,7 @@ class HttpClient implements HttpClientInterface
      * @var array
      */
     protected $options = [
-        'base_uri' => 'http://api.textmaster.com/%s/clients',
+        'base_uri' => 'http://api.textmaster.com/%s',
         'api_version' => 'v1',
         'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
     ];
