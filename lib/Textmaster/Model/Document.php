@@ -241,6 +241,42 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
+    public function getCreatedAt()
+    {
+        $data = $this->getProperty('created_at');
+
+        return $this->parseFullDate($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt()
+    {
+        $data = $this->getProperty('updated_at');
+
+        return $this->parseFullDate($data);
+    }
+
+    /**
+     * Parse Textmaster date
+     *
+     * @param array $data
+     *
+     * @return \DateTime|null
+     */
+    private function parseFullDate($data)
+    {
+        if (null !== $data && isset($data['full'])) {
+            return new \DateTime($data['full']);
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     final public function complete($satisfaction = null, $message = null)
     {
         if (self::STATUS_IN_REVIEW !== $this->getStatus()) {
