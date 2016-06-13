@@ -171,6 +171,20 @@ interface DocumentInterface
     public function setCustomData($customData, $key = null);
 
     /**
+     * Get create date
+     * 
+     * @return \DateTime|null
+     */
+    public function getCreatedAt();
+
+    /**
+     * Get update date
+     * 
+     * @return \DateTime|null
+     */
+    public function getUpdatedAt();
+
+    /**
      * Complete the document.
      *
      * @param string $satisfaction

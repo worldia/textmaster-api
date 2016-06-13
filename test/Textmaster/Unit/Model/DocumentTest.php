@@ -132,6 +132,18 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
+            'created_at' => [
+                'day'   => 9,
+                'month' => 6,
+                'year'  => 2016,
+                'full'  => '2016-06-09 10:37:40 UTC',
+            ],
+            'updated_at' => [
+                'day'   => 10,
+                'month' => 6,
+                'year'  => 2016,
+                'full'  => '2016-06-10 15:37:40 UTC',
+            ],
         );
 
         $document = new Document($this->clientMock, $values);
@@ -141,6 +153,14 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame('Text to translate.', $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
+
+        $expectedDate = new \DateTime('2016-06-09 10:37:40 UTC');
+        $this->assertEquals($expectedDate, $document->getCreatedAt());
+        $this->assertEquals('20160609 10:37:40', $document->getCreatedAt()->format('Ymd H:i:s'));
+
+        $expectedDate = new \DateTime('2016-06-10 15:37:40 UTC');
+        $this->assertEquals($expectedDate, $document->getUpdatedAt());
+        $this->assertEquals('20160610 15:37:40', $document->getUpdatedAt()->format('Ymd H:i:s'));
     }
 
     /**
