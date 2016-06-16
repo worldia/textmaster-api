@@ -12,7 +12,7 @@
 namespace Textmaster\Api;
 
 use Textmaster\Exception\InvalidArgumentException;
-use Textmaster\Model\ProjectInterface;
+use Textmaster\Model\Project as ProjectModel;
 
 /**
  * Locales listing, reference pricings and localized countries.
@@ -77,7 +77,7 @@ class Locale extends AbstractApi
      */
     public function abilities($ability, $page, $locale = null)
     {
-        $abilities = ProjectInterface::getAllowedActivities();
+        $abilities = ProjectModel::getAllowedActivities();
         
         if (!in_array($ability, $abilities)) {
             throw new InvalidArgumentException('Invalid ability');
