@@ -77,11 +77,7 @@ class Locale extends AbstractApi
      */
     public function abilities($ability, $page, $locale = null)
     {
-        $abilities = [
-            ProjectInterface::ACTIVITY_TRANSLATION,
-            ProjectInterface::ACTIVITY_COPYWRITING,
-            ProjectInterface::ACTIVITY_PROOFREADING,
-        ];
+        $abilities = ProjectInterface::getAllowedActivities();
         
         if (!in_array($ability, $abilities)) {
             throw new InvalidArgumentException('Invalid ability');
