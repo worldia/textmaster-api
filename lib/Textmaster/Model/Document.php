@@ -259,7 +259,7 @@ class Document extends AbstractObject implements DocumentInterface
     }
 
     /**
-     * Parse Textmaster date
+     * Parse Textmaster date.
      *
      * @param array $data
      *
@@ -271,7 +271,7 @@ class Document extends AbstractObject implements DocumentInterface
             return new \DateTime($data['full']);
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -389,12 +389,12 @@ class Document extends AbstractObject implements DocumentInterface
      *
      * @param array $content
      */
-    private function checkArrayContent(array $content)
+    private function checkArrayContent(array &$content)
     {
-        foreach ($content as $value) {
-            if (!is_array($value) || !array_key_exists('original_phrase', $value)) {
+        foreach ($content as &$value) {
+            if (!is_array($value) || !isset($value['original_phrase'])) {
                 throw new InvalidArgumentException(
-                    'Original content of type "array" must only contains array with key "original_phrase".'
+                    'Original content of type "array" must only contain array with key "original_phrase".'
                 );
             }
         }

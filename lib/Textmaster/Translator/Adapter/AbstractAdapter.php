@@ -12,8 +12,9 @@
 namespace Textmaster\Translator\Adapter;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Textmaster\Model\DocumentInterface;
+use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\UnexpectedTypeException;
+use Textmaster\Model\DocumentInterface;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -42,7 +43,9 @@ abstract class AbstractAdapter implements AdapterInterface
 
         $this->setSubjectOnDocument($subject, $document);
 
-        return $document->setOriginalContent($content)->save();
+        $document->setOriginalContent($content);
+
+        return $document;
     }
 
     /**
@@ -159,11 +162,25 @@ abstract class AbstractAdapter implements AdapterInterface
         $data = array();
         foreach ($properties as $property) {
             $value = $accessor->getValue($holder, $property);
+
+            if (empty($value)) {
+                // Textmaster rejects empty strings
+                continue;
+            }
+
             if ($original) {
                 $value = array('original_phrase' => $value);
             }
 
             $data[$property] = $value;
+        }
+
+        if (!count($data)) {
+            throw new InvalidArgumentException(sprintf(
+                'Object of type "%s" has no translatable properties to translate (ie. non-empty). Checked for: "%s"',
+                get_class($subject),
+                implode(', ', $properties)
+            ));
         }
 
         return $data;

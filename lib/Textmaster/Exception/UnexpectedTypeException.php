@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sylius package.
+ * This file is part of the Textmaster Api v1 client package.
  *
- * (c) Paweł Jędrzejewski
+ * (c) Christian Daguerre <christian@daguer.re>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace Textmaster\Exception;

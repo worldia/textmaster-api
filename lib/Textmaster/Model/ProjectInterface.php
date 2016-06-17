@@ -213,6 +213,18 @@ interface ProjectInterface
     public function createDocument();
 
     /**
+     * Add documents.
+     *
+     * @param array|DocumentInterface[] $documents
+     *
+     * @return ProjectInterface
+     *
+     * @throws UnexpectedTypeException  If one of array values is not a DocumentInterface
+     * @throws InvalidArgumentException If a given document relates to a different project.
+     */
+    public function addDocuments(array $documents);
+
+    /**
      * Launch the project asynchronously.
      *
      * @return ProjectInterface

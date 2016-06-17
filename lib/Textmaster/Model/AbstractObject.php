@@ -67,6 +67,16 @@ abstract class AbstractObject
     }
 
     /**
+     * Get data.
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
      * Save the object through API.
      *
      * @return AbstractObject

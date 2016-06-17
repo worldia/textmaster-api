@@ -79,9 +79,9 @@ class Client
     public function api($name)
     {
         $name = Inflector::singularize($name);
-        $apis = [
+        $apis = array(
             'author', 'billing', 'bundle', 'category', 'expertise', 'language', 'locale', 'project', 'template', 'user',
-        ];
+        );
 
         if (!in_array($name, $apis, true)) {
             throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));

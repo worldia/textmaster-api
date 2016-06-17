@@ -11,11 +11,11 @@
 
 namespace Textmaster\Translator;
 
+use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Translator\Factory\DocumentFactoryInterface;
 use Textmaster\Translator\Provider\MappingProviderInterface;
-use Textmaster\Exception\InvalidArgumentException;
-use Textmaster\Exception\UnexpectedTypeException;
 
 class Translator implements TranslatorInterface
 {
@@ -54,7 +54,7 @@ class Translator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function create($subject, $documentOrParams = null)
+    public function create($subject, $documentOrParams = null, $save = true)
     {
         $document = $documentOrParams;
 
@@ -66,7 +66,13 @@ class Translator implements TranslatorInterface
 
         foreach ($this->adapters as $adapter) {
             if ($adapter->supports($subject)) {
-                return $adapter->create($subject, $properties, $document);
+                $document = $adapter->create($subject, $properties, $document);
+
+                if ($save) {
+                    $document->save();
+                }
+
+                return $document;
             }
         }
 
