@@ -27,16 +27,40 @@ class ResponseMediator
      */
     public static function getContent(Response $response)
     {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 300) {
+            self::createException($response);
+        }
+
         $body = $response->getBody();
-        if ($response->hasHeader('Content-Type') && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0) {
+
+        if ($response->hasHeader('Content-Type')
+            && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0
+        ) {
             $content = json_decode($body->getContents(), true);
             if (array_key_exists('errors', $content)) {
-                throw new \LogicException(serialize($content['errors']), $response->getStatusCode());
+                self::createException($response);
             }
 
             return $content;
         }
 
         return $body;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @throws ErrorException
+     */
+    protected static function createException(Response $response)
+    {
+        $content = json_decode($response->getBody()->getContents(), true);
+        if (array_key_exists('errors', $content)) {
+            $message = json_encode($content['errors'], JSON_UNESCAPED_UNICODE);
+        } else {
+            $message = $response->getReasonPhrase();
+        }
+        throw new ErrorException($message, $response->getStatusCode());
     }
 }

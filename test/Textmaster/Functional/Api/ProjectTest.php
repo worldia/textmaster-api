@@ -13,6 +13,7 @@ namespace Textmaster\Functional\Api;
 
 use Textmaster\Api\Project;
 use Textmaster\Client;
+use Textmaster\Exception\ErrorException;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
@@ -118,6 +119,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('api', $result['creation_channel']);
 
         return $result['id'];
+    }
+    
+    /**
+     * @test
+     */
+    public function shouldNotCreateInvalidProject()
+    {
+        $params = [
+            'name' => 'Created project for functional test',
+            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
+            'options' => [
+                'language_level' => 'foobar',
+            ],
+            'language_from' => 'en',
+            'language_to' => 'fr',
+            'category' => 'C021'
+        ];
+
+        $this->setExpectedExceptionRegExp(ErrorException::class, '/"level_name":\["doit être rempli\(e\)"\]/');
+        $this->api->create($params);
     }
 
     /**
