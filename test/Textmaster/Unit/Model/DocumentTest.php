@@ -157,11 +157,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Translating instructions.', $document->getInstructions());
 
         $expectedDate = new \DateTime('2016-06-09 10:37:40 UTC');
-        // $this->assertSame($expectedDate, $document->getCreatedAt());
         $this->assertSame('20160609 10:37:40', $document->getCreatedAt()->format('Ymd H:i:s'));
 
         $expectedDate = new \DateTime('2016-06-10 15:37:40 UTC');
-        // $this->assertSame($expectedDate, $document->getUpdatedAt());
         $this->assertSame('20160610 15:37:40', $document->getUpdatedAt()->format('Ymd H:i:s'));
     }
 
