@@ -145,13 +145,32 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public function setOriginalContent($content)
     {
-        if (is_array($content)) {
-            $this->checkArrayContent($content);
-            $this->setProperty('type', self::TYPE_KEY_VALUE);
-        } elseif (!is_string($content)) {
-            throw new InvalidArgumentException('Original content must be of type "string" or "array".');
+        if (!is_array($content)) {
+            $content = array('content' => $content);
         }
 
+        foreach ($content as $property => $value) {
+            if (empty($value)) {
+                unset($content[$property]);
+                continue;
+            }
+
+            if (is_string($value)) {
+                $value = array('original_phrase' => $value);
+            }
+
+            if (!is_array($value) || !array_key_exists('original_phrase', $value)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Invalid argument for original content: %s / %s',
+                    $property,
+                    serialize($value)
+                ));
+            }
+
+            $content[$property] = $value;
+        }
+
+        $this->setProperty('type', self::TYPE_KEY_VALUE);
         $this->setProperty('original_content', $content);
 
         $this->countWords();
@@ -385,48 +404,15 @@ class Document extends AbstractObject implements DocumentInterface
     }
 
     /**
-     * Check the given array respect Textmaster standard for array content.
-     *
-     * @param array $content
-     */
-    private function checkArrayContent(array &$content)
-    {
-        foreach ($content as &$value) {
-            if (!is_array($value) || !isset($value['original_phrase'])) {
-                throw new InvalidArgumentException(
-                    'Original content of type "array" must only contain array with key "original_phrase".'
-                );
-            }
-        }
-    }
-
-    /**
      * Count words in original content.
      */
     private function countWords()
     {
-        if (is_string($this->data['original_content'])) {
-            $this->data['word_count'] = $this->count($this->data['original_content']);
-
-            return;
-        }
+        $this->data['word_count'] = 0;
 
         foreach ($this->data['original_content'] as $value) {
-            $this->data['word_count'] += $this->count($value['original_phrase']);
+            $words = preg_split('/\s+/', $value['original_phrase']);
+            $this->data['word_count'] += count($words);
         }
-    }
-
-    /**
-     * Count words (including numbers) in the given string.
-     *
-     * @param string $input
-     *
-     * @return int
-     */
-    private function count($input)
-    {
-        $res = preg_split('/\s+/', $input);
-
-        return count($res);
     }
 }

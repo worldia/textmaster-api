@@ -15,7 +15,7 @@ use Pagerfanta\Pagerfanta;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\ObjectImmutableException;
 
-interface ProjectInterface
+interface ProjectInterface extends AbstractObjectInterface
 {
     const ACTIVITY_TRANSLATION = 'translation';
     const ACTIVITY_COPYWRITING = 'copywriting';
@@ -31,11 +31,11 @@ interface ProjectInterface
     const CALLBACK_KEY = 'project_in_progress';
 
     /**
-     * Get id.
+     * Save the project.
      *
-     * @return string
+     * @return ProjectInterface
      */
-    public function getId();
+    public function save();
 
     /**
      * Get name.

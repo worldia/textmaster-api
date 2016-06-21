@@ -12,7 +12,6 @@
 namespace Textmaster\Translator\Adapter;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
 
@@ -149,38 +148,17 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param object $subject
      * @param array  $properties Array of 'properties'
      * @param string $language
-     * @param bool   $original   if true return array of 'property' => array('original_phrase' => 'value')
-     *                           else return array of 'property' => 'value'
      *
      * @return array
      */
-    protected function getProperties($subject, array $properties, $language, $original = true)
+    protected function getProperties($subject, array $properties, $language)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $holder = $this->getPropertyHolder($subject, $language);
 
         $data = array();
         foreach ($properties as $property) {
-            $value = $accessor->getValue($holder, $property);
-
-            if (empty($value)) {
-                // Textmaster rejects empty strings
-                continue;
-            }
-
-            if ($original) {
-                $value = array('original_phrase' => $value);
-            }
-
-            $data[$property] = $value;
-        }
-
-        if (!count($data)) {
-            throw new InvalidArgumentException(sprintf(
-                'Object of type "%s" has no translatable properties to translate (ie. non-empty). Checked for: "%s"',
-                get_class($subject),
-                implode(', ', $properties)
-            ));
+            $data[$property] = $accessor->getValue($holder, $property);
         }
 
         return $data;

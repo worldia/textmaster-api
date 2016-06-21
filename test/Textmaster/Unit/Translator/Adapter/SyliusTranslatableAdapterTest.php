@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Unit\Translator\Adapter;
 
-use Textmaster\Unit\Mock\MockTranslation;
 use Textmaster\Translator\Adapter\SyliusTranslatableAdapter;
+use Textmaster\Unit\Mock\MockTranslation;
 
 /**
  * @group sylius
@@ -42,15 +51,13 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', array('getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation'));
         $translationMock = new MockTranslation();
+        $translationMock->setName('Translated name');
         $documentMock = $this->getMock('Textmaster\Model\Document', array('getProject', 'save'), array(), '', false);
         $projectMock = $this->getMock('Textmaster\Model\Project', array('getLanguageFrom'), array(), '', false);
 
         $documentMock->expects($this->once())
             ->method('getProject')
             ->willReturn($projectMock);
-        $documentMock->expects($this->once())
-            ->method('save')
-            ->willReturn($documentMock);
 
         $projectMock->expects($this->once())
             ->method('getLanguageFrom')
@@ -130,6 +137,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
         $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
         $enTranslationMock = new MockTranslation();
         $enTranslationMock->setName('Name to translate');
@@ -168,8 +176,8 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn($translatableMock);
 
         $map = array(
-            array('fr', $frTranslationMock),
             array('en', $enTranslationMock),
+            array('fr', $frTranslationMock),
         );
         $translatableMock->expects($this->exactly(2))
             ->method('translate')
