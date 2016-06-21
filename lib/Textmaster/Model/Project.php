@@ -292,10 +292,10 @@ class Project extends AbstractObject implements ProjectInterface
       *
       * @return \Textmaster\Api\Project
       */
-     protected function getApi()
-     {
-         return $this->client->projects();
-     }
+    protected function getApi()
+    {
+        return $this->client->projects();
+    }
 
     /**
      * {@inheritdoc}
