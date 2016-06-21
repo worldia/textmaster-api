@@ -201,7 +201,7 @@ interface ProjectInterface extends AbstractObjectInterface
      *
      * @return Pagerfanta
      */
-    public function getDocuments(array $where = array(), array $order = array());
+    public function getDocuments(array $where = [], array $order = []);
 
     /**
      * Create a document.

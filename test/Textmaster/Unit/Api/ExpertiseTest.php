@@ -18,13 +18,13 @@ class ExpertiseTest extends TestCase
      */
     public function shouldShowAllExpertises()
     {
-        $expectedArray = array(
-            array(
+        $expectedArray = [
+            [
                 'id' => '551290294d61630e52120000',
                 'name' => 'Finance',
                 'client_pricing' => 10,
-            ),
-        );
+            ],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -40,13 +40,13 @@ class ExpertiseTest extends TestCase
      */
     public function shouldShowAllExpertisesLocalized()
     {
-        $expectedArray = array(
-            array(
+        $expectedArray = [
+            [
                 'id' => '551290294d61630e52120000',
                 'name' => 'Finance',
                 'client_pricing' => 10,
-            ),
-        );
+            ],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

@@ -37,11 +37,11 @@ class HttpClient implements HttpClientInterface
     /**
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'base_uri' => 'http://api.textmaster.com/%s',
         'api_version' => 'v1',
         'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
-    );
+    ];
 
     /**
      * @var ResponseInterface
@@ -60,7 +60,7 @@ class HttpClient implements HttpClientInterface
      * @param string $secret
      * @param array  $options
      */
-    public function __construct($key, $secret, array $options = array())
+    public function __construct($key, $secret, array $options = [])
     {
         $options = array_merge($this->options, $options);
 
@@ -77,7 +77,7 @@ class HttpClient implements HttpClientInterface
             ;
         }));
 
-        $this->options = array_merge($this->options, $options, array('handler' => $stack));
+        $this->options = array_merge($this->options, $options, ['handler' => $stack]);
         $this->options['base_uri'] = sprintf($this->options['base_uri'], $this->options['api_version']);
 
         $this->client = new Client($this->options);
@@ -86,15 +86,15 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function get($path, array $parameters = array(), array $headers = array())
+    public function get($path, array $parameters = [], array $headers = [])
     {
-        return $this->request($path, array(), 'GET', $headers, $parameters);
+        return $this->request($path, [], 'GET', $headers, $parameters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function post($path, array $body = array(), array $headers = array())
+    public function post($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'POST', $headers);
     }
@@ -102,7 +102,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function patch($path, array $body = array(), array $headers = array())
+    public function patch($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'PATCH', $headers);
     }
@@ -110,7 +110,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($path, array $body = array(), array $headers = array())
+    public function delete($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'DELETE', $headers);
     }
@@ -118,7 +118,7 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function put($path, array $body = array(), array $headers = array())
+    public function put($path, array $body = [], array $headers = [])
     {
         return $this->request($path, $body, 'PUT', $headers);
     }
@@ -126,9 +126,9 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritdoc}
      */
-    public function request($path, array $body = array(), $httpMethod = 'GET', array $headers = array(), array $parameters = array())
+    public function request($path, array $body = [], $httpMethod = 'GET', array $headers = [], array $parameters = [])
     {
-        $options = array();
+        $options = [];
         if (!empty($body)) {
             $options[RequestOptions::JSON] = $body;
             $options['curl']['body_as_string'] = true;
@@ -179,7 +179,7 @@ class HttpClient implements HttpClientInterface
      *
      * @return RequestInterface
      */
-    protected function createRequest($httpMethod, $path, array $headers = array())
+    protected function createRequest($httpMethod, $path, array $headers = [])
     {
         return new Request($httpMethod, $this->getFinalPath($path), $headers);
     }

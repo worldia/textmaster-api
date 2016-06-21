@@ -69,10 +69,10 @@ abstract class AbstractAdapter implements AdapterInterface
             false
         );
 
-        return array(
+        return [
             'original' => $original,
             'translated' => $translated,
-        );
+        ];
     }
 
     /**
@@ -109,13 +109,13 @@ abstract class AbstractAdapter implements AdapterInterface
         $properties = array_keys($content);
         $values = $this->getProperties($subject, $properties, $language, false);
 
-        $diffs = array();
+        $diffs = [];
         $renderer = new \Diff_Renderer_Html_SideBySide();
         foreach ($values as $property => $value) {
-            $a = array($value);
-            $b = array($content[$property]);
+            $a = [$value];
+            $b = [$content[$property]];
             if ($original) {
-                $b = array($content[$property]['original_phrase']);
+                $b = [$content[$property]['original_phrase']];
             }
 
             $diff = new \Diff($a, $b);
@@ -156,7 +156,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $accessor = PropertyAccess::createPropertyAccessor();
         $holder = $this->getPropertyHolder($subject, $language);
 
-        $data = array();
+        $data = [];
         foreach ($properties as $property) {
             $data[$property] = $accessor->getValue($holder, $property);
         }

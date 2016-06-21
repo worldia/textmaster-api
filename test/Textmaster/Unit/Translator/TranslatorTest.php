@@ -23,14 +23,14 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
         $subjectMock = $this->getMock('Subject');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
         $mappingProviderMock->expects($this->once())
             ->method('getProperties')
-            ->willReturn(array());
+            ->willReturn([]);
 
         $adapterMock->expects($this->once())
             ->method('supports')
@@ -52,7 +52,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $documentFactoryMock = $this->getMock('Textmaster\Translator\Factory\DocumentFactoryInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
         $subjectMock = $this->getMock('Subject');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
@@ -63,7 +63,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 
         $mappingProviderMock->expects($this->once())
             ->method('getProperties')
-            ->willReturn(array());
+            ->willReturn([]);
 
         $adapterMock->expects($this->once())
             ->method('supports')
@@ -84,7 +84,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
@@ -104,7 +104,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock1, $adapterMock2);
+        $adapters = [$adapterMock1, $adapterMock2];
 
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
@@ -128,7 +128,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock1, $adapterMock2);
+        $adapters = [$adapterMock1, $adapterMock2];
 
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $subjectMock = $this->getMock('Subject');
@@ -152,12 +152,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
-        $expected = array(
-            'original' => array('property1' => 'Original content'),
-            'translated' => array('property1' => 'Translated content'),
-        );
+        $expected = [
+            'original' => ['property1' => 'Original content'],
+            'translated' => ['property1' => 'Translated content'],
+        ];
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
         $adapterMock->expects($this->once())
@@ -178,14 +178,14 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
         $subjectMock = $this->getMock('Subject');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
         $mappingProviderMock->expects($this->once())
             ->method('getProperties')
-            ->willReturn(array());
+            ->willReturn([]);
 
         $adapterMock->expects($this->once())
             ->method('supports')
@@ -202,7 +202,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     public function shouldNotComplete()
     {
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array();
+        $adapters = [];
 
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 
@@ -218,7 +218,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock);
+        $adapters = [$adapterMock];
 
         $subjectMock = $this->getMock('Subject');
 
@@ -235,7 +235,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
         $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $adapters = array($adapterMock1, $adapterMock2);
+        $adapters = [$adapterMock1, $adapterMock2];
 
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
 

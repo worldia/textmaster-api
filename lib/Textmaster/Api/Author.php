@@ -33,7 +33,7 @@ class Author extends AbstractApi
     public function find(array $params)
     {
         foreach ($params as $name => $value) {
-            if (!in_array($name, array(
+            if (!in_array($name, [
                 'name',
                 'ctype',
                 'options',
@@ -41,7 +41,7 @@ class Author extends AbstractApi
                 'language_to',
                 'project_briefing',
                 'category',
-            ), true)) {
+            ], true)) {
                 throw new InvalidArgumentException(sprintf('"%s" is not a valid author search parameter.', $name));
             }
         }

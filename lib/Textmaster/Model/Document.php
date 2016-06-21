@@ -25,24 +25,24 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * @var array
      */
-    protected $data = array(
+    protected $data = [
         'status' => self::STATUS_IN_CREATION,
         'word_count_rule' => self::WORD_COUNT_RULE_PERCENTAGE,
         'word_count' => 0,
-        'custom_data' => array(),
+        'custom_data' => [],
         'type' => self::TYPE_STANDARD,
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $immutableProperties = array(
+    protected $immutableProperties = [
         'title',
         'instructions',
         'original_content',
         'callback',
         'custom_data',
-    );
+    ];
 
     /**
      * Constructor.
@@ -51,7 +51,7 @@ class Document extends AbstractObject implements DocumentInterface
      * @param array  $data   all values to populate document | id and project id to load from API |
      *                       nothing to create an empty document
      */
-    public function __construct(Client $client, array $data = array())
+    public function __construct(Client $client, array $data = [])
     {
         $this->client = $client;
 
@@ -146,7 +146,7 @@ class Document extends AbstractObject implements DocumentInterface
     public function setOriginalContent($content)
     {
         if (!is_array($content)) {
-            $content = array('content' => $content);
+            $content = ['content' => $content];
         }
 
         foreach ($content as $property => $value) {
@@ -156,7 +156,7 @@ class Document extends AbstractObject implements DocumentInterface
             }
 
             if (is_string($value)) {
-                $value = array('original_phrase' => $value);
+                $value = ['original_phrase' => $value];
             }
 
             if (!is_array($value) || !array_key_exists('original_phrase', $value)) {
@@ -251,7 +251,7 @@ class Document extends AbstractObject implements DocumentInterface
     public function setCustomData($customData, $key = null)
     {
         if (null !== $key) {
-            $customData = array_merge($this->getCustomData() ?: array(), array($key => $customData));
+            $customData = array_merge($this->getCustomData() ?: [], [$key => $customData]);
         }
 
         return $this->setProperty('custom_data', $customData);
@@ -335,7 +335,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public static function getAllowedStatus()
     {
-        return array(
+        return [
             self::STATUS_IN_CREATION,
             self::STATUS_IN_PROGRESS,
             self::STATUS_WAITING_ASSIGNMENT,
@@ -347,7 +347,7 @@ class Document extends AbstractObject implements DocumentInterface
             self::STATUS_COPYSCAPE,
             self::STATUS_COUNTING_WORDS,
             self::STATUS_QUALITY,
-        );
+        ];
     }
 
     /**
@@ -355,11 +355,11 @@ class Document extends AbstractObject implements DocumentInterface
      */
     public static function getAllowedSatisfaction()
     {
-        return array(
+        return [
             self::SATISFACTION_NEGATIVE,
             self::SATISFACTION_NEUTRAL,
             self::SATISFACTION_POSITIVE,
-        );
+        ];
     }
 
     /**
@@ -395,7 +395,7 @@ class Document extends AbstractObject implements DocumentInterface
      */
     protected function formatTranslatedContent()
     {
-        $data = array();
+        $data = [];
         foreach ($this->getOriginalContent() as $property => $value) {
             $data[$property] = $value['completed_phrase'];
         }

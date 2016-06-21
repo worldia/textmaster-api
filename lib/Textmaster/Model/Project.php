@@ -23,14 +23,14 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * @var array
      */
-    protected $data = array(
+    protected $data = [
         'status' => ProjectInterface::STATUS_IN_CREATION,
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $immutableProperties = array(
+    protected $immutableProperties = [
         'name',
         'ctype',
         'category',
@@ -39,7 +39,7 @@ class Project extends AbstractObject implements ProjectInterface
         'project_briefing',
         'options',
         'callback',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -142,11 +142,11 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public static function getAllowedActivities()
     {
-        return array(
+        return [
             ProjectInterface::ACTIVITY_COPYWRITING,
             ProjectInterface::ACTIVITY_PROOFREADING,
             ProjectInterface::ACTIVITY_TRANSLATION,
-        );
+        ];
     }
 
     /**
@@ -207,7 +207,7 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(array $where = array(), array $order = array())
+    public function getDocuments(array $where = [], array $order = [])
     {
         return new Pagerfanta(new PagerfantaAdapter($this->getApi()->documents($this->getId()), $where, $order));
     }
@@ -221,7 +221,7 @@ class Project extends AbstractObject implements ProjectInterface
             throw new BadMethodCallException('The project must be saved before adding documents.');
         }
 
-        $document = new Document($this->client, array('project_id' => $this->getId()));
+        $document = new Document($this->client, ['project_id' => $this->getId()]);
         $document->setProject($this);
 
         return $document;
@@ -232,7 +232,7 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function addDocuments(array $documents)
     {
-        $data = array();
+        $data = [];
 
         foreach ($documents as $key => $document) {
             if (!$document instanceof DocumentInterface) {

@@ -25,10 +25,10 @@ class Manager
     /**
      * @var array
      */
-    protected $classes = array(
+    protected $classes = [
         'document' => 'Textmaster\Model\Document',
         'project' => 'Textmaster\Model\Project',
-    );
+    ];
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ class Manager
      * @param Client $client
      * @param array  $classes
      */
-    public function __construct(Client $client, array $classes = array())
+    public function __construct(Client $client, array $classes = [])
     {
         $this->client = $client;
         $this->classes = array_merge($this->classes, $classes);
@@ -62,7 +62,7 @@ class Manager
      *
      * @return Pagerfanta
      */
-    public function getProjects(array $where = array(), array $order = array())
+    public function getProjects(array $where = [], array $order = [])
     {
         /** @var FilterableApiInterface $api */
         $api = $this->client->api('projects');
@@ -82,7 +82,7 @@ class Manager
     {
         return new $this->classes['document'](
             $this->client,
-            array('project_id' => $projectId, 'id' => $id)
+            ['project_id' => $projectId, 'id' => $id]
         );
     }
 }

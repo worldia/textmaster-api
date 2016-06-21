@@ -20,22 +20,22 @@ class SubExpertiseTest extends TestCase
      */
     public function shouldShowAllSubExpertises()
     {
-        $expectedArray = array(
-            array(
+        $expectedArray = [
+            [
                 'id' => '561d1b770ed4c03ab4000ea7',
                 'name' => 'General',
                 'code' => 'general',
                 'client_pricing' => 10,
                 'client_pricing_in_locale' => 0,
-            ),
-            array(
+            ],
+            [
                 'id' => '561d1b770ed4c03ab4000eaa',
                 'name' => 'Banking',
                 'code' => 'banking',
                 'client_pricing' => 20,
                 'client_pricing_in_locale' => 0,
-            ),
-        );
+            ],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -51,13 +51,13 @@ class SubExpertiseTest extends TestCase
      */
     public function shouldShowSubExpertise()
     {
-        $expectedArray = array(
+        $expectedArray = [
             'id' => '561d1b770ed4c03ab4000e9e',
             'name' => 'General',
             'code' => 'general',
             'client_pricing' => 10,
             'client_pricing_in_locale' => 0,
-        );
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

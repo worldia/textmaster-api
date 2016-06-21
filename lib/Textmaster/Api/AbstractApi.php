@@ -106,9 +106,9 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function get($path, array $parameters = array(), $requestHeaders = array())
+    protected function get($path, array $parameters = [], $requestHeaders = [])
     {
-        $defaultParams = array('page' => 'page', 'per_page' => 'perPage');
+        $defaultParams = ['page' => 'page', 'per_page' => 'perPage'];
 
         foreach ($defaultParams as $snake => $camel) {
             if (isset($this->$camel) && !isset($parameters[$snake])) {
@@ -132,11 +132,11 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return Response
      */
-    protected function head($path, array $parameters = array(), $requestHeaders = array())
+    protected function head($path, array $parameters = [], $requestHeaders = [])
     {
-        $response = $this->client->getHttpClient()->request($path, array(), 'HEAD', $requestHeaders, array(
+        $response = $this->client->getHttpClient()->request($path, [], 'HEAD', $requestHeaders, [
             'query' => $parameters,
-        ));
+        ]);
 
         return $response;
     }
@@ -150,7 +150,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function post($path, array $body = array(), $requestHeaders = array())
+    protected function post($path, array $body = [], $requestHeaders = [])
     {
         return $this->postRaw(
             $path,
@@ -168,7 +168,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function postRaw($path, array $body, $requestHeaders = array())
+    protected function postRaw($path, array $body, $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->post(
             $path,
@@ -188,7 +188,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function patch($path, array $body = array(), $requestHeaders = array())
+    protected function patch($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->patch(
             $path,
@@ -208,7 +208,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function put($path, array $body = array(), $requestHeaders = array())
+    protected function put($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->put(
             $path,
@@ -228,7 +228,7 @@ abstract class AbstractApi implements ApiInterface
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      */
-    protected function delete($path, array $body = array(), $requestHeaders = array())
+    protected function delete($path, array $body = [], $requestHeaders = [])
     {
         $response = $this->client->getHttpClient()->delete(
             $path,

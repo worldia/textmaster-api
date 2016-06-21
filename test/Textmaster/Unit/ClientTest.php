@@ -71,33 +71,33 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function getApiClassesProvider()
     {
-        return array(
-            array('author', 'Textmaster\Api\Author'),
-            array('authors', 'Textmaster\Api\Author'),
-            array('billing', 'Textmaster\Api\Billing'),
-            array('bundle', 'Textmaster\Api\Bundle'),
-            array('bundles', 'Textmaster\Api\Bundle'),
-            array('category', 'Textmaster\Api\Category'),
-            array('categories', 'Textmaster\Api\Category'),
-            array('expertise', 'Textmaster\Api\Expertise'),
-            array('expertises', 'Textmaster\Api\Expertise'),
-            array('language', 'Textmaster\Api\Language'),
-            array('languages', 'Textmaster\Api\Language'),
-            array('locale', 'Textmaster\Api\Locale'),
-            array('locales', 'Textmaster\Api\Locale'),
-            array('project', 'Textmaster\Api\Project'),
-            array('projects', 'Textmaster\Api\Project'),
-            array('template', 'Textmaster\Api\Template'),
-            array('templates', 'Textmaster\Api\Template'),
-            array('user', 'Textmaster\Api\User'),
-            array('users', 'Textmaster\Api\User'),
-        );
+        return [
+            ['author', 'Textmaster\Api\Author'],
+            ['authors', 'Textmaster\Api\Author'],
+            ['billing', 'Textmaster\Api\Billing'],
+            ['bundle', 'Textmaster\Api\Bundle'],
+            ['bundles', 'Textmaster\Api\Bundle'],
+            ['category', 'Textmaster\Api\Category'],
+            ['categories', 'Textmaster\Api\Category'],
+            ['expertise', 'Textmaster\Api\Expertise'],
+            ['expertises', 'Textmaster\Api\Expertise'],
+            ['language', 'Textmaster\Api\Language'],
+            ['languages', 'Textmaster\Api\Language'],
+            ['locale', 'Textmaster\Api\Locale'],
+            ['locales', 'Textmaster\Api\Locale'],
+            ['project', 'Textmaster\Api\Project'],
+            ['projects', 'Textmaster\Api\Project'],
+            ['template', 'Textmaster\Api\Template'],
+            ['templates', 'Textmaster\Api\Template'],
+            ['user', 'Textmaster\Api\User'],
+            ['users', 'Textmaster\Api\User'],
+        ];
     }
 
-    public function getHttpClientMock(array $methods = array())
+    public function getHttpClientMock(array $methods = [])
     {
         $methods = array_merge(
-            array('get', 'post', 'patch', 'put', 'delete', 'request', 'setOption', 'setHeaders', 'authenticate'),
+            ['get', 'post', 'patch', 'put', 'delete', 'request', 'setOption', 'setHeaders', 'authenticate'],
             $methods
         );
 
