@@ -11,12 +11,26 @@
 
 namespace Textmaster\Model;
 
-interface AuthorInterface extends AbstractObjectInterface
+interface AbstractObjectInterface
 {
+    /**
+     * Get id.
+     *
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * Get raw data.
+     *
+     * @return array
+     */
+    public function getData();
+
     /**
      * Save the object.
      *
-     * @return AuthorInterface
+     * @return AbstractObjectInterface
      */
     public function save();
 }

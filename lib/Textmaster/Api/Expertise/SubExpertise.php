@@ -32,7 +32,7 @@ class SubExpertise extends AbstractApi
      */
     public function all($expertiseId, $locale = null)
     {
-        $params = array();
+        $params = [];
 
         if (null !== $locale) {
             $params['locale'] = $locale;
@@ -54,7 +54,7 @@ class SubExpertise extends AbstractApi
      */
     public function show($expertiseId, $subExpertiseId, $locale = null)
     {
-        $params = array();
+        $params = [];
 
         if (null !== $locale) {
             $params['locale'] = $locale;

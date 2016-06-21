@@ -62,12 +62,13 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct($key, $secret, array $options = [])
     {
-        $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $options = array_merge($this->options, $options);
 
         $stack = new HandlerStack();
         $stack->setHandler(new CurlHandler());
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $date, $secret, $options) {
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $secret, $options) {
+            $date = new \DateTime('now', new \DateTimeZone('UTC'));
+
             return $request
                 ->withHeader('User-Agent', $options['user_agent'])
                 ->withHeader('Apikey', $key)
@@ -137,6 +138,7 @@ class HttpClient implements HttpClientInterface
         }
 
         $request = $this->createRequest($httpMethod, $path, $headers);
+
         try {
             /** @var Response $response */
             $response = $this->client->send($request, $options);

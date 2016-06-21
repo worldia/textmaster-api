@@ -45,9 +45,9 @@ class Project extends AbstractApi implements ObjectApiInterface, FilterableApiIn
      *
      * @return array
      */
-    public function filter(array $where = array(), array $order = array())
+    public function filter(array $where = [], array $order = [])
     {
-        $params = array();
+        $params = [];
 
         empty($where) ?: $params['where'] = json_encode($where);
         empty($order) ?: $params['order'] = json_encode($order);
@@ -80,7 +80,7 @@ class Project extends AbstractApi implements ObjectApiInterface, FilterableApiIn
      */
     public function create(array $params)
     {
-        return $this->post($this->getPath(), array('project' => $params));
+        return $this->post($this->getPath(), ['project' => $params]);
     }
 
     /**
@@ -193,7 +193,7 @@ class Project extends AbstractApi implements ObjectApiInterface, FilterableApiIn
      */
     public function quote(array $params)
     {
-        return $this->get($this->getPath().'/quotation', array('project' => $params));
+        return $this->get($this->getPath().'/quotation', ['project' => $params]);
     }
 
     /**

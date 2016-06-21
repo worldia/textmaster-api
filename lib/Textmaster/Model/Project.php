@@ -12,6 +12,8 @@
 namespace Textmaster\Model;
 
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Textmaster\Events;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Pagination\PagerfantaAdapter;
@@ -21,14 +23,14 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * @var array
      */
-    protected $data = array(
+    protected $data = [
         'status' => ProjectInterface::STATUS_IN_CREATION,
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $immutableProperties = array(
+    protected $immutableProperties = [
         'name',
         'ctype',
         'category',
@@ -37,7 +39,7 @@ class Project extends AbstractObject implements ProjectInterface
         'project_briefing',
         'options',
         'callback',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -140,11 +142,11 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public static function getAllowedActivities()
     {
-        return array(
+        return [
             ProjectInterface::ACTIVITY_COPYWRITING,
             ProjectInterface::ACTIVITY_PROOFREADING,
             ProjectInterface::ACTIVITY_TRANSLATION,
-        );
+        ];
     }
 
     /**
@@ -205,7 +207,7 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(array $where = array(), array $order = array())
+    public function getDocuments(array $where = [], array $order = [])
     {
         return new Pagerfanta(new PagerfantaAdapter($this->getApi()->documents($this->getId()), $where, $order));
     }
@@ -219,7 +221,46 @@ class Project extends AbstractObject implements ProjectInterface
             throw new BadMethodCallException('The project must be saved before adding documents.');
         }
 
-        return new Document($this->client, array('project_id' => $this->getId()));
+        $document = new Document($this->client, ['project_id' => $this->getId()]);
+        $document->setProject($this);
+
+        return $document;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDocuments(array $documents)
+    {
+        $data = [];
+
+        foreach ($documents as $key => $document) {
+            if (!$document instanceof DocumentInterface) {
+                throw new UnexpectedTypeException($document, DocumentInterface::class);
+            }
+
+            $documentData = $document->getData();
+
+            if ($documentData['project_id'] !== $this->getId()) {
+                throw new InvalidArgumentException(sprintf(
+                    'Document "%s" relates to a different project.',
+                    serialize($documentData)
+                ));
+            }
+
+            $data[$key] = $documentData;
+        }
+
+        $documents = $this->getApi()->documents($this->getId())->batchCreate($data);
+
+        foreach ($documents as $key => $document) {
+            $document = new Document($this->client, $document);
+            $document->setProject($this);
+            $event = new GenericEvent($document, $document->getData());
+            $this->client->getEventDispatcher()->dispatch(Events::DOCUMENT_IN_CREATION, $event);
+        }
+
+        return $this;
     }
 
     /**
@@ -246,15 +287,15 @@ class Project extends AbstractObject implements ProjectInterface
         return $this->data['status'] !== self::STATUS_IN_CREATION;
     }
 
-     /**
-      * Get the Project Api object.
-      *
-      * @return \Textmaster\Api\Project
-      */
-     protected function getApi()
-     {
-         return $this->client->projects();
-     }
+    /**
+     * Get the Project Api object.
+     *
+     * @return \Textmaster\Api\Project
+     */
+    protected function getApi()
+    {
+        return $this->client->projects();
+    }
 
     /**
      * {@inheritdoc}

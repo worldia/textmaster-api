@@ -65,9 +65,9 @@ class Document extends AbstractApi implements ObjectApiInterface, FilterableApiI
      *
      * @return array
      */
-    public function filter(array $where = array(), array $order = array())
+    public function filter(array $where = [], array $order = [])
     {
-        $params = array();
+        $params = [];
 
         empty($where) ?: $params['where'] = json_encode($where);
         empty($order) ?: $params['order'] = json_encode($order);
@@ -100,7 +100,7 @@ class Document extends AbstractApi implements ObjectApiInterface, FilterableApiI
      */
     public function create(array $params)
     {
-        return $this->post($this->getPath(), array('document' => $params));
+        return $this->post($this->getPath(), ['document' => $params]);
     }
 
     /**
@@ -145,7 +145,7 @@ class Document extends AbstractApi implements ObjectApiInterface, FilterableApiI
      */
     public function complete($documentId, $satisfaction = null, $message = null)
     {
-        $params = array();
+        $params = [];
 
         if (null !== $satisfaction) {
             $params['satisfaction'] = $satisfaction;
@@ -170,9 +170,9 @@ class Document extends AbstractApi implements ObjectApiInterface, FilterableApiI
      */
     public function batchComplete(array $documentIds, $satisfaction = null, $message = null)
     {
-        $params = array(
+        $params = [
             'documents' => $documentIds,
-        );
+        ];
 
         if (null !== $satisfaction) {
             $params['satisfaction'] = $satisfaction;
@@ -195,7 +195,7 @@ class Document extends AbstractApi implements ObjectApiInterface, FilterableApiI
      */
     public function batchCreate(array $documents)
     {
-        return $this->post('clients/projects/'.rawurlencode($this->projectId).'/batch/documents', array('documents' => $documents));
+        return $this->post('clients/projects/'.rawurlencode($this->projectId).'/batch/documents', ['documents' => $documents]);
     }
 
     /**

@@ -21,10 +21,11 @@ interface TranslatorInterface
      * @param mixed                   $subject
      * @param mixed|DocumentInterface $documentOrParams Either pass a document instance
      *                                                  or parameters to pass on to a defined DocumentFactoryInterface
+     * @param bool                    $save             Whether the document should be saved to textmaster
      *
      * @return DocumentInterface
      */
-    public function create($subject, $documentOrParams = null);
+    public function create($subject, $documentOrParams = null, $save = true);
 
     /**
      * Make a comparison between textmaster document and its subject.

@@ -15,7 +15,7 @@ use Pagerfanta\Pagerfanta;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\ObjectImmutableException;
 
-interface ProjectInterface
+interface ProjectInterface extends AbstractObjectInterface
 {
     const ACTIVITY_TRANSLATION = 'translation';
     const ACTIVITY_COPYWRITING = 'copywriting';
@@ -31,11 +31,11 @@ interface ProjectInterface
     const CALLBACK_KEY = 'project_in_progress';
 
     /**
-     * Get id.
+     * Save the project.
      *
-     * @return string
+     * @return ProjectInterface
      */
-    public function getId();
+    public function save();
 
     /**
      * Get name.
@@ -201,7 +201,7 @@ interface ProjectInterface
      *
      * @return Pagerfanta
      */
-    public function getDocuments(array $where = array(), array $order = array());
+    public function getDocuments(array $where = [], array $order = []);
 
     /**
      * Create a document.
@@ -211,6 +211,18 @@ interface ProjectInterface
      * @throws BadMethodCallException If the project has no id.
      */
     public function createDocument();
+
+    /**
+     * Add documents.
+     *
+     * @param array|DocumentInterface[] $documents
+     *
+     * @return ProjectInterface
+     *
+     * @throws UnexpectedTypeException  If one of array values is not a DocumentInterface
+     * @throws InvalidArgumentException If a given document relates to a different project.
+     */
+    public function addDocuments(array $documents);
 
     /**
      * Launch the project asynchronously.

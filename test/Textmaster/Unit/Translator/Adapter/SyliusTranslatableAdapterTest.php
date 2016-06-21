@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Textmaster Api v1 client package.
+ *
+ * (c) Christian Daguerre <christian@daguer.re>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Textmaster\Unit\Translator\Adapter;
 
-use Textmaster\Unit\Mock\MockTranslation;
 use Textmaster\Translator\Adapter\SyliusTranslatableAdapter;
+use Textmaster\Unit\Mock\MockTranslation;
 
 /**
  * @group sylius
@@ -40,17 +49,15 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
     public function shouldCreate()
     {
         $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', array('getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation'));
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
-        $documentMock = $this->getMock('Textmaster\Model\Document', array('getProject', 'save'), array(), '', false);
-        $projectMock = $this->getMock('Textmaster\Model\Project', array('getLanguageFrom'), array(), '', false);
+        $translationMock->setName('Translated name');
+        $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
+        $projectMock = $this->getMock('Textmaster\Model\Project', ['getLanguageFrom'], [], '', false);
 
         $documentMock->expects($this->once())
             ->method('getProject')
             ->willReturn($projectMock);
-        $documentMock->expects($this->once())
-            ->method('save')
-            ->willReturn($documentMock);
 
         $projectMock->expects($this->once())
             ->method('getLanguageFrom')
@@ -64,7 +71,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(1);
 
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
-        $adapter->create($translatableMock, array('name'), $documentMock);
+        $adapter->create($translatableMock, ['name'], $documentMock);
     }
 
     /**
@@ -79,15 +86,15 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
 
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', array('getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation'));
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
 
         $documentMock->expects($this->once())
             ->method('getCustomData')
-            ->willReturn(array('class' => 'My\Class', 'id' => 1));
+            ->willReturn(['class' => 'My\Class', 'id' => 1]);
         $documentMock->expects($this->once())
             ->method('getTranslatedContent')
-            ->willReturn(array('name' => 'my translation'));
+            ->willReturn(['name' => 'my translation']);
         $documentMock->expects($this->once())
             ->method('getProject')
             ->willReturn($projectMock);
@@ -130,6 +137,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
         $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
         $enTranslationMock = new MockTranslation();
         $enTranslationMock->setName('Name to translate');
@@ -137,13 +145,13 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
 
         $documentMock->expects($this->once())
             ->method('getCustomData')
-            ->willReturn(array('class' => 'My\Class', 'id' => 1));
+            ->willReturn(['class' => 'My\Class', 'id' => 1]);
         $documentMock->expects($this->once())
             ->method('getOriginalContent')
-            ->willReturn(array('name' => array('original_phrase' => 'Name to translate')));
+            ->willReturn(['name' => ['original_phrase' => 'Name to translate']]);
         $documentMock->expects($this->once())
             ->method('getTranslatedContent')
-            ->willReturn(array('name' => 'Le nom à traduire'));
+            ->willReturn(['name' => 'Le nom à traduire']);
         $documentMock->expects($this->exactly(2))
             ->method('getProject')
             ->willReturn($projectMock);
@@ -167,10 +175,10 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->method('find')
             ->willReturn($translatableMock);
 
-        $map = array(
-            array('fr', $frTranslationMock),
-            array('en', $enTranslationMock),
-        );
+        $map = [
+            ['en', $enTranslationMock],
+            ['fr', $frTranslationMock],
+        ];
         $translatableMock->expects($this->exactly(2))
             ->method('translate')
             ->will($this->returnValueMap($map));
@@ -178,7 +186,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
         $comparison = $adapter->compare($documentMock);
 
-        $this->assertSame(array('name' => ''), $comparison['original']);
+        $this->assertSame(['name' => ''], $comparison['original']);
         $this->assertContains('Le nom à traduire', $comparison['translated']['name']);
     }
 }

@@ -27,12 +27,12 @@ abstract class AbstractObject
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * @var array
      */
-    protected $immutableProperties = array();
+    protected $immutableProperties = [];
 
     /**
      * Constructor.
@@ -64,6 +64,16 @@ abstract class AbstractObject
         }
 
         return;
+    }
+
+    /**
+     * Get data.
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -170,7 +180,7 @@ abstract class AbstractObject
      * @param string $status
      * @param array  $data   Optional data to dispatch with the event.
      */
-    protected function dispatchEvent($status, array $data = array())
+    protected function dispatchEvent($status, array $data = [])
     {
         $name = $this->getEventNamePrefix().'.'.$status;
 

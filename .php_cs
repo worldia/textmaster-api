@@ -15,7 +15,7 @@ return Symfony\CS\Config\Config::create()
     // use default SYMFONY_LEVEL and extra fixers:
     ->fixers(array(
         'header_comment',
-        'long_array_syntax',
+        'short_array_syntax',
         'ordered_use',
         'php_unit_construct',
         'php_unit_strict',

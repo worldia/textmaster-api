@@ -11,7 +11,7 @@
 
 namespace Textmaster\Model;
 
-interface DocumentInterface
+interface DocumentInterface extends AbstractObjectInterface
 {
     const STATUS_IN_CREATION = 'in_creation';
     const STATUS_IN_PROGRESS = 'in_progress';
@@ -37,11 +37,11 @@ interface DocumentInterface
     const WORD_COUNT_RULE_MAX = 2;
 
     /**
-     * Get id.
+     * Save the document.
      *
-     * @return string
+     * @return DocumentInterface
      */
-    public function getId();
+    public function save();
 
     /**
      * Get project.
@@ -106,7 +106,7 @@ interface DocumentInterface
     public function getOriginalContent();
 
     /**
-     * Get original content.
+     * Set original content.
      *
      * @param string|array $content
      *
@@ -171,15 +171,15 @@ interface DocumentInterface
     public function setCustomData($customData, $key = null);
 
     /**
-     * Get create date
-     * 
+     * Get create date.
+     *
      * @return \DateTime|null
      */
     public function getCreatedAt();
 
     /**
-     * Get update date
-     * 
+     * Get update date.
+     *
      * @return \DateTime|null
      */
     public function getUpdatedAt();

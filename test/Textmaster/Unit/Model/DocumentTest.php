@@ -24,31 +24,31 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $projectId = '654321';
-        $showValues = array(
+        $showValues = [
             'id' => '123456',
             'title' => 'Document 1',
             'status' => DocumentInterface::STATUS_IN_CREATION,
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => '654321',
-        );
-        $updateValues = array(
+        ];
+        $updateValues = [
             'id' => '123456',
             'title' => 'New Title',
             'status' => DocumentInterface::STATUS_IN_REVIEW,
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
-        );
-        $completeValues = array(
+        ];
+        $completeValues = [
             'id' => '123456',
             'title' => 'New Title',
             'status' => DocumentInterface::STATUS_COMPLETED,
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
-        );
-        $projectValues = array(
+        ];
+        $projectValues = [
             'id' => $projectId,
             'name' => 'Project 1',
             'status' => ProjectInterface::STATUS_IN_CREATION,
@@ -57,13 +57,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'language_to' => 'en',
             'category' => 'C014',
             'project_briefing' => 'Lorem ipsum...',
-            'options' => array('language_level' => 'premium'),
-        );
+            'options' => ['language_level' => 'premium'],
+        ];
 
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(array('projects'))->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('documents', 'show'), array($clientMock));
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', array('show', 'update', 'complete', 'supportMessages'), array($clientMock, $projectId), '', false);
-        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', array('create'), array($clientMock), '', false);
+        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->getMock();
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
+        $documentApiMock = $this->getMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
+        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
@@ -98,9 +98,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateEmpty()
     {
         $title = 'Document 1';
-        $originalContent = array('key' => array('original_phrase' => 'Text to translate.'));
+        $originalContent = ['key' => ['original_phrase' => 'Text to translate.']];
         $instructions = 'Translating instructions.';
-        $customData = array('Custom data can be any type');
+        $customData = ['Custom data can be any type'];
 
         $document = new Document($this->clientMock);
         $document
@@ -125,42 +125,42 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateFromValues()
     {
         $projectId = '654321';
-        $values = array(
+        $values = [
             'id' => '123456',
             'title' => 'Document 1',
             'status' => DocumentInterface::STATUS_IN_CREATION,
-            'original_content' => 'Text to translate.',
+            'original_content' => [
+                'content' => ['original_phrase' => 'Text to translate.'],
+            ],
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
             'created_at' => [
-                'day'   => 9,
+                'day' => 9,
                 'month' => 6,
-                'year'  => 2016,
-                'full'  => '2016-06-09 10:37:40 UTC',
+                'year' => 2016,
+                'full' => '2016-06-09 10:37:40 UTC',
             ],
             'updated_at' => [
-                'day'   => 10,
+                'day' => 10,
                 'month' => 6,
-                'year'  => 2016,
-                'full'  => '2016-06-10 15:37:40 UTC',
+                'year' => 2016,
+                'full' => '2016-06-10 15:37:40 UTC',
             ],
-        );
+        ];
 
         $document = new Document($this->clientMock, $values);
 
         $this->assertSame('123456', $document->getId());
         $this->assertSame('Document 1', $document->getTitle());
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
-        $this->assertSame('Text to translate.', $document->getOriginalContent());
+        $this->assertSame(['content' => ['original_phrase' => 'Text to translate.']], $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
 
         $expectedDate = new \DateTime('2016-06-09 10:37:40 UTC');
-        $this->assertEquals($expectedDate, $document->getCreatedAt());
-        $this->assertEquals('20160609 10:37:40', $document->getCreatedAt()->format('Ymd H:i:s'));
+        $this->assertSame('20160609 10:37:40', $document->getCreatedAt()->format('Ymd H:i:s'));
 
         $expectedDate = new \DateTime('2016-06-10 15:37:40 UTC');
-        $this->assertEquals($expectedDate, $document->getUpdatedAt());
-        $this->assertEquals('20160610 15:37:40', $document->getUpdatedAt()->format('Ymd H:i:s'));
+        $this->assertSame('20160610 15:37:40', $document->getUpdatedAt()->format('Ymd H:i:s'));
     }
 
     /**
@@ -169,7 +169,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldGetTranslatedContentForStandard()
     {
         $projectId = '654321';
-        $values = array(
+        $values = [
             'id' => '123456',
             'title' => 'Document 1',
             'type' => DocumentInterface::TYPE_STANDARD,
@@ -177,8 +177,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'original_content' => 'Text to translate.',
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
-            'author_work' => array('free_text' => 'Translated text.'),
-        );
+            'author_work' => ['free_text' => 'Translated text.'],
+        ];
 
         $document = new Document($this->clientMock, $values);
 
@@ -196,22 +196,22 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldGetTranslatedContentForKeyValue()
     {
         $projectId = '654321';
-        $values = array(
+        $values = [
             'id' => '123456',
             'title' => 'Document 1',
             'type' => DocumentInterface::TYPE_KEY_VALUE,
             'status' => DocumentInterface::STATUS_IN_CREATION,
-            'original_content' => array(
-                'key1' => array('original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'),
-                'key2' => array('original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'),
-            ),
+            'original_content' => [
+                'key1' => ['original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'],
+                'key2' => ['original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'],
+            ],
             'instructions' => 'Translating instructions.',
             'project_id' => $projectId,
-            'author_work' => array(
+            'author_work' => [
                 'key1' => 'Translated text.',
                 'key2' => 'Translated text.',
-            ),
-        );
+            ],
+        ];
 
         $document = new Document($this->clientMock, $values);
 
@@ -229,10 +229,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldCreateToLoad()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
 
@@ -249,10 +249,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldUpdate()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $this->assertSame('Document 1', $document->getTitle());
@@ -269,10 +269,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldGetProject()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $project = $document->getProject();
@@ -286,10 +286,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetArrayOriginalContent()
     {
-        $originalContent = array(
-            'translation1' => array('original_phrase' => 'Text to translate.'),
-            'translation2' => array('original_phrase' => 'An other text to translate.'),
-        );
+        $originalContent = [
+            'translation1' => ['original_phrase' => 'Text to translate.'],
+            'translation2' => ['original_phrase' => 'An other text to translate.'],
+        ];
 
         $document = new Document($this->clientMock);
         $document->setOriginalContent($originalContent);
@@ -302,10 +302,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCountWords()
     {
-        $originalContent = array(
-            'translation1' => array('original_phrase' => 'Text 1 to translate.'),
-            'translation2' => array('original_phrase' => 'An other text to translate.'),
-        );
+        $originalContent = [
+            'translation1' => ['original_phrase' => 'Text 1 to translate.'],
+            'translation2' => ['original_phrase' => 'An other text to translate.'],
+        ];
 
         $document = new Document($this->clientMock);
         $document->setOriginalContent($originalContent);
@@ -322,10 +322,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldSetCallback()
     {
-        $callback = array(
-            DocumentInterface::STATUS_CANCELED => array('url' => 'http://my.host/canceled_callback'),
-            DocumentInterface::STATUS_IN_REVIEW => array('url' => 'http://my.host/in_review_callback'),
-        );
+        $callback = [
+            DocumentInterface::STATUS_CANCELED => ['url' => 'http://my.host/canceled_callback'],
+            DocumentInterface::STATUS_IN_REVIEW => ['url' => 'http://my.host/in_review_callback'],
+        ];
 
         $document = new Document($this->clientMock);
         $document->setCallback($callback);
@@ -339,10 +339,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldComplete()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $document->save();
@@ -357,10 +357,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldReject()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $document->save();
@@ -375,10 +375,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotSetBadArrayOriginalContent()
     {
-        $originalContent = array(
-            'translation1' => array('original_phrase' => 'Text to translate.'),
-            'translation2' => array('bad_key' => 'An other text to translate.'),
-        );
+        $originalContent = [
+            'translation1' => ['original_phrase' => 'Text to translate.'],
+            'translation2' => ['bad_key' => 'An other text to translate.'],
+        ];
 
         $document = new Document($this->clientMock);
         $document->setOriginalContent($originalContent);
@@ -391,10 +391,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldBeImmutable()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $document->save();
@@ -407,9 +407,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotSetWrongCallback()
     {
-        $callback = array(
-            'NOT_A_DOCUMENT_STATUS' => array('url' => 'http://my.host/bad_callback'),
-        );
+        $callback = [
+            'NOT_A_DOCUMENT_STATUS' => ['url' => 'http://my.host/bad_callback'],
+        ];
 
         $document = new Document($this->clientMock);
         $document->setCallback($callback);
@@ -422,10 +422,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldNotCompleteWithWrongSatisfaction()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $document->save();
@@ -439,10 +439,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function shouldNotCompleteNotInReview()
     {
         $projectId = '654321';
-        $valuesToCreate = array(
+        $valuesToCreate = [
             'id' => '123456',
             'project_id' => $projectId,
-        );
+        ];
 
         $document = new Document($this->clientMock, $valuesToCreate);
         $document->complete();

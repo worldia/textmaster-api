@@ -20,9 +20,9 @@ class DocumentTest extends TestCase
      */
     public function shouldShowAllDocuments()
     {
-        $expectedArray = array(
-            'documents' => array(
-                array(
+        $expectedArray = [
+            'documents' => [
+                [
                     'status' => 'waiting_assignment',
                     'skip_copyscape' => false,
                     'title' => 'document_6',
@@ -31,45 +31,45 @@ class DocumentTest extends TestCase
                     'word_count_rule' => 0,
                     'keywords_repeat_count' => 1,
                     'deliver_work_as_file' => false,
-                    'custom_data' => array(),
-                    'plagiarism_analysis' => array(),
+                    'custom_data' => [],
+                    'plagiarism_analysis' => [],
                     'written_words' => 0,
                     'type' => 'standard',
                     'id' => '55b24260736f76641a000112',
                     'project_id' => '55b24260736f76641a0000e5',
-                    'callback' => array(),
+                    'callback' => [],
                     'reference' => 'PR-2D3-54974-00000',
                     'ctype' => 'proofreading',
                     'keyword_list' => 'foo, bar, baz',
                     'satisfaction' => null,
                     'completion' => 0,
                     'can_post_message_to_author' => false,
-                    'author_work' => array(),
+                    'author_work' => [],
                     'author_id' => null,
                     'author_rating' => 1,
                     'original_content' => 'foo bar',
-                    'created_at' => array(
+                    'created_at' => [
                         'day' => 24,
                         'month' => 7,
                         'year' => 2015,
                         'full' => '2015-07-24 13:49:20 UTC',
-                    ),
-                    'updated_at' => array(
+                    ],
+                    'updated_at' => [
                         'day' => 24,
                         'month' => 7,
                         'year' => 2015,
                         'full' => '2015-07-24 13:49:20 UTC',
-                    ),
+                    ],
                     'completed_at' => null,
-                ),
-            ),
+                ],
+            ],
             'total_pages' => 0,
             'count' => 1,
             'page' => 1,
             'per_page' => 20,
             'previous_page' => null,
             'next_page' => null,
-        );
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -85,10 +85,10 @@ class DocumentTest extends TestCase
      */
     public function shouldFilterDocuments()
     {
-        $expectedArray = array(
-            array('id' => 1, 'name' => 'Test document 1'),
-            array('id' => 2, 'name' => 'Test document 2'),
-        );
+        $expectedArray = [
+            ['id' => 1, 'name' => 'Test document 1'],
+            ['id' => 2, 'name' => 'Test document 2'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -104,7 +104,7 @@ class DocumentTest extends TestCase
      */
     public function shouldShowDocument()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test document 1');
+        $expectedArray = ['id' => 1, 'name' => 'Test document 1'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -120,7 +120,7 @@ class DocumentTest extends TestCase
      */
     public function shouldCreateDocument()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -128,10 +128,10 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->create(array(
+        $this->assertSame($expectedArray, $api->create([
             'name' => 'Test document 3',
             'project_id' => 1,
-        )));
+        ]));
     }
 
     /**
@@ -139,7 +139,7 @@ class DocumentTest extends TestCase
      */
     public function shouldUpdateDocument()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Renamed test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Renamed test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -147,10 +147,10 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/documents/3')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->update(3, array(
+        $this->assertSame($expectedArray, $api->update(3, [
             'name' => 'Test document 3',
             'project_id' => 1,
-        )));
+        ]));
     }
 
     /**
@@ -158,7 +158,7 @@ class DocumentTest extends TestCase
      */
     public function shouldRemoveDocument()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -174,7 +174,7 @@ class DocumentTest extends TestCase
      */
     public function shouldCompleteDocument()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -190,7 +190,7 @@ class DocumentTest extends TestCase
      */
     public function shouldCompleteDocumentWithSatisfaction()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -206,7 +206,7 @@ class DocumentTest extends TestCase
      */
     public function shouldCompleteDocumentWithMessage()
     {
-        $expectedArray = array('id' => 3, 'name' => 'Test document 3');
+        $expectedArray = ['id' => 3, 'name' => 'Test document 3'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -222,10 +222,10 @@ class DocumentTest extends TestCase
      */
     public function shouldBatchCompleteDocuments()
     {
-        $expectedArray = array(
-            array('id' => 3, 'name' => 'Test document 3'),
-            array('id' => 4, 'name' => 'Test document 4'),
-        );
+        $expectedArray = [
+            ['id' => 3, 'name' => 'Test document 3'],
+            ['id' => 4, 'name' => 'Test document 4'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -233,7 +233,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->batchComplete(array(3, 4)));
+        $this->assertSame($expectedArray, $api->batchComplete([3, 4]));
     }
 
     /**
@@ -241,10 +241,10 @@ class DocumentTest extends TestCase
      */
     public function shouldBatchCompleteDocumentsWithSatisfactionAndMessage()
     {
-        $expectedArray = array(
-            array('id' => 3, 'name' => 'Test document 3'),
-            array('id' => 4, 'name' => 'Test document 4'),
-        );
+        $expectedArray = [
+            ['id' => 3, 'name' => 'Test document 3'],
+            ['id' => 4, 'name' => 'Test document 4'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -252,7 +252,7 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents/complete')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->batchComplete(array(3, 4), 'positive', 'Good job!'));
+        $this->assertSame($expectedArray, $api->batchComplete([3, 4], 'positive', 'Good job!'));
     }
 
     /**
@@ -260,10 +260,10 @@ class DocumentTest extends TestCase
      */
     public function shouldBatchCreateDocuments()
     {
-        $expectedArray = array(
-            array('id' => 3, 'name' => 'Test document 3'),
-            array('id' => 4, 'name' => 'Test document 4'),
-        );
+        $expectedArray = [
+            ['id' => 3, 'name' => 'Test document 3'],
+            ['id' => 4, 'name' => 'Test document 4'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -271,10 +271,10 @@ class DocumentTest extends TestCase
             ->with('clients/projects/1/batch/documents')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->batchCreate(array(
-            array('name' => 'Test document 3'),
-            array('name' => 'Test document 4'),
-        )));
+        $this->assertSame($expectedArray, $api->batchCreate([
+            ['name' => 'Test document 3'],
+            ['name' => 'Test document 4'],
+        ]));
     }
 
     /**
@@ -305,8 +305,8 @@ class DocumentTest extends TestCase
         $client = new \Textmaster\Client($httpClientMock);
 
         return $this->getMockBuilder($this->getApiClass())
-            ->setMethods(array('get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'))
-            ->setConstructorArgs(array($client, 1))
+            ->setMethods(['get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'])
+            ->setConstructorArgs([$client, 1])
             ->getMock();
     }
 }
