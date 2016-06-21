@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Textmaster\Events;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Pagination\PagerfantaAdapter;
 
 class Project extends AbstractObject implements ProjectInterface
