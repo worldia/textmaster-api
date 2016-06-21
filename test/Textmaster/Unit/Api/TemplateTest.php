@@ -18,28 +18,28 @@ class TemplateTest extends TestCase
      */
     public function shouldShowAllTemplates()
     {
-        $expectedArray = array(
-            'work_templates' => array(
-                array(
+        $expectedArray = [
+            'work_templates' => [
+                [
                     'name' => '1_title_1_paragraph',
                     'description' => null,
                     'image_preview_path' => null,
                     'ctype' => 'public',
-                ),
-                array(
+                ],
+                [
                     'name' => '2_paragraphs',
                     'description' => null,
                     'image_preview_path' => null,
                     'ctype' => 'public',
-                ),
-            ),
+                ],
+            ],
             'total_pages' => 0,
             'count' => 2,
             'page' => 1,
             'per_page' => 20,
             'previous_page' => null,
             'next_page' => null,
-        );
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -55,12 +55,12 @@ class TemplateTest extends TestCase
      */
     public function shouldFindTemplateByName()
     {
-        $expectedArray = array(
+        $expectedArray = [
             'name' => '2_paragraphs',
             'description' => null,
             'image_preview_path' => null,
             'ctype' => 'public',
-        );
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

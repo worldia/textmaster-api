@@ -15,27 +15,27 @@ use Textmaster\Unit\Api\TestCase;
 
 class MineTest extends TestCase
 {
-    protected $authorResult = array(
-        'my_authors' => array(
-            array(
+    protected $authorResult = [
+        'my_authors' => [
+            [
                 'description' => 'description',
-                'tags' => array(),
+                'tags' => [],
                 'status' => 'my_textmaster',
                 'id' => '53d7bf7c53ecaaf8aa000520',
                 'author_id' => '53d7bf7c53ecaaf8aa000514',
                 'author_ref' => 'A-7B14-FM',
                 'latest_activity' => '2014-07-29 18:35:52 +0300',
-                'created_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:28 +0300'),
-                'updated_at' => array('day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:28 +0300'),
-            ),
-        ),
+                'created_at' => ['day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:28 +0300'],
+                'updated_at' => ['day' => 29, 'month' => 7, 'year' => 2014, 'full' => '2014-07-29 18:36:28 +0300'],
+            ],
+        ],
         'total_pages' => 0,
         'count' => 1,
         'page' => 1,
         'per_page' => 20,
         'previous_page' => null,
         'next_page' => null,
-    );
+    ];
 
     /**
      * @test
@@ -130,7 +130,7 @@ class MineTest extends TestCase
      */
     public function shouldShowAuthorInfo()
     {
-        $expectedArray = array('name' => 'Test author');
+        $expectedArray = ['name' => 'Test author'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

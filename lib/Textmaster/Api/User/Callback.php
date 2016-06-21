@@ -36,23 +36,23 @@ class Callback extends AbstractApi
      */
     public function set($userId, $event, $url, $format)
     {
-        if (!in_array($event, array('waiting_assignment', 'completed'), true)) {
+        if (!in_array($event, ['waiting_assignment', 'completed'], true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback event.', $event));
         }
 
-        if (!in_array($format, array('json', 'xml'), true)) {
+        if (!in_array($format, ['json', 'xml'], true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid callback format.', $format));
         }
 
-        return $this->put('clients/users/'.rawurlencode($userId), array(
-            'user' => array(
-                'callback' => array(
-                    $event => array(
+        return $this->put('clients/users/'.rawurlencode($userId), [
+            'user' => [
+                'callback' => [
+                    $event => [
                         'url' => $url,
                         'format' => $format,
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
     }
 }

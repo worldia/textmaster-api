@@ -18,7 +18,7 @@ class UserTest extends TestCase
      */
     public function shouldShowInfoAboutCurrentUser()
     {
-        $expectedArray = array('id' => 123456);
+        $expectedArray = ['id' => 123456];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

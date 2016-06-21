@@ -20,7 +20,7 @@ class CallbackTest extends TestCase
      */
     public function shouldSetCallback()
     {
-        $expectedArray = array('id' => 1);
+        $expectedArray = ['id' => 1];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

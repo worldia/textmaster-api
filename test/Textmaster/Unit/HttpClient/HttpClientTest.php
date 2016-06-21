@@ -21,13 +21,13 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoGETRequest()
     {
         $path = '/some/path';
-        $parameters = array('a' => 'b');
-        $headers = array('c' => 'd');
+        $parameters = ['a' => 'b'];
+        $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->get($path, $parameters, $headers);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 
     /**
@@ -36,13 +36,13 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoPOSTRequest()
     {
         $path = '/some/path';
-        $body = array('a' => 'b');
-        $headers = array('c' => 'd');
+        $body = ['a' => 'b'];
+        $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->post($path, $body, $headers);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 
     /**
@@ -52,10 +52,10 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     {
         $path = '/some/path';
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->post($path);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 
     /**
@@ -64,13 +64,13 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoPATCHRequest()
     {
         $path = '/some/path';
-        $body = array('a' => 'b');
-        $headers = array('c' => 'd');
+        $body = ['a' => 'b'];
+        $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->patch($path, $body, $headers);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 
     /**
@@ -79,13 +79,13 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoDELETERequest()
     {
         $path = '/some/path';
-        $body = array('a' => 'b');
-        $headers = array('c' => 'd');
+        $body = ['a' => 'b'];
+        $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->delete($path, $body, $headers);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 
     /**
@@ -94,11 +94,11 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     public function shouldDoPUTRequest()
     {
         $path = '/some/path';
-        $headers = array('c' => 'd');
+        $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', array());
+        $httpClient = new HttpClient('key', 'secret', []);
         $response = $httpClient->put($path, $headers);
 
-        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response)));
+        $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
     }
 }

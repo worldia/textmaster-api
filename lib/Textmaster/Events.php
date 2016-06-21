@@ -133,7 +133,7 @@ final class Events
      */
     public static function getDocumentEvents()
     {
-        return array(
+        return [
             self::DOCUMENT_IN_CREATION,
             self::DOCUMENT_WAITING_ASSIGNMENT,
             self::DOCUMENT_IN_PROGRESS,
@@ -146,7 +146,7 @@ final class Events
             self::DOCUMENT_IN_REVIEW,
             self::DOCUMENT_INCOMPLETE,
             self::DOCUMENT_COMPLETED,
-        );
+        ];
     }
 
     /**
@@ -156,8 +156,8 @@ final class Events
      */
     public static function getProjectEvents()
     {
-        return array(
+        return [
             self::PROJECT_IN_PROGRESS,
-        );
+        ];
     }
 }
