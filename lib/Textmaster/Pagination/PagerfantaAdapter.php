@@ -41,10 +41,10 @@ class PagerfantaAdapter implements AdapterInterface
     /**
      * @var array
      */
-    protected $classes = array(
+    protected $classes = [
       'project' => 'Textmaster\Model\Project',
       'document' => 'Textmaster\Model\Document',
-    );
+    ];
 
     /**
      * PagerfantaAdapter constructor.
@@ -57,10 +57,10 @@ class PagerfantaAdapter implements AdapterInterface
      */
     public function __construct(
         FilterableApiInterface $api,
-        array $where = array(),
-        array $order = array(),
+        array $where = [],
+        array $order = [],
         $asObjects = true,
-        array $classes = array()
+        array $classes = []
     ) {
         $this->api = $api;
         $this->where = $where;
@@ -124,7 +124,7 @@ class PagerfantaAdapter implements AdapterInterface
      */
     private function toObjects(array $result, $resource)
     {
-        $objects = array();
+        $objects = [];
         $singular = Inflector::singularize($resource);
 
         foreach ($result[$resource] as $values) {

@@ -28,7 +28,7 @@ interface FilterableApiInterface
      *
      * @return array
      */
-    public function filter(array $where = array(), array $order = array());
+    public function filter(array $where = [], array $order = []);
 
     /**
      * Get API client.

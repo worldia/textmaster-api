@@ -18,10 +18,10 @@ class ProjectTest extends TestCase
      */
     public function shouldShowAllProjects()
     {
-        $expectedArray = array(
-            array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2'),
-        );
+        $expectedArray = [
+            ['id' => 1, 'name' => 'Test project 1'],
+            ['id' => 2, 'name' => 'Test project 2'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -37,10 +37,10 @@ class ProjectTest extends TestCase
      */
     public function shouldFilterProjects()
     {
-        $expectedArray = array(
-            array('id' => 1, 'name' => 'Test project 1'),
-            array('id' => 2, 'name' => 'Test project 2'),
-        );
+        $expectedArray = [
+            ['id' => 1, 'name' => 'Test project 1'],
+            ['id' => 2, 'name' => 'Test project 2'],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -48,7 +48,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/filter')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->filter(array('name' => 'Test')));
+        $this->assertSame($expectedArray, $api->filter(['name' => 'Test']));
     }
 
     /**
@@ -56,7 +56,7 @@ class ProjectTest extends TestCase
      */
     public function shouldShowProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -72,7 +72,7 @@ class ProjectTest extends TestCase
      */
     public function shouldCreateProjectWithoutTracker()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -80,7 +80,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->create(array('name' => 'Test project')));
+        $this->assertSame($expectedArray, $api->create(['name' => 'Test project']));
     }
 
     /**
@@ -88,7 +88,7 @@ class ProjectTest extends TestCase
      */
     public function shouldCreateProjectWithTracker()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -96,7 +96,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->create(array('name' => 'Test project'), 12345));
+        $this->assertSame($expectedArray, $api->create(['name' => 'Test project'], 12345));
     }
 
     /**
@@ -104,7 +104,7 @@ class ProjectTest extends TestCase
      */
     public function shouldUpdateProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -112,7 +112,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/1')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->update(1, array('name' => 'Test project'), 12345));
+        $this->assertSame($expectedArray, $api->update(1, ['name' => 'Test project'], 12345));
     }
 
     /**
@@ -120,7 +120,7 @@ class ProjectTest extends TestCase
      */
     public function shouldCancelProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -136,7 +136,7 @@ class ProjectTest extends TestCase
      */
     public function shouldArchiveProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -152,7 +152,7 @@ class ProjectTest extends TestCase
      */
     public function shouldUnarchiveProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -168,7 +168,7 @@ class ProjectTest extends TestCase
      */
     public function shouldPauseProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -184,7 +184,7 @@ class ProjectTest extends TestCase
      */
     public function shouldResumeProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -200,7 +200,7 @@ class ProjectTest extends TestCase
      */
     public function shouldLaunchProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -216,7 +216,7 @@ class ProjectTest extends TestCase
      */
     public function shouldQuoteProject()
     {
-        $expectedArray = array('id' => 1, 'name' => 'Test project');
+        $expectedArray = ['id' => 1, 'name' => 'Test project'];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -224,7 +224,7 @@ class ProjectTest extends TestCase
             ->with('clients/projects/quotation')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->quote(array('words' => 320)));
+        $this->assertSame($expectedArray, $api->quote(['words' => 320]));
     }
 
     /**

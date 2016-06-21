@@ -61,10 +61,10 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     protected function setSubjectOnDocument($subject, DocumentInterface $document)
     {
         $document->setCustomData(
-            array(
+            [
                 'class' => get_class($subject),
                 'id' => $subject->getId(),
-            ),
+            ],
             'adapter'
         );
     }

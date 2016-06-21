@@ -18,18 +18,18 @@ class AuthorTest extends TestCase
      */
     public function shouldShowAllAuthors()
     {
-        $expectedArray = array(
-            'authors' => array(
-                array('ident' => 'A-7B1E-FM', 'id' => '53d7bf6353ecaaf8aa00001e'),
-                array('ident' => 'A-7B2E-FM', 'id' => '53d7bf6353ecaaf8aa00002e'),
-            ),
+        $expectedArray = [
+            'authors' => [
+                ['ident' => 'A-7B1E-FM', 'id' => '53d7bf6353ecaaf8aa00001e'],
+                ['ident' => 'A-7B2E-FM', 'id' => '53d7bf6353ecaaf8aa00002e'],
+            ],
             'total_pages' => 0,
             'count' => 2,
             'page' => 1,
             'per_page' => 20,
             'previous_page' => null,
             'next_page' => null,
-        );
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -37,10 +37,10 @@ class AuthorTest extends TestCase
             ->with('clients/authors')
             ->will($this->returnValue($expectedArray));
 
-        $this->assertSame($expectedArray, $api->find(array(
+        $this->assertSame($expectedArray, $api->find([
             'language_from' => 'fr-FR',
             'language_to' => 'de-DE',
-        )));
+        ]));
     }
 
     /**
@@ -49,7 +49,7 @@ class AuthorTest extends TestCase
      */
     public function shouldThrowExceptionWhenSearchingWithInvalidParameter()
     {
-        $this->getApiMock()->find(array('invalid_parameters' => 'value'));
+        $this->getApiMock()->find(['invalid_parameters' => 'value']);
     }
 
     /**

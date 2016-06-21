@@ -32,10 +32,10 @@ class CallbackHandler
     /**
      * @var array
      */
-    protected $classes = array(
+    protected $classes = [
         'document' => 'Textmaster\Model\Document',
         'project' => 'Textmaster\Model\Project',
-    );
+    ];
 
     /**
      * Constructor.
@@ -44,7 +44,7 @@ class CallbackHandler
      * @param Client                   $client
      * @param array                    $classes
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Client $client, array $classes = array())
+    public function __construct(EventDispatcherInterface $dispatcher, Client $client, array $classes = [])
     {
         $this->dispatcher = $dispatcher;
         $this->client = $client;

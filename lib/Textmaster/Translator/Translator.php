@@ -11,11 +11,11 @@
 
 namespace Textmaster\Translator;
 
+use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Translator\Factory\DocumentFactoryInterface;
 use Textmaster\Translator\Provider\MappingProviderInterface;
-use Textmaster\Exception\InvalidArgumentException;
-use Textmaster\Exception\UnexpectedTypeException;
 
 class Translator implements TranslatorInterface
 {

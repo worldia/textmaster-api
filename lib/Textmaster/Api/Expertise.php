@@ -32,7 +32,7 @@ class Expertise extends AbstractApi
      */
     public function all($activity, $locale = null)
     {
-        $params = array('activity' => $activity);
+        $params = ['activity' => $activity];
 
         if (null !== $locale) {
             $params['locale'] = $locale;

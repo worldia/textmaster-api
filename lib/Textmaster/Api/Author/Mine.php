@@ -32,7 +32,7 @@ class Mine extends AbstractApi
      */
     public function all($status = null)
     {
-        $params = array();
+        $params = [];
 
         if (null !== $status) {
             if (!$this->isValidStatus($status)) {
@@ -61,12 +61,12 @@ class Mine extends AbstractApi
             throw new InvalidArgumentException(sprintf('"%s" is not valid author status.', $status));
         }
 
-        $params = array(
-            'my_author' => array(
+        $params = [
+            'my_author' => [
                 'author_id' => $authorId,
                 'status' => $status,
-                ),
-            );
+                ],
+            ];
 
         if (null !== $description) {
             $params['my_author']['description'] = $description;
@@ -94,11 +94,11 @@ class Mine extends AbstractApi
             throw new InvalidArgumentException(sprintf('"%s" is not valid author status.', $status));
         }
 
-        $params = array(
-            'my_author' => array(
+        $params = [
+            'my_author' => [
                 'status' => $status,
-                ),
-            );
+                ],
+            ];
 
         if (null !== $description) {
             $params['my_author']['description'] = $description;
@@ -146,6 +146,6 @@ class Mine extends AbstractApi
      */
     protected function isValidStatus($status)
     {
-        return in_array($status, array('my_textmaster', 'blacklisted', 'uncategorized'), true);
+        return in_array($status, ['my_textmaster', 'blacklisted', 'uncategorized'], true);
     }
 }

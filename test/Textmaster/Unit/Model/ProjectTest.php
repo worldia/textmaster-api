@@ -24,7 +24,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $showValues = array(
+        $showValues = [
             'id' => '123456',
             'name' => 'Project 1',
             'status' => ProjectInterface::STATUS_IN_CREATION,
@@ -33,9 +33,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'language_to' => 'en',
             'category' => 'C014',
             'project_briefing' => 'Lorem ipsum...',
-            'options' => array('language_level' => 'premium'),
-        );
-        $updateValues = array(
+            'options' => ['language_level' => 'premium'],
+        ];
+        $updateValues = [
             'id' => '123456',
             'name' => 'Project Beta',
             'status' => ProjectInterface::STATUS_IN_CREATION,
@@ -44,12 +44,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'language_to' => 'en',
             'category' => 'C014',
             'project_briefing' => 'Lorem ipsum...',
-            'options' => array('language_level' => 'premium'),
-        );
+            'options' => ['language_level' => 'premium'],
+        ];
 
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(array('api'))->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', array('show', 'update', 'launch'), array($clientMock));
-        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', array('filter', 'getClient'));
+        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch'], [$clientMock]);
+        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);
@@ -79,8 +79,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $languageTo = 'en';
         $category = 'C014';
         $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
-        $callback = array(ProjectInterface::CALLBACK_KEY => 'http://callback.url');
+        $options = ['language_level' => 'premium'];
+        $callback = [ProjectInterface::CALLBACK_KEY => 'http://callback.url'];
 
         $project = new Project($this->clientMock);
         $project
@@ -119,9 +119,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $languageTo = 'en';
         $category = 'C014';
         $briefing = 'Lorem ipsum...';
-        $options = array('language_level' => 'premium');
+        $options = ['language_level' => 'premium'];
 
-        $values = array(
+        $values = [
             'id' => $id,
             'name' => $name,
             'status' => $status,
@@ -131,7 +131,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'category' => $category,
             'project_briefing' => $briefing,
             'options' => $options,
-        );
+        ];
 
         $project = new Project($this->clientMock, $values);
 
@@ -191,11 +191,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetAllowedActivities()
     {
-        $allowedActivities = array(
+        $allowedActivities = [
             ProjectInterface::ACTIVITY_COPYWRITING,
             ProjectInterface::ACTIVITY_PROOFREADING,
             ProjectInterface::ACTIVITY_TRANSLATION,
-        );
+        ];
 
         $this->assertSame($allowedActivities, Project::getAllowedActivities());
     }
@@ -207,7 +207,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         $this->projectApiMock->expects($this->once())
             ->method('launch')
-            ->willReturn(array());
+            ->willReturn([]);
 
         $project = new Project($this->clientMock, '123456');
         $project->launch();
@@ -219,10 +219,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeImmutable()
     {
-        $values = array(
+        $values = [
             'id' => 'ID-IMMUTABLE',
             'status' => ProjectInterface::STATUS_IN_PROGRESS,
-        );
+        ];
 
         $project = new Project($this->clientMock, $values);
         $project->setName('New name');
@@ -255,7 +255,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function shouldNotSetWrongCallback()
     {
         $project = new Project($this->clientMock, '123456');
-        $project->setCallback(array('wrong_callback' => 'bad value'));
+        $project->setCallback(['wrong_callback' => 'bad value']);
     }
 
     /**
@@ -264,10 +264,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotLaunchImmutable()
     {
-        $values = array(
+        $values = [
             'id' => 'ID-IMMUTABLE',
             'status' => ProjectInterface::STATUS_IN_PROGRESS,
-        );
+        ];
 
         $project = new Project($this->clientMock, $values);
         $project->launch();

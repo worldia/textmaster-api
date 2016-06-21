@@ -171,14 +171,14 @@ interface DocumentInterface
     public function setCustomData($customData, $key = null);
 
     /**
-     * Get create date
+     * Get create date.
      * 
      * @return \DateTime|null
      */
     public function getCreatedAt();
 
     /**
-     * Get update date
+     * Get update date.
      * 
      * @return \DateTime|null
      */

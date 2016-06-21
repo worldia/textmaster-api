@@ -22,8 +22,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $client = new \Textmaster\Client($httpClientMock);
 
         return $this->getMockBuilder($this->getApiClass())
-            ->setMethods(array('get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'))
-            ->setConstructorArgs(array($client))
+            ->setMethods(['get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'])
+            ->setConstructorArgs([$client])
             ->getMock();
     }
 }

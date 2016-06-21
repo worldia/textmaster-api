@@ -27,7 +27,7 @@ class DefaultDocumentFactory implements DocumentFactoryInterface
         }
 
         $project = $params['project'];
-        $params = isset($params['document']) ? $params['document'] : array();
+        $params = isset($params['document']) ? $params['document'] : [];
         $document = $project->createDocument();
 
         $accessor = PropertyAccess::createPropertyAccessor();

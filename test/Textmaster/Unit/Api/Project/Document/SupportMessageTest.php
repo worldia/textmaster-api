@@ -20,38 +20,38 @@ class SupportMessageTest extends TestCase
      */
     public function shouldShowAllSupportMessages()
     {
-        $expectedArray = array(
-            'support_messages' => array(
-                array(
+        $expectedArray = [
+            'support_messages' => [
+                [
                     'content' => 'Hey, we need a small fix there',
                     'message' => 'Hey, we need a small fix there',
                     'author_id' => '53d7bfa253ecaaf8aa000d3d',
                     'written_by_you' => true,
                     'written_by_author' => false,
                     'author_ref' => 'C-7B3D-FM',
-                    'created_at' => array(
+                    'created_at' => [
                         'day' => 29,
                         'month' => 7,
                         'year' => 2014,
                         'full' => '2014-07-29 18:37:09 +0300',
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'content' => 'done',
                     'message' => 'done',
                     'author_id' => '53d7bfa253ecaaf8aa000d31',
                     'written_by_you' => false,
                     'written_by_author' => true,
                     'author_ref' => 'A-7B31-FM',
-                    'created_at' => array(
+                    'created_at' => [
                         'day' => 29,
                         'month' => 7,
                         'year' => 2014,
                         'full' => '2014-07-29 18:37:09 +0300',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())
@@ -67,20 +67,20 @@ class SupportMessageTest extends TestCase
      */
     public function shouldCreateSupportMessage()
     {
-        $expectedArray = array(
+        $expectedArray = [
             'content' => 'Hey, we need a small fix there',
             'message' => 'Hey, we need a small fix there',
             'author_id' => '53d7bfa253ecaaf8aa000d3d',
             'written_by_you' => true,
             'written_by_author' => false,
             'author_ref' => 'C-7B3D-FM',
-            'created_at' => array(
+            'created_at' => [
                 'day' => 29,
                 'month' => 7,
                 'year' => 2014,
                 'full' => '2014-07-29 18:37:09 +0300',
-            ),
-        );
+            ],
+        ];
 
         $api = $this->getApiMock();
         $api->expects($this->once())

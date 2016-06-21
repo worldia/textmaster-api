@@ -48,9 +48,9 @@ class SupportMessage extends AbstractApi
      */
     public function create($projectId, $documentId, $message)
     {
-        return $this->post($this->getPath($projectId, $documentId), array(
-            'support_message' => array('message' => $message),
-        ));
+        return $this->post($this->getPath($projectId, $documentId), [
+            'support_message' => ['message' => $message],
+        ]);
     }
 
     /**
