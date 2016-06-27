@@ -252,7 +252,12 @@ class Project extends AbstractObject implements ProjectInterface
             $data[$key] = $documentData;
         }
 
-        $documents = $this->getApi()->documents($this->getId())->batchCreate($data);
+        $chunks = array_chunk($data, 100);
+        $documents = [];
+
+        foreach ($chunks as $chunk) {
+            $documents = array_merge($this->getApi()->documents($this->getId())->batchCreate($chunk), $documents);
+        }
 
         foreach ($documents as $key => $document) {
             $document = new Document($this->client, $document);
