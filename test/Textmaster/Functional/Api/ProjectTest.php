@@ -13,7 +13,6 @@ namespace Textmaster\Functional\Api;
 
 use Textmaster\Api\Project;
 use Textmaster\Client;
-use Textmaster\Exception\ErrorException;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
@@ -137,7 +136,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'category' => 'C021'
         ];
 
-        $this->setExpectedExceptionRegExp(ErrorException::class, '/"level_name":\["doit être rempli\(e\)"\]/');
+        $this->setExpectedExceptionRegExp(\LogicException::class, '/"level_name":\["doit être rempli\(e\)"\]/');
         $this->api->create($params);
     }
 

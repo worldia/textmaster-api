@@ -12,7 +12,6 @@
 namespace Textmaster\HttpClient\Message;
 
 use GuzzleHttp\Psr7\Response;
-use Textmaster\Exception\ErrorException;
 
 class ResponseMediator
 {
@@ -23,7 +22,7 @@ class ResponseMediator
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      *
-     * @throws ErrorException
+     * @throws \LogicException
      */
     public static function getContent(Response $response)
     {
@@ -51,7 +50,7 @@ class ResponseMediator
     /**
      * @param Response $response
      *
-     * @throws ErrorException
+     * @throws \LogicException
      */
     protected static function createException(Response $response)
     {
@@ -61,6 +60,6 @@ class ResponseMediator
         } else {
             $message = $response->getReasonPhrase();
         }
-        throw new ErrorException($message, $response->getStatusCode());
+        throw new \LogicException($message, $response->getStatusCode());
     }
 }
