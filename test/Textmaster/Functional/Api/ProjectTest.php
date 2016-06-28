@@ -409,7 +409,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             if ($status === $result['status']) {
                 return;
             }
-            printf('Expected status %s, found %s', $status, $result['status']);
+            printf('[Expected status %s, found %s] ', $status, $result['status']);
             sleep(self::WAIT_TIME);
             $retry++;
         }
