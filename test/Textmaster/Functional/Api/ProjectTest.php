@@ -21,6 +21,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     // wait time between calls because the sandbox environment is not as fast as prod
     const WAIT_TIME = 3;
+    
+    // Unique ID used for created project name
+    private static $testId;
 
     /**
      * Project api.
@@ -29,6 +32,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     protected $api;
 
+
+    /**
+     * Generate a unique ID when tests starts
+     */
+    public static function setUpBeforeClass()
+    {
+        self::$testId = uniqid();
+    }    
+    
     public function setUp()
     {
         parent::setUp();
@@ -49,7 +61,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $api = $client->project();
 
         $where = [
-            'name' => 'Project for functional test',
+            'name' => self::$testId,
             'status' => ['$in' => [ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION]],
             'archived' => false,
         ];
@@ -136,12 +148,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_CREATION);
 
         $params = [
-            'name' => 'Project for functional test',
+            'name' => self::$testId,
         ];
 
         $result = $this->api->update($projectId, $params);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -168,7 +180,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->api->show($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -221,7 +233,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->api->launch($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -286,7 +298,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->api->cancel($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
