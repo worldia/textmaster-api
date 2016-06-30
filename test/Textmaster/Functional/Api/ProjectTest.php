@@ -19,9 +19,11 @@ use Textmaster\Model\ProjectInterface;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
-    // As launch project is done asynchronously we need a project to be paused and archived.
-    const TO_PAUSE_PROJECT_ID = '5731ac85ca8564000edda2df';
-    const TO_ARCHIVE_PROJECT_ID = '5731ad44ca8564000bdda286';
+    // wait time between calls because the sandbox environment is not as fast as prod
+    const WAIT_TIME = 3;
+    
+    // Unique ID used for created project name
+    private static $testId;
 
     /**
      * Project api.
@@ -30,23 +32,36 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     protected $api;
 
+
+    /**
+     * Generate a unique ID when tests starts
+     */
+    public static function setUpBeforeClass()
+    {
+        self::$testId = uniqid();
+    }    
+    
     public function setUp()
     {
         parent::setUp();
 
-        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM', ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
+        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM',
+            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
         $client = new Client($httpClient);
         $this->api = $client->project();
     }
 
     public static function tearDownAfterClass()
     {
-        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM', ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
+        sleep(self::WAIT_TIME);
+
+        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM',
+            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
         $client = new Client($httpClient);
         $api = $client->project();
 
         $where = [
-            'name' => 'Project for functional test',
+            'name' => self::$testId,
             'status' => ['$in' => [ProjectInterface::STATUS_IN_PROGRESS, ProjectInterface::STATUS_IN_CREATION]],
             'archived' => false,
         ];
@@ -58,8 +73,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
                     continue;
                 }
                 foreach ($data as $project) {
-                    $api->cancel($project['id']);
-                    $api->archive($project['id']);
+                    self::spinCall($api, 'cancel', $project['id']);
+                    self::spinCall($api, 'archive', $project['id']);
                 }
             }
         }
@@ -123,16 +138,22 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends shouldCreateProject
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
     public function shouldUpdateProject($projectId)
     {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_CREATION);
+
         $params = [
-            'name' => 'Project for functional test',
+            'name' => self::$testId,
         ];
 
         $result = $this->api->update($projectId, $params);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -148,12 +169,18 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends shouldCreateProject
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
     public function shouldShowProject($projectId)
     {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_CREATION);
+
         $result = $this->api->show($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -167,9 +194,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends shouldCreateProject
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
     public function shouldAddDocument($projectId)
     {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_CREATION);
+
         $params = [
             'title' => 'Document for functional test',
             'original_content' => 'Text to translate.',
@@ -189,12 +222,18 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends shouldAddDocument
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
     public function shouldLaunchProject($projectId)
     {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_CREATION);
+
         $result = $this->api->launch($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -210,12 +249,56 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends shouldLaunchProject
+     *
+     * @param string $projectId
+     *
+     * @return array
+     */
+    public function shouldPauseProject($projectId)
+    {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_PROGRESS);
+
+        $result = $this->api->pause($projectId);
+
+        $this->assertSame(ProjectInterface::STATUS_PAUSED, $result['status']);
+
+        return $projectId;
+    }
+
+    /**
+     * @test
+     * @depends shouldPauseProject
+     *
+     * @param string $projectId
+     *
+     * @return array
+     */
+    public function shouldResumeProject($projectId)
+    {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_PAUSED);
+
+        $result = $this->api->resume($projectId);
+
+        $this->assertSame(ProjectInterface::STATUS_IN_PROGRESS, $result['status']);
+
+        return $projectId;
+    }
+
+    /**
+     * @test
+     * @depends shouldResumeProject
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
     public function shouldCancelProject($projectId)
     {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_IN_PROGRESS);
+
         $result = $this->api->cancel($projectId);
 
-        $this->assertSame('Project for functional test', $result['name']);
+        $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
         $this->assertSame('en', $result['language_from']);
@@ -225,64 +308,44 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
         $this->assertSame('api', $result['creation_channel']);
 
-        $this->api->archive($projectId);
+        return $projectId;
+    }
+
+    /**
+     * @test
+     * @depends shouldCancelProject
+     *
+     * @param string $projectId
+     *
+     * @return array
+     */
+    public function shouldArchiveProject($projectId)
+    {
+        $this->waitForStatus($projectId, ProjectInterface::STATUS_CANCELED);
+
+        $result = $this->api->archive($projectId);
+
+        $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
 
         return $projectId;
     }
 
     /**
      * @test
+     * @depends shouldArchiveProject
+     *
+     * @param string $projectId
+     *
+     * @return array
      */
-    public function shouldArchiveProject()
+    public function shouldUnarchiveProject($projectId)
     {
-        $result = $this->api->archive(self::TO_ARCHIVE_PROJECT_ID);
+        sleep(self::WAIT_TIME);
+        $result = $this->api->unarchive($projectId);
 
-        $this->assertSame('worldia/textmaster-api to archive', $result['name']);
-        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('en', $result['language_to']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldUnarchiveProject()
-    {
-        $result = $this->api->unarchive(self::TO_ARCHIVE_PROJECT_ID);
-
-        $this->assertSame('worldia/textmaster-api to archive', $result['name']);
-        $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
-        $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('en', $result['language_to']);
         $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
-    }
 
-    /**
-     * @test
-     */
-    public function shouldPauseProject()
-    {
-        $result = $this->api->pause(self::TO_PAUSE_PROJECT_ID);
-
-        $this->assertSame('worldia/textmaster-api test to pause', $result['name']);
-        $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('de', $result['language_to']);
-        $this->assertSame(ProjectInterface::STATUS_PAUSED, $result['status']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldResumeProject()
-    {
-        $result = $this->api->resume(self::TO_PAUSE_PROJECT_ID);
-
-        $this->assertSame('worldia/textmaster-api test to pause', $result['name']);
-        $this->assertSame('fr', $result['language_from']);
-        $this->assertSame('de', $result['language_to']);
-        $this->assertSame(ProjectInterface::STATUS_IN_PROGRESS, $result['status']);
+        return $projectId;
     }
 
     /**
@@ -317,5 +380,52 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('en', $result['language_to']);
         $this->assertSame(4001, $result['total_word_count']);
         $this->assertSame($totalCosts, $result['total_costs']);
+    }
+
+    /**
+     * @param Project $api
+     * @param string  $method method to call
+     * @param string  $projectId
+     */
+    private static function spinCall(Project $api, $method, $projectId)
+    {
+        $maxRetry = 5;
+        $retry = 0;
+
+        while ($retry <= $maxRetry) {
+            try {
+                $api->$method($projectId);
+
+                return;
+            } catch (\LogicException $e) {
+                if ($maxRetry < $retry) {
+                    throw $e;
+                }
+            }
+            sleep(self::WAIT_TIME);
+            $retry++;
+        }
+    }
+
+    /**
+     * @param string $projectId
+     * @param string $status
+     */
+    private function waitForStatus($projectId, $status)
+    {
+        $maxRetry = 10;
+        $retry = 0;
+
+        while ($retry <= $maxRetry) {
+            $result = $this->api->show($projectId);
+            if ($status === $result['status']) {
+                return;
+            }
+            printf('[Expected status %s, found %s] ', $status, $result['status']);
+            sleep(self::WAIT_TIME);
+            $retry++;
+        }
+
+        throw new \RuntimeException(sprintf('Status %s not found for project %s', $status, $projectId));
     }
 }
