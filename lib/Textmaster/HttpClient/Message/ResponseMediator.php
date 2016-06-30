@@ -12,7 +12,6 @@
 namespace Textmaster\HttpClient\Message;
 
 use GuzzleHttp\Psr7\Response;
-use Textmaster\Exception\ErrorException;
 
 class ResponseMediator
 {
@@ -23,20 +22,44 @@ class ResponseMediator
      *
      * @return \GuzzleHttp\Psr7\Stream|mixed|\Psr\Http\Message\StreamInterface
      *
-     * @throws ErrorException
+     * @throws \LogicException
      */
     public static function getContent(Response $response)
     {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 300) {
+            self::createException($response);
+        }
+
         $body = $response->getBody();
-        if ($response->hasHeader('Content-Type') && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0) {
+
+        if ($response->hasHeader('Content-Type')
+            && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0
+        ) {
             $content = json_decode($body->getContents(), true);
             if (array_key_exists('errors', $content)) {
-                throw new \LogicException(serialize($content['errors']), $response->getStatusCode());
+                self::createException($response);
             }
 
             return $content;
         }
 
         return $body;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @throws \LogicException
+     */
+    protected static function createException(Response $response)
+    {
+        $content = json_decode($response->getBody()->getContents(), true);
+        if (array_key_exists('errors', $content)) {
+            $message = json_encode($content['errors'], JSON_UNESCAPED_UNICODE);
+        } else {
+            $message = $response->getReasonPhrase();
+        }
+        throw new \LogicException($message, $response->getStatusCode());
     }
 }

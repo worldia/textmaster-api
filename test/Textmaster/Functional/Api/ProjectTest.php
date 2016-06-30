@@ -134,6 +134,26 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         return $result['id'];
     }
+    
+    /**
+     * @test
+     */
+    public function shouldNotCreateInvalidProject()
+    {
+        $params = [
+            'name' => 'Created project for functional test',
+            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
+            'options' => [
+                'language_level' => 'foobar',
+            ],
+            'language_from' => 'en',
+            'language_to' => 'fr',
+            'category' => 'C021'
+        ];
+
+        $this->setExpectedExceptionRegExp(\LogicException::class, '/"level_name":\["doit être rempli\(e\)"\]/');
+        $this->api->create($params);
+    }
 
     /**
      * @test
