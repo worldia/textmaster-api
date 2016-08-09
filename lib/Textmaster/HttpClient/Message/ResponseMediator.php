@@ -37,7 +37,7 @@ class ResponseMediator
             && strpos($response->getHeader('Content-Type')[0], 'application/json') === 0
         ) {
             $content = json_decode($body->getContents(), true);
-            if (array_key_exists('errors', $content)) {
+            if (is_array($content) && array_key_exists('errors', $content)) {
                 self::createException($response);
             }
 
@@ -55,7 +55,7 @@ class ResponseMediator
     protected static function createException(Response $response)
     {
         $content = json_decode($response->getBody()->getContents(), true);
-        if (array_key_exists('errors', $content)) {
+        if (is_array($content) && array_key_exists('errors', $content)) {
             $message = json_encode($content['errors'], JSON_UNESCAPED_UNICODE);
         } else {
             $message = $response->getReasonPhrase();
