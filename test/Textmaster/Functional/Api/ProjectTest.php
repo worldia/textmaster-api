@@ -21,7 +21,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     // wait time between calls because the sandbox environment is not as fast as prod
     const WAIT_TIME = 3;
-    
+
     // Unique ID used for created project name
     private static $testId;
 
@@ -32,15 +32,14 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      */
     protected $api;
 
-
     /**
-     * Generate a unique ID when tests starts
+     * Generate a unique ID when tests starts.
      */
     public static function setUpBeforeClass()
     {
         self::$testId = uniqid();
-    }    
-    
+    }
+
     public function setUp()
     {
         parent::setUp();
@@ -134,7 +133,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         return $result['id'];
     }
-    
+
     /**
      * @test
      */
@@ -148,7 +147,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ],
             'language_from' => 'en',
             'language_to' => 'fr',
-            'category' => 'C021'
+            'category' => 'C021',
         ];
 
         $this->setExpectedExceptionRegExp(\LogicException::class, '/"level_name":\["doit être rempli\(e\)"\]/');
@@ -404,7 +403,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param Project $api
-     * @param string  $method method to call
+     * @param string  $method    method to call
      * @param string  $projectId
      */
     private static function spinCall(Project $api, $method, $projectId)
@@ -423,7 +422,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
                 }
             }
             sleep(self::WAIT_TIME);
-            $retry++;
+            ++$retry;
         }
     }
 
@@ -443,7 +442,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             }
             printf('[Expected status %s, found %s] ', $status, $result['status']);
             sleep(self::WAIT_TIME);
-            $retry++;
+            ++$retry;
         }
 
         throw new \RuntimeException(sprintf('Status %s not found for project %s', $status, $projectId));
