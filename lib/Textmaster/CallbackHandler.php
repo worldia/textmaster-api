@@ -102,7 +102,7 @@ class CallbackHandler
     {
         if (array_key_exists('name', $data)) {
             $type = 'project';
-        } elseif (array_key_exists('original_content', $data)) {
+        } elseif (array_key_exists('original_content', $data) || array_key_exists('author_work', $data)) {
             $type = 'document';
         }
 

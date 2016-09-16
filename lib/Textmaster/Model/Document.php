@@ -196,6 +196,10 @@ class Document extends AbstractObject implements DocumentInterface
             return $authorWork['free_text'];
         }
 
+        if (ProjectInterface::ACTIVITY_COPYWRITING === $this->getProject()->getActivity()) {
+            return $authorWork;
+        }
+
         return $this->formatTranslatedContent();
     }
 

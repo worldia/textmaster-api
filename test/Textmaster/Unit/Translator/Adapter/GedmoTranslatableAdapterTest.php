@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Translator\Adapter;
 
+use Textmaster\Model\ProjectInterface;
 use Textmaster\Translator\Adapter\GedmoTranslatableAdapter;
 
 class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +26,7 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
 
         $translatableMock = $this->getMock('Gedmo\Translatable\Translatable', ['getName', 'getId']);
         $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
-        $projectMock = $this->getMock('Textmaster\Model\Project', ['getLanguageFrom'], [], '', false);
+        $projectMock = $this->getMock('Textmaster\Model\Project', ['getLanguageFrom', 'getActivity'], [], '', false);
 
         $translatableMock->expects($this->once())
             ->method('getName')
@@ -41,6 +42,10 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $projectMock->expects($this->once())
             ->method('getLanguageFrom')
             ->willReturn('en');
+
+        $projectMock->expects($this->once())
+            ->method('getActivity')
+            ->willReturn(ProjectInterface::ACTIVITY_TRANSLATION);
 
         $listenerMock->expects($this->once())
             ->method('getListenerLocale')

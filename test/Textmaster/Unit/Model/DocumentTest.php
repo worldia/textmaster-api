@@ -226,6 +226,43 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldGetTranslatedContentForCopywriting()
+    {
+        $projectId = '654321';
+        $values = [
+            'id' => '123456',
+            'title' => 'Document 1',
+            'type' => DocumentInterface::TYPE_KEY_VALUE,
+            'status' => DocumentInterface::STATUS_IN_CREATION,
+            'original_content' => [
+                'key1' => ['original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'],
+                'key2' => ['original_phrase' => 'Text to translate.', 'completed_phrase' => 'Translated text.'],
+            ],
+            'instructions' => 'Translating instructions.',
+            'project_id' => $projectId,
+            'author_work' => [
+                'key1' => 'Translated text.',
+                'key2' => 'Translated text.',
+            ],
+        ];
+
+        $projectMock = $this->getMock('Textmaster\Model\Project', ['getActivity'], [$this->clientMock]);
+        $projectMock->method('getActivity')
+            ->willReturn(ProjectInterface::ACTIVITY_COPYWRITING);
+
+        $document = new Document($this->clientMock, $values);
+
+        $this->assertSame('123456', $document->getId());
+        $this->assertSame('Document 1', $document->getTitle());
+        $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
+        $this->assertSame($values['original_content'], $document->getOriginalContent());
+        $this->assertSame('Translating instructions.', $document->getInstructions());
+        $this->assertSame($values['author_work'], $document->getTranslatedContent());
+    }
+
+    /**
+     * @test
+     */
     public function shouldCreateToLoad()
     {
         $projectId = '654321';

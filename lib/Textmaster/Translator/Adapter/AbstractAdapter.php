@@ -14,6 +14,7 @@ namespace Textmaster\Translator\Adapter;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Model\DocumentInterface;
+use Textmaster\Model\ProjectInterface;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -36,9 +37,10 @@ abstract class AbstractAdapter implements AdapterInterface
     public function create($subject, array $properties, DocumentInterface $document)
     {
         $this->failIfDoesNotSupport($subject);
+        $project = $document->getProject();
 
-        $language = $document->getProject()->getLanguageFrom();
-        $content = $this->getProperties($subject, $properties, $language);
+        $language = $project->getLanguageFrom();
+        $content = $this->getProperties($subject, $properties, $language, $project->getActivity());
 
         $this->setSubjectOnDocument($subject, $document);
 
@@ -54,18 +56,22 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         $subject = $this->getSubjectFromDocument($document);
         $this->failIfDoesNotSupport($subject);
+        $project = $document->getProject();
 
-        $original = $this->compareContent(
-            $subject,
-            $document->getOriginalContent(),
-            $document->getProject()->getLanguageFrom(),
-            true
-        );
+        $original = array();
+        if (ProjectInterface::ACTIVITY_COPYWRITING !== $project->getActivity()) {
+            $original = $this->compareContent(
+                $subject,
+                $document->getOriginalContent(),
+                $project->getLanguageFrom(),
+                true
+            );
+        }
 
         $translated = $this->compareContent(
             $subject,
             $document->getTranslatedContent(),
-            $document->getProject()->getLanguageTo(),
+            $this->getLanguageTo($project),
             false
         );
 
@@ -85,13 +91,31 @@ abstract class AbstractAdapter implements AdapterInterface
 
         /** @var array $properties */
         $properties = $document->getTranslatedContent();
-        $language = $document->getProject()->getLanguageTo();
+
+        $project = $document->getProject();
+        $language = $this->getLanguageTo($project);
 
         $this->setProperties($subject, $properties, $language);
 
         $document->complete($satisfaction, $message);
 
         return $subject;
+    }
+
+    /**
+     * Get project language to.
+     *
+     * @param ProjectInterface $project
+     *
+     * @return string
+     */
+    protected function getLanguageTo(ProjectInterface $project)
+    {
+        if (ProjectInterface::ACTIVITY_TRANSLATION === $project->getActivity()) {
+            return $project->getLanguageTo();
+        }
+
+        return $project->getLanguageFrom();
     }
 
     /**
@@ -107,7 +131,7 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function compareContent($subject, array $content, $language, $original = true)
     {
         $properties = array_keys($content);
-        $values = $this->getProperties($subject, $properties, $language, false);
+        $values = $this->getProperties($subject, $properties, $language);
 
         $diffs = [];
         $renderer = new \Diff_Renderer_Html_SideBySide();
@@ -148,13 +172,14 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param object $subject
      * @param array  $properties Array of 'properties'
      * @param string $language
+     * @param string $activity
      *
      * @return array
      */
-    protected function getProperties($subject, array $properties, $language)
+    protected function getProperties($subject, array $properties, $language, $activity = null)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $holder = $this->getPropertyHolder($subject, $language);
+        $holder = $this->getPropertyHolder($subject, $language, $activity);
 
         $data = [];
         foreach ($properties as $property) {
@@ -203,8 +228,9 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @param object $subject
      * @param string $language
+     * @param string $activity
      *
      * @return mixed
      */
-    abstract protected function getPropertyHolder($subject, $language);
+    abstract protected function getPropertyHolder($subject, $language, $activity = null);
 }

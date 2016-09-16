@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Translator\Adapter;
 
+use Textmaster\Model\ProjectInterface;
 use Textmaster\Translator\Adapter\SyliusTranslatableAdapter;
 use Textmaster\Unit\Mock\MockTranslation;
 
@@ -119,6 +120,10 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->method('getLanguageTo')
             ->willReturn('fr');
 
+        $projectMock->expects($this->once())
+            ->method('getActivity')
+            ->willReturn(ProjectInterface::ACTIVITY_TRANSLATION);
+
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
         $subject = $adapter->complete($documentMock);
 
@@ -137,7 +142,6 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
         $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
         $enTranslationMock = new MockTranslation();
         $enTranslationMock->setName('Name to translate');
@@ -152,7 +156,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $documentMock->expects($this->once())
             ->method('getTranslatedContent')
             ->willReturn(['name' => 'Le nom à traduire']);
-        $documentMock->expects($this->exactly(2))
+        $documentMock->expects($this->once())
             ->method('getProject')
             ->willReturn($projectMock);
 
@@ -162,6 +166,9 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $projectMock->expects($this->once())
             ->method('getLanguageTo')
             ->willReturn('fr');
+        $projectMock->expects($this->exactly(2))
+            ->method('getActivity')
+            ->willReturn(ProjectInterface::ACTIVITY_TRANSLATION);
 
         $managerRegistryMock->expects($this->once())
             ->method('getManagerForClass')

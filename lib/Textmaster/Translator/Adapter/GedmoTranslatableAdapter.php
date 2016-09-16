@@ -39,7 +39,7 @@ class GedmoTranslatableAdapter extends AbstractDoctrineAdapter
     /**
      * {@inheritdoc}
      */
-    protected function getPropertyHolder($subject, $language)
+    protected function getPropertyHolder($subject, $language, $activity = null)
     {
         $listenerLocale = $this->listener->getListenerLocale();
 
