@@ -18,7 +18,7 @@ class SyliusTranslatableAdapter extends AbstractDoctrineAdapter
     /**
      * {@inheritdoc}
      */
-    protected function getPropertyHolder($subject, $language)
+    protected function getPropertyHolder($subject, $language, $activity = null)
     {
         return $subject->translate($language);
     }

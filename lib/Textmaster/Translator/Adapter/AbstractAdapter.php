@@ -179,7 +179,7 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function getProperties($subject, array $properties, $language, $activity = null)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $holder = $this->getPropertyHolder($subject, $language);
+        $holder = $this->getPropertyHolder($subject, $language, $activity);
 
         $data = [];
         foreach ($properties as $property) {
@@ -228,8 +228,9 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @param object $subject
      * @param string $language
+     * @param string $activity
      *
      * @return mixed
      */
-    abstract protected function getPropertyHolder($subject, $language);
+    abstract protected function getPropertyHolder($subject, $language, $activity = null);
 }
