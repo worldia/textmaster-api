@@ -194,6 +194,22 @@ interface ProjectInterface extends AbstractObjectInterface
     public function setCallback(array $callback);
 
     /**
+     * Get work template value.
+     *
+     * @return array
+     */
+    public function getWorkTemplate();
+
+    /**
+     * Set work template value.
+     *
+     * @param string $template
+     *
+     * @return ProjectInterface
+     */
+    public function setWorkTemplate($template);
+
+    /**
      * Get documents.
      *
      * @param array $where criteria to filter documents.

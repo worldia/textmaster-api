@@ -117,6 +117,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'language_to' => 'fr',
             'category' => 'C021',
             'project_briefing' => 'This project is only for testing purpose',
+            'work_template' => '1_title_2_paragraphs',
         ];
 
         $result = $this->api->create($params);
@@ -130,6 +131,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
         $this->assertSame('api', $result['creation_channel']);
+        $this->assertSame('1_title_2_paragraphs', $result['work_template']['name']);
 
         return $result['id'];
     }
