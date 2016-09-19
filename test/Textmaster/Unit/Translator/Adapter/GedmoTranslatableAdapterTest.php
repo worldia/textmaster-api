@@ -43,7 +43,7 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->method('getLanguageFrom')
             ->willReturn('en');
 
-        $projectMock->expects($this->once())
+        $projectMock->expects($this->exactly(2))
             ->method('getActivity')
             ->willReturn(ProjectInterface::ACTIVITY_TRANSLATION);
 
