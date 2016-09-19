@@ -39,12 +39,13 @@ abstract class AbstractAdapter implements AdapterInterface
         $this->failIfDoesNotSupport($subject);
         $project = $document->getProject();
 
-        $language = $project->getLanguageFrom();
-        $content = $this->getProperties($subject, $properties, $language, $project->getActivity());
-
         $this->setSubjectOnDocument($subject, $document);
 
-        $document->setOriginalContent($content);
+        if (ProjectInterface::ACTIVITY_COPYWRITING !== $project->getActivity()) {
+            $language = $project->getLanguageFrom();
+            $content = $this->getProperties($subject, $properties, $language, $project->getActivity());
+            $document->setOriginalContent($content);
+        }
 
         return $document;
     }
