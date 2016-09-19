@@ -189,15 +189,15 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslatedContent()
+    public function getSourceContent()
     {
         $authorWork = $this->getProperty('author_work');
-        if (self::TYPE_STANDARD === $this->getType() && !empty($authorWork)) {
-            return $authorWork['free_text'];
-        }
-
         if (ProjectInterface::ACTIVITY_COPYWRITING === $this->getProject()->getActivity()) {
             return $authorWork;
+        }
+
+        if (self::TYPE_STANDARD === $this->getType() && !empty($authorWork)) {
+            return $authorWork['free_text'];
         }
 
         return $this->formatTranslatedContent();
@@ -209,6 +209,14 @@ class Document extends AbstractObject implements DocumentInterface
     public function getWordCount()
     {
         return $this->getProperty('word_count');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWordCount($count)
+    {
+        return $this->setProperty('word_count', $count);
     }
 
     /**

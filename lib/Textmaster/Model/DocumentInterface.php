@@ -122,11 +122,11 @@ interface DocumentInterface extends AbstractObjectInterface
     public function getType();
 
     /**
-     * Get translated content.
+     * Get source content.
      *
      * @return string|array
      */
-    public function getTranslatedContent();
+    public function getSourceContent();
 
     /**
      * Get word count.

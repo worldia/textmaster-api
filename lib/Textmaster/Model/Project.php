@@ -40,6 +40,7 @@ class Project extends AbstractObject implements ProjectInterface
         'project_briefing',
         'options',
         'callback',
+        'work_template',
     ];
 
     /**
@@ -195,6 +196,22 @@ class Project extends AbstractObject implements ProjectInterface
         }
 
         $this->data['callback'] = $callback;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWorkTemplate()
+    {
+        return $this->getProperty('work_template');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWorkTemplate($template)
+    {
+        return $this->setProperty('work_template', $template);
     }
 
     /**

@@ -187,7 +187,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame('Text to translate.', $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
-        $this->assertSame('Translated text.', $document->getTranslatedContent());
+        $this->assertSame('Translated text.', $document->getSourceContent());
     }
 
     /**
@@ -220,7 +220,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame($values['original_content'], $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
-        $this->assertSame($values['author_work'], $document->getTranslatedContent());
+        $this->assertSame($values['author_work'], $document->getSourceContent());
     }
 
     /**
@@ -257,7 +257,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame($values['original_content'], $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
-        $this->assertSame($values['author_work'], $document->getTranslatedContent());
+        $this->assertSame($values['author_work'], $document->getSourceContent());
     }
 
     /**
