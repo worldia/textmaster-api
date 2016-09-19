@@ -71,7 +71,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
         $translated = $this->compareContent(
             $subject,
-            $document->getTranslatedContent(),
+            $document->getSourceContent(),
             $this->getLanguageTo($project),
             false
         );
@@ -91,7 +91,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $this->failIfDoesNotSupport($subject);
 
         /** @var array $properties */
-        $properties = $document->getTranslatedContent();
+        $properties = $document->getSourceContent();
 
         $project = $document->getProject();
         $language = $this->getLanguageTo($project);

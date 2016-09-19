@@ -189,7 +189,7 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslatedContent()
+    public function getSourceContent()
     {
         $authorWork = $this->getProperty('author_work');
         if (ProjectInterface::ACTIVITY_COPYWRITING === $this->getProject()->getActivity()) {
