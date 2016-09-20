@@ -38,9 +38,9 @@ class HttpClient implements HttpClientInterface
      * @var array
      */
     protected $options = [
-        'base_uri' => 'http://api.textmaster.com/%s',
+        'base_uri'    => 'http://api.textmaster.com/%s',
         'api_version' => 'v1',
-        'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
+        'user_agent'  => 'textmaster-api (http://github.com/worldia/textmaster-api)',
     ];
 
     /**
@@ -69,12 +69,19 @@ class HttpClient implements HttpClientInterface
         $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $secret, $options) {
             $date = new \DateTime('now', new \DateTimeZone('UTC'));
 
-            return $request
+            $request = $request
                 ->withHeader('User-Agent', $options['user_agent'])
                 ->withHeader('Apikey', $key)
                 ->withHeader('Date', $date->format('Y-m-d H:i:s'))
-                ->withHeader('Signature', sha1($secret.$date->format('Y-m-d H:i:s')))
-            ;
+                ->withHeader('Signature', sha1($secret . $date->format('Y-m-d H:i:s')));
+
+            if (isset($options['headers'])) {
+                foreach ($options['headers'] as $headerKey => $headerValue) {
+                    $request = $request->withHeader($headerKey, $headerValue);
+                }
+            }
+
+            return $request;
         }));
 
         $this->options = array_merge($this->options, $options, ['handler' => $stack]);
@@ -191,6 +198,6 @@ class HttpClient implements HttpClientInterface
      */
     protected function getFinalPath($path)
     {
-        return $this->client->getConfig('base_uri')->getPath().'/'.$path;
+        return $this->client->getConfig('base_uri')->getPath() . '/' . $path;
     }
 }
