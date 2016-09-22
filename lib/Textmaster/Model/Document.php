@@ -206,6 +206,19 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
+    public function getTranslatedContent()
+    {
+        $authorWork = $this->getProperty('author_work');
+        if (self::TYPE_STANDARD === $this->getType() && !empty($authorWork)) {
+            return $authorWork['free_text'];
+        }
+
+        return $this->formatTranslatedContent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getWordCount()
     {
         return $this->getProperty('word_count');
