@@ -98,7 +98,11 @@ abstract class AbstractAdapter implements AdapterInterface
 
         $this->setProperties($subject, $properties, $language);
 
-        $document->complete($satisfaction, $message);
+        try {
+            $document->complete($satisfaction, $message);
+        } catch (\Exception $e) {
+            // @todo: deal with the exception
+        }
 
         return $subject;
     }
