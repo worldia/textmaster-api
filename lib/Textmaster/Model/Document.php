@@ -206,6 +206,14 @@ class Document extends AbstractObject implements DocumentInterface
     /**
      * {@inheritdoc}
      */
+    public function getTranslatedContent()
+    {
+        return $this->getSourceContent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getWordCount()
     {
         return $this->getProperty('word_count');

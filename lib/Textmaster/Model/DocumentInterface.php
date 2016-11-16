@@ -129,6 +129,15 @@ interface DocumentInterface extends AbstractObjectInterface
     public function getSourceContent();
 
     /**
+     * Get translated content.
+     *
+     * @deprecated since version 0.2.7, to be removed in 0.3. Use getSourceContent().
+     *
+     * @return string|array
+     */
+    public function getTranslatedContent();
+
+    /**
      * Get word count.
      *
      * @return int
