@@ -36,9 +36,9 @@ abstract class AbstractDoctrineAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}
      */
-    public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
+    public function pull(DocumentInterface $document)
     {
-        $subject = parent::complete($document, $satisfaction, $message);
+        $subject = parent::pull($document);
 
         $this->persist($subject);
 

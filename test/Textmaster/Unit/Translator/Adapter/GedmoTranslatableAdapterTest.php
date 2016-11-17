@@ -52,7 +52,7 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn('en');
 
         $adapter = new GedmoTranslatableAdapter($managerRegistryMock, $listenerMock);
-        $adapter->create($translatableMock, ['name'], $documentMock);
+        $adapter->push($translatableMock, ['name'], $documentMock);
     }
 
     /**
@@ -95,6 +95,6 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->method('refresh');
 
         $adapter = new GedmoTranslatableAdapter($managerRegistryMock, $listenerMock);
-        $adapter->create($translatableMock, ['name'], $documentMock);
+        $adapter->push($translatableMock, ['name'], $documentMock);
     }
 }

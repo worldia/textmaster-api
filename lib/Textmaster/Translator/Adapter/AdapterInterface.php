@@ -18,12 +18,14 @@ interface AdapterInterface
     /**
      * Whether the adapter supports the given subject.
      *
+     * @param mixed $subject
+     *
      * @return bool
      */
     public function supports($subject);
 
     /**
-     * Launch a translation.
+     * Push document to textmaster.
      *
      * @param mixed             $subject
      * @param array             $properties
@@ -31,7 +33,7 @@ interface AdapterInterface
      *
      * @return DocumentInterface
      */
-    public function create($subject, array $properties, DocumentInterface $document);
+    public function push($subject, array $properties, DocumentInterface $document);
 
     /**
      * Make a comparison between textmaster document and its subject.
@@ -43,15 +45,24 @@ interface AdapterInterface
     public function compare(DocumentInterface $document);
 
     /**
-     * Complete a translation.
+     * Complete a document.
      *
      * @param DocumentInterface $document
      * @param string            $satisfaction
      * @param string            $message
      *
-     * @return mixed
+     * @return DocumentInterface
      */
     public function complete(DocumentInterface $document, $satisfaction = null, $message = null);
+
+    /**
+     * Pull document from textmaster.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed The subject passed on creation.
+     */
+    public function pull(DocumentInterface $document);
 
     /**
      * Get subject from document.

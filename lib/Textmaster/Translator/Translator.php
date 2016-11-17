@@ -54,7 +54,7 @@ class Translator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function create($subject, $documentOrParams = null, $save = true)
+    public function push($subject, $documentOrParams = null, $save = true)
     {
         $document = $documentOrParams;
 
@@ -66,7 +66,7 @@ class Translator implements TranslatorInterface
 
         foreach ($this->adapters as $adapter) {
             if ($adapter->supports($subject)) {
-                $document = $adapter->create($subject, $properties, $document);
+                $document = $adapter->push($subject, $properties, $document);
 
                 if ($save) {
                     $document->save();
@@ -103,6 +103,22 @@ class Translator implements TranslatorInterface
         foreach ($this->adapters as $adapter) {
             try {
                 return $adapter->complete($document, $satisfaction, $message);
+            } catch (UnexpectedTypeException $e) {
+                continue;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('No adapter found for document "%s".', $document->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pull(DocumentInterface $document)
+    {
+        foreach ($this->adapters as $adapter) {
+            try {
+                return $adapter->pull($document);
             } catch (UnexpectedTypeException $e) {
                 continue;
             }

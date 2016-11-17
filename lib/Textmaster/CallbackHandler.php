@@ -107,7 +107,7 @@ class CallbackHandler
         }
 
         if (!isset($type)) {
-            throw new InvalidArgumentException(sprintf('Couldnt determine callback type from "%s".', serialize($data)));
+            throw new InvalidArgumentException(sprintf('Could not determine callback type from "%s".', serialize($data)));
         }
 
         $name = sprintf('textmaster.%s.%s', $type, $data['status']);

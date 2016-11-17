@@ -37,11 +37,11 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true);
 
         $adapterMock->expects($this->once())
-            ->method('create')
+            ->method('push')
             ->willReturn($documentMock);
 
         $translator = new Translator($adapters, $mappingProviderMock);
-        $translator->create($subjectMock, $documentMock);
+        $translator->push($subjectMock, $documentMock);
     }
 
     /**
@@ -70,11 +70,11 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn(true);
 
         $adapterMock->expects($this->once())
-            ->method('create')
+            ->method('push')
             ->willReturn($documentMock);
 
         $translator = new Translator($adapters, $mappingProviderMock, $documentFactoryMock);
-        $translator->create($subjectMock);
+        $translator->push($subjectMock);
     }
 
     /**
@@ -192,7 +192,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false);
 
         $translator = new Translator($adapters, $mappingProviderMock);
-        $translator->create($subjectMock, $documentMock);
+        $translator->push($subjectMock, $documentMock);
     }
 
     /**
@@ -223,7 +223,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $subjectMock = $this->getMock('Subject');
 
         $translator = new Translator($adapters, $mappingProviderMock);
-        $translator->create($subjectMock);
+        $translator->push($subjectMock);
     }
 
     /**

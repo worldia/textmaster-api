@@ -72,7 +72,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(1);
 
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
-        $adapter->create($translatableMock, ['name'], $documentMock);
+        $adapter->push($translatableMock, ['name'], $documentMock);
     }
 
     /**
@@ -125,7 +125,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(ProjectInterface::ACTIVITY_TRANSLATION);
 
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
-        $subject = $adapter->complete($documentMock);
+        $subject = $adapter->pull($documentMock);
 
         $this->assertSame($translatableMock, $subject);
         $this->assertSame('my translation', $translationMock->getName());

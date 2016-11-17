@@ -34,7 +34,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function create($subject, array $properties, DocumentInterface $document)
+    public function push($subject, array $properties, DocumentInterface $document)
     {
         $this->failIfDoesNotSupport($subject);
         $project = $document->getProject();
@@ -87,6 +87,16 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function complete(DocumentInterface $document, $satisfaction = null, $message = null)
     {
+        $document->complete($satisfaction, $message);
+
+        return $document;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pull(DocumentInterface $document)
+    {
         $subject = $this->getSubjectFromDocument($document);
         $this->failIfDoesNotSupport($subject);
 
@@ -97,8 +107,6 @@ abstract class AbstractAdapter implements AdapterInterface
         $language = $this->getLanguageTo($project);
 
         $this->setProperties($subject, $properties, $language);
-
-        $document->complete($satisfaction, $message);
 
         return $subject;
     }
