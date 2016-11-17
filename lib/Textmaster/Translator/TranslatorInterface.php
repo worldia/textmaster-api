@@ -16,7 +16,7 @@ use Textmaster\Model\DocumentInterface;
 interface TranslatorInterface
 {
     /**
-     * Launch a translation.
+     * Push document to textmaster.
      *
      * @param mixed                   $subject
      * @param mixed|DocumentInterface $documentOrParams Either pass a document instance
@@ -25,7 +25,7 @@ interface TranslatorInterface
      *
      * @return DocumentInterface
      */
-    public function create($subject, $documentOrParams = null, $save = true);
+    public function push($subject, $documentOrParams = null, $save = true);
 
     /**
      * Make a comparison between textmaster document and its subject.
@@ -37,15 +37,24 @@ interface TranslatorInterface
     public function compare(DocumentInterface $document);
 
     /**
-     * Complete a translation.
+     * Complete a document.
      *
      * @param DocumentInterface $document
      * @param string            $satisfaction
      * @param string            $message
      *
-     * @return mixed The subject passed on creation.
+     * @return DocumentInterface
      */
     public function complete(DocumentInterface $document, $satisfaction = null, $message = null);
+
+    /**
+     * Pull document from textmaster.
+     *
+     * @param DocumentInterface $document
+     *
+     * @return mixed The subject passed on creation.
+     */
+    public function pull(DocumentInterface $document);
 
     /**
      * Get subject from document.

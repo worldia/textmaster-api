@@ -15,8 +15,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CallbackEvent extends GenericEvent
 {
+    /**
+     * @var string
+     */
     private $eventName;
 
+    /**
+     * Constructor.
+     *
+     * @param string $eventName
+     * @param array  $subject
+     * @param mixed  $data
+     */
     public function __construct($eventName, $subject, $data)
     {
         parent::__construct($subject, $data);
@@ -24,6 +34,11 @@ class CallbackEvent extends GenericEvent
         $this->eventName = $eventName;
     }
 
+    /**
+     * Get name.
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->eventName;
