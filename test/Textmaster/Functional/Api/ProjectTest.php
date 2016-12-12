@@ -19,10 +19,16 @@ use Textmaster\Model\ProjectInterface;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
-    // wait time between calls because the sandbox environment is not as fast as prod
+    /**
+     * Wait time between calls because the sandbox environment is not as fast as prod.
+     */
     const WAIT_TIME = 3;
 
-    // Unique ID used for created project name
+    /**
+     * Unique ID used for created project name.
+     *
+     * @var string
+     */
     private static $testId;
 
     /**
@@ -40,6 +46,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         self::$testId = uniqid();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -50,6 +59,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->api = $client->project();
     }
 
+    /**
+     * Cancel and archive projects created during tests.
+     */
     public static function tearDownAfterClass()
     {
         sleep(self::WAIT_TIME);
@@ -162,7 +174,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldUpdateProject($projectId)
     {
@@ -192,8 +204,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      * @depends shouldCreateProject
      *
      * @param string $projectId
-     *
-     * @return array
      */
     public function shouldShowProject($projectId)
     {
@@ -218,7 +228,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldAddDocument($projectId)
     {
@@ -246,7 +256,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldLaunchProject($projectId)
     {
@@ -273,7 +283,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldPauseProject($projectId)
     {
@@ -292,7 +302,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldResumeProject($projectId)
     {
@@ -311,7 +321,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldCancelProject($projectId)
     {
@@ -338,7 +348,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldArchiveProject($projectId)
     {
@@ -357,7 +367,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $projectId
      *
-     * @return array
+     * @return string
      */
     public function shouldUnarchiveProject($projectId)
     {

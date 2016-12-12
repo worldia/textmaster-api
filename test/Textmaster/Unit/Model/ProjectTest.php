@@ -80,7 +80,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $category = 'C014';
         $briefing = 'Lorem ipsum...';
         $options = ['language_level' => 'premium'];
-        $callback = [ProjectInterface::CALLBACK_KEY => 'http://callback.url'];
+        $callback = [ProjectInterface::CALLBACK_PROJECT_IN_PROGRESS => 'http://callback.url'];
 
         $project = new Project($this->clientMock);
         $project

@@ -20,6 +20,6 @@ class SyliusTranslatableAdapter extends AbstractDoctrineAdapter
      */
     protected function getPropertyHolder($subject, $language, $activity = null)
     {
-        return $subject->translate($language);
+        return $subject->getTranslation($language);
     }
 }

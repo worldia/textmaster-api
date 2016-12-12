@@ -10,7 +10,7 @@
         { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
     ],
     "require": {
-        "php":                       ">=5.5.0",
+        "php":                       ">=5.6.0",
         "ext-curl":                  "*",
         "guzzlehttp/guzzle":         "^6.2",
         "phpspec/php-diff":          "^1.0"
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     }
 }
