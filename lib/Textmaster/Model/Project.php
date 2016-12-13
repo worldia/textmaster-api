@@ -166,13 +166,21 @@ class Project extends AbstractObject implements ProjectInterface
     {
         $activities = self::getAllowedActivities();
         if (!in_array($activity, $activities, true)) {
-            throw new InvalidArgumentException(sprintf(
-                'Activity must me one of "%s".',
-                implode('","', $activities)
-            ));
+            throw new InvalidArgumentException(sprintf('Activity must be one of "%s".', implode('","', $activities)));
         }
 
         return $this->setProperty('ctype', $activity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getAllowedCallbacks()
+    {
+        return [
+            self::CALLBACK_PROJECT_IN_PROGRESS,
+            self::CALLBACK_PROJECT_TM_COMPLETED,
+        ];
     }
 
     /**
@@ -188,11 +196,14 @@ class Project extends AbstractObject implements ProjectInterface
      */
     public function setCallback(array $callback)
     {
-        if (!array_key_exists(self::CALLBACK_KEY, $callback) || 1 < count($callback)) {
-            throw new InvalidArgumentException(sprintf(
-                'Only key for array callback allowed is "%s"',
-                self::CALLBACK_KEY
-            ));
+        $callbacks = self::getAllowedCallbacks();
+        foreach ($callback as $key => $value) {
+            if (!in_array($key, $callbacks, true)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Callback keys must be one of "%s".',
+                    implode('","', $callbacks)
+                ));
+            }
         }
 
         $this->data['callback'] = $callback;

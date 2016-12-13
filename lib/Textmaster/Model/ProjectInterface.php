@@ -13,7 +13,9 @@ namespace Textmaster\Model;
 
 use Pagerfanta\Pagerfanta;
 use Textmaster\Exception\BadMethodCallException;
+use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\ObjectImmutableException;
+use Textmaster\Exception\UnexpectedTypeException;
 
 interface ProjectInterface extends AbstractObjectInterface
 {
@@ -28,7 +30,8 @@ interface ProjectInterface extends AbstractObjectInterface
     const STATUS_PAUSED = 'paused';
     const STATUS_CANCELED = 'canceled';
 
-    const CALLBACK_KEY = 'project_in_progress';
+    const CALLBACK_PROJECT_IN_PROGRESS = 'project_in_progress';
+    const CALLBACK_PROJECT_TM_COMPLETED = 'project_tm_completed';
 
     /**
      * Save the project.
@@ -176,6 +179,13 @@ interface ProjectInterface extends AbstractObjectInterface
      * @throws ObjectImmutableException If project was already launched
      */
     public function setOptions(array $options);
+
+    /**
+     * Get list of all allowed callbacks.
+     *
+     * @return array
+     */
+    public static function getAllowedCallbacks();
 
     /**
      * Get API callback values.

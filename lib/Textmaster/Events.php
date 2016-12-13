@@ -127,6 +127,12 @@ final class Events
     const PROJECT_IN_PROGRESS = 'textmaster.project.in_progress';
 
     /**
+     * Triggered when project option "translation_memory" is completed.
+     * Useful for asynchronous launching.
+     */
+    const PROJECT_TM_COMPLETED = 'textmaster.project.tm_completed';
+
+    /**
      * Get all existing events for documents.
      *
      * @return array
@@ -158,6 +164,7 @@ final class Events
     {
         return [
             self::PROJECT_IN_PROGRESS,
+            self::PROJECT_TM_COMPLETED,
         ];
     }
 }

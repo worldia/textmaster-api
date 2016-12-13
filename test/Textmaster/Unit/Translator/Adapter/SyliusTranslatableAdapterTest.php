@@ -50,7 +50,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
     public function shouldCreate()
     {
         $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
         $translationMock->setName('Translated name');
         $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
@@ -65,7 +65,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn('en');
 
         $translatableMock->expects($this->once())
-            ->method('translate')
+            ->method('getTranslation')
             ->willReturn($translationMock);
         $translatableMock->expects($this->once())
             ->method('getId')
@@ -87,7 +87,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
         $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
 
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'translate', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
+        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
 
         $documentMock->expects($this->once())
@@ -113,7 +113,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ->willReturn($translatableMock);
 
         $translatableMock->expects($this->once())
-            ->method('translate')
+            ->method('getTranslation')
             ->willReturn($translationMock);
 
         $projectMock->expects($this->once())
@@ -187,7 +187,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
             ['fr', $frTranslationMock],
         ];
         $translatableMock->expects($this->exactly(2))
-            ->method('translate')
+            ->method('getTranslation')
             ->will($this->returnValueMap($map));
 
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
