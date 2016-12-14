@@ -130,7 +130,7 @@ final class Events
      * Triggered when project option "translation_memory" is completed.
      * Useful for asynchronous launching.
      */
-    const PROJECT_TM_COMPLETED = 'textmaster.project.tm_completed';
+    const PROJECT_MEMORY_COMPLETED = 'textmaster.project.tm_completed';
 
     /**
      * Get all existing events for documents.
@@ -164,7 +164,7 @@ final class Events
     {
         return [
             self::PROJECT_IN_PROGRESS,
-            self::PROJECT_TM_COMPLETED,
+            self::PROJECT_MEMORY_COMPLETED,
         ];
     }
 }

@@ -179,7 +179,7 @@ class Project extends AbstractObject implements ProjectInterface
     {
         return [
             self::CALLBACK_PROJECT_IN_PROGRESS,
-            self::CALLBACK_PROJECT_TM_COMPLETED,
+            self::CALLBACK_PROJECT_MEMORY_COMPLETED,
         ];
     }
 
