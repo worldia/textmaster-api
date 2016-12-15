@@ -86,19 +86,20 @@ class CallbackHandler
         }
 
         $data = json_decode($request->getContent(), true);
-        $event = $this->getEvent($data);
+        $event = $this->getEvent($data, $request->get('event'));
 
         $this->dispatcher->dispatch($event->getName(), $event);
     }
 
     /**
-     * Get event name and object from request data.
+     * Get event from request data.
      *
-     * @param array $data
+     * @param array       $data
+     * @param string|null $event
      *
      * @return CallbackEvent
      */
-    private function getEvent(array $data)
+    private function getEvent(array $data, $event = null)
     {
         if (array_key_exists('name', $data)) {
             $type = 'project';
@@ -110,7 +111,11 @@ class CallbackHandler
             throw new InvalidArgumentException(sprintf('Could not determine callback type from "%s".', serialize($data)));
         }
 
-        $name = sprintf('textmaster.%s.%s', $type, $data['status']);
+        if (null === $event) {
+            $event = $data['status'];
+        }
+
+        $name = sprintf('textmaster.%s.%s', $type, $event);
         $resource = new $this->classes[$type]($this->client, $data);
 
         return new CallbackEvent($name, $resource, $data);

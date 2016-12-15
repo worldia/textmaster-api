@@ -24,6 +24,7 @@ interface ProjectInterface extends AbstractObjectInterface
     const ACTIVITY_PROOFREADING = 'proofreading';
 
     const STATUS_IN_CREATION = 'in_creation';
+    const STATUS_MEMORY_COMPLETED = 'tm_completed';
     const STATUS_IN_PROGRESS = 'in_progress';
     const STATUS_IN_REVIEW = 'in_review';
     const STATUS_COMPLETED = 'completed';
@@ -31,7 +32,7 @@ interface ProjectInterface extends AbstractObjectInterface
     const STATUS_CANCELED = 'canceled';
 
     const CALLBACK_PROJECT_IN_PROGRESS = 'project_in_progress';
-    const CALLBACK_PROJECT_TM_COMPLETED = 'project_tm_completed';
+    const CALLBACK_PROJECT_MEMORY_COMPLETED = 'project_tm_completed';
 
     /**
      * Save the project.
