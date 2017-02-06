@@ -182,6 +182,24 @@ interface ProjectInterface extends AbstractObjectInterface
     public function setOptions(array $options);
 
     /**
+     * Get textmasters.
+     *
+     * @return array
+     */
+    public function getTextmasters();
+
+    /**
+     * Set textmasters.
+     *
+     * @param array $textmasters
+     *
+     * @return ProjectInterface
+     *
+     * @throws ObjectImmutableException If project was already launched
+     */
+    public function setTextmasters(array $textmasters);
+
+    /**
      * Get list of all allowed callbacks.
      *
      * @return array

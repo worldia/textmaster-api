@@ -125,11 +125,14 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'options' => [
                 'language_level' => 'premium',
             ],
-            'language_from' => 'en',
-            'language_to' => 'fr',
+            'language_from' => 'fr',
+            'language_to' => 'en',
             'category' => 'C021',
             'project_briefing' => 'This project is only for testing purpose',
             'work_template' => '1_title_2_paragraphs',
+            'textmasters' => [
+                '55c3763e656462000b000027'
+            ],
         ];
 
         $result = $this->api->create($params);
@@ -137,13 +140,14 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Created project for functional test', $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame('C021', $result['category']);
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
         $this->assertSame('api', $result['creation_channel']);
         $this->assertSame('1_title_2_paragraphs', $result['work_template']['name']);
+        $this->assertSame(['55c3763e656462000b000027'], $result['textmasters']);
 
         return $result['id'];
     }
@@ -189,8 +193,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame('C021', $result['category']);
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
@@ -214,8 +218,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame('C021', $result['category']);
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
@@ -267,8 +271,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame('C021', $result['category']);
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_IN_CREATION, $result['status']);
@@ -332,8 +336,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(self::$testId, $result['name']);
         $this->assertSame(ProjectInterface::ACTIVITY_TRANSLATION, $result['ctype']);
         $this->assertSame('premium', $result['options']['language_level']);
-        $this->assertSame('en', $result['language_from']);
-        $this->assertSame('fr', $result['language_to']);
+        $this->assertSame('fr', $result['language_from']);
+        $this->assertSame('en', $result['language_to']);
         $this->assertSame('C021', $result['category']);
         $this->assertSame('This project is only for testing purpose', $result['project_briefing']);
         $this->assertSame(ProjectInterface::STATUS_CANCELED, $result['status']);
