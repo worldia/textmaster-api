@@ -41,6 +41,7 @@ class Project extends AbstractObject implements ProjectInterface
         'options',
         'callback',
         'work_template',
+        'textmasters',
     ];
 
     /**
@@ -142,6 +143,22 @@ class Project extends AbstractObject implements ProjectInterface
     /**
      * {@inheritdoc}
      */
+    public function getTextmasters()
+    {
+        return $this->getProperty('textmasters');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTextmasters(array $textmasters)
+    {
+        return $this->setProperty('textmasters', $textmasters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getAllowedActivities()
     {
         return [
@@ -207,6 +224,8 @@ class Project extends AbstractObject implements ProjectInterface
         }
 
         $this->data['callback'] = $callback;
+
+        return $this;
     }
 
     /**
