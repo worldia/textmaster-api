@@ -34,7 +34,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'category' => 'C014',
             'project_briefing' => 'Lorem ipsum...',
             'options' => ['language_level' => 'premium'],
-            'textmasters' => ['A-3727-TM'],
+            'textmasters' => ['55c3763e656462000b000027'],
         ];
         $updateValues = [
             'id' => '123456',
@@ -46,7 +46,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'category' => 'C014',
             'project_briefing' => 'Lorem ipsum...',
             'options' => ['language_level' => 'premium'],
-            'textmasters' => ['A-3727-TM'],
+            'textmasters' => ['55c3763e656462000b000027'],
         ];
 
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
@@ -83,7 +83,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $briefing = 'Lorem ipsum...';
         $options = ['language_level' => 'premium'];
         $callback = [ProjectInterface::CALLBACK_PROJECT_IN_PROGRESS => 'http://callback.url'];
-        $textmasters = ['53d7bf7c53ecaaf8aa000514'];
+        $textmasters = ['55c3763e656462000b000027'];
 
         $project = new Project($this->clientMock);
         $project
@@ -125,7 +125,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $category = 'C014';
         $briefing = 'Lorem ipsum...';
         $options = ['language_level' => 'premium'];
-        $textmasters = ['A-3727-TM'];
+        $textmasters = ['55c3763e656462000b000027'];
 
         $values = [
             'id' => $id,
