@@ -13,6 +13,7 @@ namespace Textmaster\Model;
 
 use Pagerfanta\Pagerfanta;
 use Textmaster\Exception\BadMethodCallException;
+use Textmaster\Exception\ErrorException;
 use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\ObjectImmutableException;
 use Textmaster\Exception\UnexpectedTypeException;
@@ -268,6 +269,18 @@ interface ProjectInterface extends AbstractObjectInterface
      * @throws InvalidArgumentException If a given document relates to a different project.
      */
     public function addDocuments(array $documents);
+
+    /**
+     * Get all my authors who can do this project
+     *
+     * @param string|null $status Possible values: uncategorized, my_textmaster, blacklisted
+     *
+     * @return AuthorInterface[]
+     *
+     * @throws BadMethodCallException If the project has no id.
+     * @throws ErrorException If none of my authors can do the project.
+     */
+    public function getPotentialAuthors($status = null);
 
     /**
      * Launch the project asynchronously.

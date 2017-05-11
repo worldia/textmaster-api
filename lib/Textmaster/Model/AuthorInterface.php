@@ -19,4 +19,20 @@ interface AuthorInterface extends AbstractObjectInterface
      * @return AuthorInterface
      */
     public function save();
+
+    /**
+     * Get author ID
+     *
+     * @return string
+     */
+    public function getAuthorId();
+
+    /**
+     * Set author ID
+     *
+     * @param string $authorId
+     *
+     * @return AuthorInterface
+     */
+    public function setAuthorId($authorId);
 }

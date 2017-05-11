@@ -15,6 +15,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Textmaster\Events;
 use Textmaster\Exception\BadMethodCallException;
+use Textmaster\Exception\ErrorException;
 use Textmaster\Exception\InvalidArgumentException;
 use Textmaster\Exception\UnexpectedTypeException;
 use Textmaster\Pagination\PagerfantaAdapter;
@@ -314,6 +315,32 @@ class Project extends AbstractObject implements ProjectInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPotentialAuthors($status = null)
+    {
+        if (null === $id = $this->getId()) {
+            throw new BadMethodCallException(
+                'The project must be saved before getting authors who can do it.'
+            );
+        }
+
+        $results = [];
+        $nextPage = 0;
+
+        while (null !== $nextPage) {
+            $response = $this->getApi()->authors($id)->setPage($nextPage + 1)->all($status);
+
+            $nextPage = $response['next_page'];
+            $results = array_merge($results, array_map(function ($author) {
+                return new Author($this->client, $author);
+            }, $response['my_authors']));
+        }
+
+        return $results;
     }
 
     /**
