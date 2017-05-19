@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Model;
 
+use Textmaster\Model\AuthorInterface;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\Project;
 use Textmaster\Model\ProjectInterface;
@@ -49,9 +50,43 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'textmasters' => ['55c3763e656462000b000027'],
         ];
 
+        $authors = [
+            'total_pages' => 1,
+            'count' => 1,
+            'page' => 1,
+            'per_page' => 20,
+            'previous_page' => null,
+            'next_page' => null,
+            'my_authors' => [
+                [
+                    'description' => '',
+                    'tags' => [],
+                    'status' => 'my_textmaster',
+                    'id' => '5743286d28cf7f00031eb4c9',
+                    'author_id' => '55c3763e656462000b000027',
+                    'author_ref' => 'A-3727-TM',
+                    'author_name' => 'Test',
+                    'latest_activity' => '2017-02-06 16:42:03 UTC',
+                    'created_at' => [
+                        'day' => 23,
+                        'month' => 5,
+                        'year' => 2016,
+                        'full' => '2016-05-23 15:57:33 UTC',
+                    ],
+                    'updated_at' => [
+                        'day' => 6,
+                        'month' => 2,
+                        'year' => 2017,
+                        'full' => '2017-02-06 14:06:41 UTC',
+                    ]
+                ]
+            ]
+        ];
+
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch'], [$clientMock]);
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch', 'authors'], [$clientMock]);
         $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
+        $projectAuthorApiMock = $this->getMock('Textmaster\Api\Project\Author', ['all'], [$clientMock, 123456]);
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);
@@ -64,6 +99,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $projectApiMock->method('documents')
             ->willReturn($documentApiMock);
+
+        $projectApiMock->method('authors')
+            ->willReturn($projectAuthorApiMock);
+
+        $projectAuthorApiMock->method('all')
+            ->willReturn($authors);
 
         $this->clientMock = $clientMock;
         $this->projectApiMock = $projectApiMock;
@@ -169,6 +210,33 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $project->save();
 
         $this->assertSame('Project Beta', $project->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetPotentialAuthors()
+    {
+        $project = new Project($this->clientMock, '123456');
+        $authors = $project->getPotentialAuthors();
+
+        $this->assertInternalType('array', $authors);
+        $this->assertCount(1, $authors);
+
+        foreach ($authors as $author) {
+            $this->assertInstanceOf(AuthorInterface::class, $author);
+            $this->assertSame('55c3763e656462000b000027', $author->getAuthorId());
+        }
+    }
+
+    /**
+     * @test
+     * @expectedException \Textmaster\Exception\BadMethodCallException
+     */
+    public function shouldNotGetPotentialAuthorsOnUnsaved()
+    {
+        $project = new Project($this->clientMock);
+        $project->getPotentialAuthors();
     }
 
     /**
