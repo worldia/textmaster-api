@@ -21,7 +21,7 @@ Uses [Textmaster API v1](https://www.textmaster.com/documentation). The object A
 ## Installation
 
 ```sh
-$ php composer.phar require worldia/texmaster-api
+$ php composer.phar require worldia/textmaster-api
 ```
 
 ## Basic usage of `php-textmaster-api` client
