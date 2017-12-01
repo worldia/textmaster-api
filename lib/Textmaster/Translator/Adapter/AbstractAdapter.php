@@ -145,6 +145,11 @@ abstract class AbstractAdapter implements AdapterInterface
         $diffs = [];
         $renderer = new \Diff_Renderer_Html_SideBySide();
         foreach ($values as $property => $value) {
+            if (null === $value || empty($value)) {
+                unset($values[$property]);
+                continue;
+            }
+
             $a = [$value];
             $b = [$content[$property]];
             if ($original) {
