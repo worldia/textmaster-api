@@ -11,6 +11,9 @@
 
 namespace Textmaster\Api;
 
+use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\Model\Project as ProjectModel;
+
 /**
  * Locales listing, reference pricings and localized countries.
  *
@@ -61,5 +64,35 @@ class Locale extends AbstractApi
     public function countries($locale)
     {
         return $this->get('public/countries/'.rawurlencode($locale));
+    }
+
+    /**
+     * List all available locales for an ability.
+     *
+     * @param string      $ability Can be one of ProjectInterface::ACTIVITY
+     * @param int         $page
+     * @param string|null $locale
+     *
+     * @return array
+     */
+    public function abilities($ability, $page, $locale = null)
+    {
+        $abilities = ProjectModel::getAllowedActivities();
+        
+        if (!in_array($ability, $abilities)) {
+            throw new InvalidArgumentException('Invalid ability');
+        }
+        
+        if (!is_int($page)) {
+            throw new InvalidArgumentException('Invalid page number');
+        }
+
+        $queryParameters = ['activity' => $ability, 'page' => $page];
+
+        if (null !== $locale) {
+            $queryParameters['locale'] = $locale;
+        }
+
+        return $this->get('clients/abilities', $queryParameters);
     }
 }

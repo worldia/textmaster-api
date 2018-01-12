@@ -11,6 +11,8 @@
 
 namespace Textmaster\Unit\Api;
 
+use Textmaster\Exception\InvalidArgumentException;
+
 class LocaleTest extends TestCase
 {
     /**
@@ -107,6 +109,19 @@ class LocaleTest extends TestCase
             ->will($this->returnValue($expectedArray));
 
         $this->assertSame($expectedArray, $api->countries('fr_FR'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldShowAbilities()
+    {
+        $api = $this->getApiMock();
+
+        $this->setExpectedException('InvalidArgumentException', 'Invalid ability');
+        $api->abilities('invalid', 1);
+        $this->setExpectedException('InvalidArgumentException', 'Invalid page number');
+        $api->abilities('translation', 'foo');
     }
 
     protected function getApiClass()
