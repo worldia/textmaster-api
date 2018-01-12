@@ -169,6 +169,20 @@ class Project extends AbstractApi implements ObjectApiInterface, FilterableApiIn
     }
 
     /**
+     * Finalize a project.
+     *
+     * @link https://fr.textmaster.com/documentation#projects-finalize-a-project
+     *
+     * @param string $projectId
+     *
+     * @return array
+     */
+    public function finalize($projectId)
+    {
+        return $this->put($this->getPath($projectId).'/finalize');
+    }
+
+    /**
      * Launch a project.
      *
      * @link https://www.textmaster.com/documentation#projects-launch-a-project-asynchronously

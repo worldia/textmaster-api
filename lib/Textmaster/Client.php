@@ -17,13 +17,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Textmaster\Api\ApiInterface;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
-use Textmaster\HttpClient\HttpClient;
 use Textmaster\HttpClient\HttpClientInterface;
 
 /**
  * PHP Textmaster client.
  *
- * @method Api\Author author()
+ * @method Api\ApiTemplate apiTemplate()
  * @method Api\Author authors()
  * @method Api\Billing billing()
  * @method Api\Bundle bundle()
@@ -80,7 +79,17 @@ class Client
     {
         $name = Inflector::singularize($name);
         $apis = [
-            'author', 'billing', 'bundle', 'category', 'expertise', 'language', 'locale', 'project', 'template', 'user',
+            'apiTemplate',
+            'author',
+            'billing',
+            'bundle',
+            'category',
+            'expertise',
+            'language',
+            'locale',
+            'project',
+            'template',
+            'user',
         ];
 
         if (!in_array($name, $apis, true)) {
@@ -93,7 +102,7 @@ class Client
     }
 
     /**
-     * @return HttpClient
+     * @return HttpClientInterface
      */
     public function getHttpClient()
     {
