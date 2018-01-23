@@ -36,6 +36,19 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'project_briefing' => 'Lorem ipsum...',
             'options' => ['language_level' => 'premium'],
             'textmasters' => ['55c3763e656462000b000027'],
+            'documents_statuses' => [
+                'in_creation'        => 0,
+                'waiting_assignment' => 2,
+                'in_progress'        => 0,
+                'in_review'          => 0,
+                'incomplete'         => 0,
+                'completed'          => 0,
+                'paused'             => 0,
+                'canceled'           => 0,
+                'quality_control'    => 0,
+                'copyscape'          => 0,
+                'counting_words'     => 1,
+            ],
         ];
         $updateValues = [
             'id' => '123456',
@@ -167,6 +180,19 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $briefing = 'Lorem ipsum...';
         $options = ['language_level' => 'premium'];
         $textmasters = ['55c3763e656462000b000027'];
+        $documentsStatuses = [
+            'in_creation'        => 0,
+            'waiting_assignment' => 2,
+            'in_progress'        => 0,
+            'in_review'          => 0,
+            'incomplete'         => 0,
+            'completed'          => 0,
+            'paused'             => 0,
+            'canceled'           => 0,
+            'quality_control'    => 0,
+            'copyscape'          => 0,
+            'counting_words'     => 1,
+        ];
 
         $values = [
             'id' => $id,
@@ -179,6 +205,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             'project_briefing' => $briefing,
             'options' => $options,
             'textmasters' => $textmasters,
+            'documents_statuses' => $documentsStatuses,
         ];
 
         $project = new Project($this->clientMock, $values);
@@ -193,6 +220,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($briefing, $project->getBriefing());
         $this->assertSame($options, $project->getOptions());
         $this->assertSame($textmasters, $project->getTextmasters());
+        $this->assertEquals(2, $project->getDocumentsStatuses()[DocumentInterface::STATUS_WAITING_ASSIGNMENT]);
+        $this->assertEquals(1, $project->getDocumentsStatuses()[DocumentInterface::STATUS_COUNTING_WORDS]);
     }
 
     /**
