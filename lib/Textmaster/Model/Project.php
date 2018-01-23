@@ -384,4 +384,12 @@ class Project extends AbstractObject implements ProjectInterface
     {
         return 'textmaster.project';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocumentsStatuses()
+    {
+        return $this->getProperty('documents_statuses');
+    }
 }

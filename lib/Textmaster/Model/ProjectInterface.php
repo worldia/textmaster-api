@@ -288,4 +288,12 @@ interface ProjectInterface extends AbstractObjectInterface
      * @return ProjectInterface
      */
     public function launch();
+
+    /**
+     * Get project documents statuses summary.
+     * @see https://eu.app.textmaster.com/api-documentation#projects-get-a-project
+     *
+     * @return int[]
+     */
+    public function getDocumentsStatuses();
 }
