@@ -22,8 +22,8 @@ class ChainedMappingProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetProperties()
     {
-        $providerMock1 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $providerMock2 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock1 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock2 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $providers = [$providerMock1, $providerMock2];
 
         $subjectMock = new MockTranslatable();
@@ -48,8 +48,8 @@ class ChainedMappingProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotGetProperties()
     {
-        $providerMock1 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $providerMock2 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock1 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock2 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $providers = [$providerMock1, $providerMock2];
 
         $subjectMock = new MockTranslatable();

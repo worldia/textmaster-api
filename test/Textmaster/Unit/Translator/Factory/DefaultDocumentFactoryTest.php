@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Translator\Factory;
 
+use Textmaster\Client;
 use Textmaster\Model\Project;
 use Textmaster\Translator\Factory\DefaultDocumentFactory;
 
@@ -21,8 +22,9 @@ class DefaultDocumentFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateDocument()
     {
-        $subjectMock = $this->getMock('SubjectInterface');
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->disableOriginalConstructor()->getMock();
+        $subjectMock = $this->createMock(\stdClass::class);
+        $clientMock = $this->getMockBuilder(Client::class)
+            ->disableOriginalConstructor()->getMock();
 
         $project = new Project($clientMock, ['id' => '123456', 'name' => 'Project-1']);
         $params = [

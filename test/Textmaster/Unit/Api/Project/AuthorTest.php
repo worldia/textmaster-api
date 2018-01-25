@@ -86,13 +86,13 @@ class AuthorTest extends TestCase
      */
     protected function getApiMock()
     {
-        $httpClientMock = $this->getMock('Textmaster\HttpClient\HttpClientInterface');
+        $httpClientMock = $this->createMock('Textmaster\HttpClient\HttpClientInterface');
 
         $client = new \Textmaster\Client($httpClientMock);
 
-        return $this->getMockBuilder($this->getApiClass())
+        return $this->createMockBuilder($this->getApiClass())
             ->setMethods(['get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'])
             ->setConstructorArgs([$client, 1])
-            ->getMock();
+            ->createMock();
     }
 }

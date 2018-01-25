@@ -21,8 +21,8 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateSameLocale()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $listenerMock = $this->getMock('Gedmo\Translatable\TranslatableListener');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $listenerMock = $this->createMock('Gedmo\Translatable\TranslatableListener');
 
         $translatableMock = $this->getMock('Gedmo\Translatable\Translatable', ['getName', 'getId']);
         $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
@@ -60,13 +60,13 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateDifferentLocale()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $listenerMock = $this->getMock('Gedmo\Translatable\TranslatableListener');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $listenerMock = $this->createMock('Gedmo\Translatable\TranslatableListener');
 
         $translatableMock = $this->getMock('Gedmo\Translatable\Translatable', ['setLocale', 'getName', 'getId']);
         $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
         $projectMock = $this->getMock('Textmaster\Model\Project', ['getLanguageFrom'], [], '', false);
-        $entityManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $entityManagerMock = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
 
         $translatableMock->expects($this->once())
             ->method('getName')

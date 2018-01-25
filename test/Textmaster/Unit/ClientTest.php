@@ -101,6 +101,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $methods
         );
 
-        return $this->getMock('Textmaster\HttpClient\HttpClientInterface', $methods);
+        return $this->createMock('Textmaster\HttpClient\HttpClientInterface', $methods);
     }
 }
