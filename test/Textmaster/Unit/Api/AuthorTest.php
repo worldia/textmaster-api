@@ -45,7 +45,7 @@ class AuthorTest extends TestCase
 
     /**
      * @test
-     * @expectedException Textmaster\Exception\InvalidArgumentException
+     * @expectedException \Textmaster\Exception\InvalidArgumentException
      */
     public function shouldThrowExceptionWhenSearchingWithInvalidParameter()
     {

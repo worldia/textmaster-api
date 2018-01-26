@@ -11,6 +11,9 @@
 
 namespace Textmaster\Unit\Model;
 
+use Textmaster\Api\FilterableApiInterface;
+use Textmaster\Api\Project as ApiProject;
+use Textmaster\Client;
 use Textmaster\Model\AuthorInterface;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\Project;
@@ -26,16 +29,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $showValues = [
-            'id' => '123456',
-            'name' => 'Project 1',
-            'status' => ProjectInterface::STATUS_IN_CREATION,
-            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
-            'language_from' => 'fr',
-            'language_to' => 'en',
-            'category' => 'C014',
-            'project_briefing' => 'Lorem ipsum...',
-            'options' => ['language_level' => 'premium'],
-            'textmasters' => ['55c3763e656462000b000027'],
+            'id'                 => '123456',
+            'name'               => 'Project 1',
+            'status'             => ProjectInterface::STATUS_IN_CREATION,
+            'ctype'              => ProjectInterface::ACTIVITY_TRANSLATION,
+            'language_from'      => 'fr',
+            'language_to'        => 'en',
+            'category'           => 'C014',
+            'project_briefing'   => 'Lorem ipsum...',
+            'options'            => ['language_level' => 'premium'],
+            'textmasters'        => ['55c3763e656462000b000027'],
             'documents_statuses' => [
                 'in_creation'        => 0,
                 'waiting_assignment' => 2,
@@ -51,55 +54,63 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ],
         ];
         $updateValues = [
-            'id' => '123456',
-            'name' => 'Project Beta',
-            'status' => ProjectInterface::STATUS_IN_CREATION,
-            'ctype' => ProjectInterface::ACTIVITY_TRANSLATION,
-            'language_from' => 'fr',
-            'language_to' => 'en',
-            'category' => 'C014',
+            'id'               => '123456',
+            'name'             => 'Project Beta',
+            'status'           => ProjectInterface::STATUS_IN_CREATION,
+            'ctype'            => ProjectInterface::ACTIVITY_TRANSLATION,
+            'language_from'    => 'fr',
+            'language_to'      => 'en',
+            'category'         => 'C014',
             'project_briefing' => 'Lorem ipsum...',
-            'options' => ['language_level' => 'premium'],
-            'textmasters' => ['55c3763e656462000b000027'],
+            'options'          => ['language_level' => 'premium'],
+            'textmasters'      => ['55c3763e656462000b000027'],
         ];
 
         $authors = [
-            'total_pages' => 1,
-            'count' => 1,
-            'page' => 1,
-            'per_page' => 20,
+            'total_pages'   => 1,
+            'count'         => 1,
+            'page'          => 1,
+            'per_page'      => 20,
             'previous_page' => null,
-            'next_page' => null,
-            'my_authors' => [
+            'next_page'     => null,
+            'my_authors'    => [
                 [
-                    'description' => '',
-                    'tags' => [],
-                    'status' => 'my_textmaster',
-                    'id' => '5743286d28cf7f00031eb4c9',
-                    'author_id' => '55c3763e656462000b000027',
-                    'author_ref' => 'A-3727-TM',
-                    'author_name' => 'Test',
+                    'description'     => '',
+                    'tags'            => [],
+                    'status'          => 'my_textmaster',
+                    'id'              => '5743286d28cf7f00031eb4c9',
+                    'author_id'       => '55c3763e656462000b000027',
+                    'author_ref'      => 'A-3727-TM',
+                    'author_name'     => 'Test',
                     'latest_activity' => '2017-02-06 16:42:03 UTC',
-                    'created_at' => [
-                        'day' => 23,
+                    'created_at'      => [
+                        'day'   => 23,
                         'month' => 5,
-                        'year' => 2016,
-                        'full' => '2016-05-23 15:57:33 UTC',
+                        'year'  => 2016,
+                        'full'  => '2016-05-23 15:57:33 UTC',
                     ],
-                    'updated_at' => [
-                        'day' => 6,
+                    'updated_at'      => [
+                        'day'   => 6,
                         'month' => 2,
-                        'year' => 2017,
-                        'full' => '2017-02-06 14:06:41 UTC',
+                        'year'  => 2017,
+                        'full'  => '2017-02-06 14:06:41 UTC',
                     ]
                 ]
             ]
         ];
 
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch', 'authors'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
-        $projectAuthorApiMock = $this->getMock('Textmaster\Api\Project\Author', ['all'], [$clientMock, 123456]);
+        $clientMock = $this->createPartialMock(Client::class, ['api']);
+        $projectApiMock = $this->createPartialMock(
+            ApiProject::class,
+            ['show', 'update', 'launch', 'authors', 'documents'],
+            [$clientMock]
+        );
+        $documentApiMock = $this->createPartialMock(FilterableApiInterface::class, ['filter', 'getClient']);
+        $projectAuthorApiMock = $this->createPartialMock(
+            'Textmaster\Api\Project\Author',
+            ['all'],
+            [$clientMock, 123456]
+        );
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);
@@ -149,8 +160,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ->setBriefing($briefing)
             ->setOptions($options)
             ->setCallback($callback)
-            ->setTextmasters($textmasters)
-        ;
+            ->setTextmasters($textmasters);
 
         $this->assertNull($project->getId());
         $this->assertSame($name, $project->getName());
@@ -195,16 +205,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         ];
 
         $values = [
-            'id' => $id,
-            'name' => $name,
-            'status' => $status,
-            'ctype' => $activity,
-            'language_from' => $languageFrom,
-            'language_to' => $languageTo,
-            'category' => $category,
-            'project_briefing' => $briefing,
-            'options' => $options,
-            'textmasters' => $textmasters,
+            'id'                 => $id,
+            'name'               => $name,
+            'status'             => $status,
+            'ctype'              => $activity,
+            'language_from'      => $languageFrom,
+            'language_to'        => $languageTo,
+            'category'           => $category,
+            'project_briefing'   => $briefing,
+            'options'            => $options,
+            'textmasters'        => $textmasters,
             'documents_statuses' => $documentsStatuses,
         ];
 
@@ -325,7 +335,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function shouldBeImmutable()
     {
         $values = [
-            'id' => 'ID-IMMUTABLE',
+            'id'     => 'ID-IMMUTABLE',
             'status' => ProjectInterface::STATUS_IN_PROGRESS,
         ];
 
@@ -370,7 +380,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function shouldNotLaunchImmutable()
     {
         $values = [
-            'id' => 'ID-IMMUTABLE',
+            'id'     => 'ID-IMMUTABLE',
             'status' => ProjectInterface::STATUS_IN_PROGRESS,
         ];
 

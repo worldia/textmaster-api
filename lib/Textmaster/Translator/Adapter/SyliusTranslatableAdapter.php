@@ -11,15 +11,21 @@
 
 namespace Textmaster\Translator\Adapter;
 
+use Sylius\Component\Resource\Model\TranslatableInterface;
+
 class SyliusTranslatableAdapter extends AbstractDoctrineAdapter
 {
-    protected $interface = 'Sylius\Component\Resource\Model\TranslatableInterface';
+    protected $interface = TranslatableInterface::class;
 
     /**
-     * {@inheritdoc}
+     * @param TranslatableInterface $subject
+     * @param string                $language
+     * @param null                  $activity
+     *
+     * @return mixed
      */
     protected function getPropertyHolder($subject, $language, $activity = null)
     {
-        return $subject->getTranslation($language);
+        return $subject->getTranslations();
     }
 }
