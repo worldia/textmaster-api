@@ -21,12 +21,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreate()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock];
 
-        $subjectMock = $this->getMock('Subject');
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $subjectMock = $this->createMock(\stdClass::class);
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $mappingProviderMock->expects($this->once())
             ->method('getProperties')
@@ -49,13 +49,13 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateFromFactory()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $documentFactoryMock = $this->getMock('Textmaster\Translator\Factory\DocumentFactoryInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $documentFactoryMock = $this->createMock('Textmaster\Translator\Factory\DocumentFactoryInterface');
         $adapters = [$adapterMock];
 
-        $subjectMock = $this->getMock('Subject');
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $subjectMock = $this->createMock(\stdClass::class);
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $documentFactoryMock->expects($this->once())
             ->method('createDocument')
@@ -82,11 +82,11 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldComplete()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock];
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $adapterMock->expects($this->once())
             ->method('complete')
@@ -101,12 +101,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCompleteWhenTwoAdapters()
     {
-        $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock1 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $adapterMock2 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock1, $adapterMock2];
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $adapterMock1->expects($this->once())
             ->method('complete')
@@ -125,13 +125,13 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldGetSubjectFromDocument()
     {
-        $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock1 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $adapterMock2 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock1, $adapterMock2];
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
-        $subjectMock = $this->getMock('Subject');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
+        $subjectMock = $this->createMock(\stdClass::class);
 
         $adapterMock1->expects($this->once())
             ->method('getSubjectFromDocument')
@@ -150,15 +150,15 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCompareNoDiff()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock];
 
         $expected = [
             'original' => ['property1' => 'Original content'],
             'translated' => ['property1' => 'Translated content'],
         ];
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $adapterMock->expects($this->once())
             ->method('compare')
@@ -176,12 +176,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotCreate()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock];
 
-        $subjectMock = $this->getMock('Subject');
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $subjectMock = $this->createMock(\stdClass::class);
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $mappingProviderMock->expects($this->once())
             ->method('getProperties')
@@ -201,10 +201,10 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotComplete()
     {
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [];
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $translator = new Translator($adapters, $mappingProviderMock);
         $translator->complete($documentMock);
@@ -216,11 +216,11 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotCreateFromFactory()
     {
-        $adapterMock = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock];
 
-        $subjectMock = $this->getMock('Subject');
+        $subjectMock = $this->createMock(\stdClass::class);
 
         $translator = new Translator($adapters, $mappingProviderMock);
         $translator->push($subjectMock);
@@ -232,12 +232,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotGetSubjectFromDocument()
     {
-        $adapterMock1 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $adapterMock2 = $this->getMock('Textmaster\Translator\Adapter\AdapterInterface');
-        $mappingProviderMock = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $adapterMock1 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $adapterMock2 = $this->createMock('Textmaster\Translator\Adapter\AdapterInterface');
+        $mappingProviderMock = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $adapters = [$adapterMock1, $adapterMock2];
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
 
         $adapterMock1->expects($this->once())
             ->method('getSubjectFromDocument')

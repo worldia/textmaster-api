@@ -53,8 +53,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM',
-            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
+        $httpClient = new HttpClient(
+            'GFHunwb2DHw',
+            'gqvE7aZS_JM',
+            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']
+        );
         $client = new Client($httpClient);
         $this->api = $client->project();
     }
@@ -66,8 +69,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     {
         sleep(self::WAIT_TIME);
 
-        $httpClient = new HttpClient('GFHunwb2DHw', 'gqvE7aZS_JM',
-            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']);
+        $httpClient = new HttpClient(
+            'GFHunwb2DHw',
+            'gqvE7aZS_JM',
+            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']
+        );
         $client = new Client($httpClient);
         $api = $client->project();
 
