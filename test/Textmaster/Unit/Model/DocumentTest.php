@@ -60,10 +60,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'options' => ['language_level' => 'premium'],
         ];
 
-        $clientMock = $this->createMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->createMock();
-        $projectApiMock = $this->createMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
-        $documentApiMock = $this->createMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
-        $supportMessageApiMock = $this->createMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
+        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->getMock();
+        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
+        $documentApiMock = $this->getMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
+        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);

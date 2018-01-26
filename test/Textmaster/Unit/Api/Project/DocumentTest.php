@@ -304,9 +304,9 @@ class DocumentTest extends TestCase
 
         $client = new \Textmaster\Client($httpClientMock);
 
-        return $this->createMockBuilder($this->getApiClass())
+        return $this->getMockBuilder($this->getApiClass())
             ->setMethods(['get', 'post', 'postRaw', 'patch', 'delete', 'put', 'head'])
             ->setConstructorArgs([$client, 1])
-            ->createMock();
+            ->getMock();
     }
 }

@@ -153,16 +153,16 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Textmaster\HttpClient\HttpClientInterface
+     * @return HttpClientInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getHttpMock()
     {
-        return $this->createMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
+        return $this->getMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
     }
 
     protected function getHttpClientMock()
     {
-        $mock = $this->createMock('Guzzle\Http\Client', ['send']);
+        $mock = $this->getMock('Guzzle\Http\Client', ['send']);
         $mock
             ->expects($this->any())
             ->method('send');
