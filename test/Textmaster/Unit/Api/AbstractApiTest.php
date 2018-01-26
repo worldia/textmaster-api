@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Api;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Textmaster\Api\AbstractApi;
 use Textmaster\HttpClient\HttpClientInterface;
@@ -34,7 +35,8 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray, $api->get('/path', ['param1' => 'param1value'], ['header1' => 'header1value']));
+        $this->assertSame($expectedArray,
+            $api->get('/path', ['param1' => 'param1value'], ['header1' => 'header1value']));
     }
 
     /**
@@ -54,7 +56,8 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray, $api->post('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame($expectedArray,
+            $api->post('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
     }
 
     /**
@@ -74,7 +77,8 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray, $api->patch('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame($expectedArray,
+            $api->patch('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
     }
 
     /**
@@ -94,7 +98,8 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray, $api->put('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame($expectedArray,
+            $api->put('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
     }
 
     /**
@@ -114,7 +119,8 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray, $api->delete('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame($expectedArray,
+            $api->delete('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
     }
 
     /**
@@ -157,12 +163,16 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
      */
     protected function getHttpMock()
     {
-        return $this->getMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
+        return $this->createPartialMock(
+            'Textmaster\HttpClient\HttpClient',
+            ['get', 'post', 'put', 'delete', 'patch', 'request'],
+            [[], $this->getHttpClientMock()]
+        );
     }
 
     protected function getHttpClientMock()
     {
-        $mock = $this->getMock('Guzzle\Http\Client', ['send']);
+        $mock = $this->createPartialMock(Client::class, ['send']);
         $mock
             ->expects($this->any())
             ->method('send');

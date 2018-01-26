@@ -54,7 +54,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
     public function shouldCreate()
     {
         $managerRegistryMock = $this->createMock(ManagerRegistry::class);
-        $translatableMock = $this->getMock(
+        $translatableMock = $this->createPartialMock(
             TranslatableInterface::class,
             [
                 'getId',
@@ -69,8 +69,8 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         );
         $translationMock = new MockTranslation();
         $translationMock->setName('Translated name');
-        $documentMock = $this->getMock(Document::class, ['getProject', 'save'], [], '', false);
-        $projectMock = $this->getMock(Project::class, ['getLanguageFrom'], [], '', false);
+        $documentMock = $this->createPartialMock(Document::class, ['getProject', 'save'], [], '', false);
+        $projectMock = $this->createPartialMock(Project::class, ['getLanguageFrom'], [], '', false);
 
         $documentMock->expects($this->once())
             ->method('getProject')
@@ -103,7 +103,7 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
         $projectMock = $this->createMock('Textmaster\Model\ProjectInterface');
 
-        $translatableMock = $this->getMock(
+        $translatableMock = $this->createPartialMock(
             TranslatableInterface::class,
             [
                 'getId',

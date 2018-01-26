@@ -11,6 +11,9 @@
 
 namespace Textmaster\Unit\Model;
 
+use Textmaster\Api\Project;
+use Textmaster\Api\Project\Document\SupportMessage;
+use Textmaster\Client;
 use Textmaster\Model\Document;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
@@ -60,10 +63,10 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             'options' => ['language_level' => 'premium'],
         ];
 
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
-        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
+        $clientMock = $this->createPartialMock(Client::class, ['projects']);
+        $projectApiMock = $this->createPartialMock(Project::class, ['documents', 'show'], [$clientMock]);
+        $documentApiMock = $this->createPartialMock(Project\Document::class, ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
+        $supportMessageApiMock = $this->createPartialMock(SupportMessage::class, ['create'], [$clientMock], '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
