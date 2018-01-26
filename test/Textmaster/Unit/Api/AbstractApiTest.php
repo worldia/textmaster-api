@@ -35,8 +35,10 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray,
-            $api->get('/path', ['param1' => 'param1value'], ['header1' => 'header1value']));
+        $this->assertSame(
+            $expectedArray,
+            $api->get('/path', ['param1' => 'param1value'], ['header1' => 'header1value'])
+        );
     }
 
     /**
@@ -56,8 +58,10 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray,
-            $api->post('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame(
+            $expectedArray,
+            $api->post('/path', ['param1' => 'param1value'], ['option1' => 'option1value'])
+        );
     }
 
     /**
@@ -77,8 +81,10 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray,
-            $api->patch('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame(
+            $expectedArray,
+            $api->patch('/path', ['param1' => 'param1value'], ['option1' => 'option1value'])
+        );
     }
 
     /**
@@ -98,8 +104,10 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray,
-            $api->put('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame(
+            $expectedArray,
+            $api->put('/path', ['param1' => 'param1value'], ['option1' => 'option1value'])
+        );
     }
 
     /**
@@ -119,8 +127,10 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
 
         $api = $this->getAbstractApiObject($client);
 
-        $this->assertSame($expectedArray,
-            $api->delete('/path', ['param1' => 'param1value'], ['option1' => 'option1value']));
+        $this->assertSame(
+            $expectedArray,
+            $api->delete('/path', ['param1' => 'param1value'], ['option1' => 'option1value'])
+        );
     }
 
     /**

@@ -63,8 +63,10 @@ class GedmoTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
         $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $listenerMock = $this->createMock('Gedmo\Translatable\TranslatableListener');
 
-        $translatableMock = $this->createPartialMock('Gedmo\Translatable\Translatable',
-            ['setLocale', 'getName', 'getId']);
+        $translatableMock = $this->createPartialMock(
+            'Gedmo\Translatable\Translatable',
+            ['setLocale', 'getName', 'getId']
+        );
         $documentMock = $this->createPartialMock('Textmaster\Model\Document', ['getProject', 'save']);
         $projectMock = $this->createPartialMock('Textmaster\Model\Project', ['getLanguageFrom']);
         $entityManagerMock = $this->createMock('Doctrine\Common\Persistence\ObjectManager');

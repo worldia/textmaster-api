@@ -102,11 +102,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $clientMock = $this->createPartialMock(Client::class, ['api']);
         $projectApiMock = $this->createPartialMock(
             ApiProject::class,
-            ['show', 'update', 'launch', 'authors', 'documents'], [$clientMock]
+            ['show', 'update', 'launch', 'authors', 'documents'],
+            [$clientMock]
         );
         $documentApiMock = $this->createPartialMock(FilterableApiInterface::class, ['filter', 'getClient']);
-        $projectAuthorApiMock = $this->createPartialMock('Textmaster\Api\Project\Author', ['all'],
-            [$clientMock, 123456]);
+        $projectAuthorApiMock = $this->createPartialMock(
+            'Textmaster\Api\Project\Author',
+            ['all'],
+            [$clientMock, 123456]
+        );
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);
