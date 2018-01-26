@@ -10,7 +10,7 @@
         { "name": "Pierre Ducoudray", "email": "pducoudray@worldia.com" }
     ],
     "require": {
-        "php":                       ">=7.1",
+        "php":                       ">=5.6",
         "ext-curl":                  "*",
         "guzzlehttp/guzzle":         "^6.2",
         "pagerfanta/pagerfanta":     "^1.0",
@@ -20,7 +20,7 @@
         "phpunit/phpunit":           "~5.0",
         "friendsofphp/php-cs-fixer": "@stable",
         "symfony/http-foundation":   "^2.7|^3.0|^4.0",
-        "sylius/resource":           "@stable",
+        "sylius/resource":           "^0.19|^1.0",
         "doctrine/orm":              "^2.3",
         "gedmo/doctrine-extensions": "^2.4"
     },
