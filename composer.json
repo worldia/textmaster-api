@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "phpunit/phpunit":           "~5.0",
-        "friendsofphp/php-cs-fixer": "^1.11",
+        "friendsofphp/php-cs-fixer": "@stable",
         "symfony/http-foundation":   "^2.7|^3.0|^4.0",
         "sylius/resource":           "@stable",
         "doctrine/orm":              "^2.3",

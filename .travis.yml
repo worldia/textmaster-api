@@ -18,3 +18,4 @@ before_script:
 script:
   - composer validate
   - vendor/bin/phpunit
+  - vendor/bin/php-cs-fixer --rules=@PSR2 --dry-run -v fix
