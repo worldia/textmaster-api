@@ -19,6 +19,10 @@ use Textmaster\Model\ProjectInterface;
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
     protected $clientMock;
+
+    /**
+     * @var Project|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $projectApiMock;
 
     public function setUp()
@@ -96,10 +100,16 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch', 'authors'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
-        $projectAuthorApiMock = $this->getMock('Textmaster\Api\Project\Author', ['all'], [$clientMock, 123456]);
+        $clientMock = $this->createPartialMock('Textmaster\Client', ['api']);
+        $projectApiMock = $this->getMockBuilder('Textmaster\Api\Project')
+            ->setConstructorArgs([$clientMock])
+            ->setMethods(['show', 'update', 'launch', 'authors', 'documents'])
+            ->getMock();
+        $documentApiMock = $this->createPartialMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
+        $projectAuthorApiMock = $this->createPartialMock(
+            'Textmaster\Api\Project\Author',
+            ['all']
+        );
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);

@@ -11,6 +11,7 @@
 
 namespace Textmaster\Unit\Model;
 
+use Textmaster\Api;
 use Textmaster\Model\Document;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
@@ -61,9 +62,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         ];
 
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
-        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
+        $projectApiMock = $this->createPartialMock(Api\Project::class, ['documents', 'show']);
+        $documentApiMock = $this->createPartialMock(Api\Project\Document::class, ['show', 'update', 'complete', 'supportMessages']);
+        $supportMessageApiMock = $this->createPartialMock('Textmaster\Api\Project\Document\SupportMessage', ['create']);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
@@ -155,11 +156,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(DocumentInterface::STATUS_IN_CREATION, $document->getStatus());
         $this->assertSame(['content' => ['original_phrase' => 'Text to translate.']], $document->getOriginalContent());
         $this->assertSame('Translating instructions.', $document->getInstructions());
-
-        $expectedDate = new \DateTime('2016-06-09 10:37:40 UTC');
         $this->assertSame('20160609 10:37:40', $document->getCreatedAt()->format('Ymd H:i:s'));
-
-        $expectedDate = new \DateTime('2016-06-10 15:37:40 UTC');
         $this->assertSame('20160610 15:37:40', $document->getUpdatedAt()->format('Ymd H:i:s'));
     }
 
@@ -246,7 +243,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $projectMock = $this->getMock('Textmaster\Model\Project', ['getActivity'], [$this->clientMock]);
+        $projectMock = $this->createPartialMock('Textmaster\Model\Project', ['getActivity']);
         $projectMock->method('getActivity')
             ->willReturn(ProjectInterface::ACTIVITY_COPYWRITING);
 

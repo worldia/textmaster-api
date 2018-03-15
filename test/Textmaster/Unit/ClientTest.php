@@ -14,6 +14,7 @@ namespace Textmaster\Unit;
 use Textmaster\Client;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
+use Textmaster\HttpClient\HttpClientInterface;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,6 +31,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider getApiClassesProvider
+     *
+     * @param string $apiName
+     * @param string $class
      */
     public function shouldGetApiInstance($apiName, $class)
     {
@@ -41,6 +45,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider getApiClassesProvider
+     *
+     * @param string $apiName
+     * @param string $class
      */
     public function shouldGetMagicApiInstance($apiName, $class)
     {
@@ -94,6 +101,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @param array $methods
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|HttpClientInterface
+     */
     public function getHttpClientMock(array $methods = [])
     {
         $methods = array_merge(
@@ -101,6 +113,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $methods
         );
 
-        return $this->getMock('Textmaster\HttpClient\HttpClientInterface', $methods);
+        return $this->createPartialMock(HttpClientInterface::class, $methods);
     }
 }

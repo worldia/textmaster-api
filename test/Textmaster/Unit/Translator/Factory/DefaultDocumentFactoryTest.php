@@ -21,7 +21,7 @@ class DefaultDocumentFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreateDocument()
     {
-        $subjectMock = $this->getMock('SubjectInterface');
+        $subjectMock = $this->createMock(\stdClass::class);
         $clientMock = $this->getMockBuilder('Textmaster\Client')->disableOriginalConstructor()->getMock();
 
         $project = new Project($clientMock, ['id' => '123456', 'name' => 'Project-1']);

@@ -11,8 +11,10 @@
 
 namespace Textmaster\Unit\Api;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Textmaster\Api\AbstractApi;
+use Textmaster\HttpClient\HttpClient;
 use Textmaster\HttpClient\HttpClientInterface;
 
 class AbstractApiTest extends \PHPUnit_Framework_TestCase
@@ -153,16 +155,16 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Textmaster\HttpClient\HttpClientInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|HttpClientInterface
      */
     protected function getHttpMock()
     {
-        return $this->getMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
+        return $this->createMock(HttpClient::class);
     }
 
     protected function getHttpClientMock()
     {
-        $mock = $this->getMock('Guzzle\Http\Client', ['send']);
+        $mock = $this->createPartialMock(Client::class, ['send']);
         $mock
             ->expects($this->any())
             ->method('send');
