@@ -14,8 +14,9 @@ namespace Textmaster\Functional\Api;
 use Textmaster\Api\Author;
 use Textmaster\Client;
 use Textmaster\HttpClient\HttpClient;
+use PHPUnit\Framework\TestCase;
 
-class AuthorTest extends \PHPUnit_Framework_TestCase
+class AuthorTest extends TestCase
 {
     /**
      * Wait time between calls because the sandbox environment is not as fast as prod.

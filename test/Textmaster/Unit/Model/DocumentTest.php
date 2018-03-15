@@ -14,8 +14,9 @@ namespace Textmaster\Unit\Model;
 use Textmaster\Model\Document;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
+use PHPUnit\Framework\TestCase;
 
-class DocumentTest extends \PHPUnit_Framework_TestCase
+class DocumentTest extends TestCase
 {
     protected $clientMock;
 
@@ -61,9 +62,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         ];
 
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['projects'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
-        $supportMessageApiMock = $this->getMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
+        $projectApiMock = $this->createMock('Textmaster\Api\Project', ['documents', 'show'], [$clientMock]);
+        $documentApiMock = $this->createMock('Textmaster\Api\Project\Document', ['show', 'update', 'complete', 'supportMessages'], [$clientMock, $projectId], '', false);
+        $supportMessageApiMock = $this->createMock('Textmaster\Api\Project\Document\SupportMessage', ['create'], [$clientMock], '', false);
 
         $clientMock->method('projects')
             ->willReturn($projectApiMock);
@@ -246,7 +247,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $projectMock = $this->getMock('Textmaster\Model\Project', ['getActivity'], [$this->clientMock]);
+        $projectMock = $this->createMock('Textmaster\Model\Project', ['getActivity'], [$this->clientMock]);
         $projectMock->method('getActivity')
             ->willReturn(ProjectInterface::ACTIVITY_COPYWRITING);
 

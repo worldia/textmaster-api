@@ -300,7 +300,7 @@ class DocumentTest extends TestCase
      */
     protected function getApiMock()
     {
-        $httpClientMock = $this->getMock('Textmaster\HttpClient\HttpClientInterface');
+        $httpClientMock = $this->createMock('Textmaster\HttpClient\HttpClientInterface');
 
         $client = new \Textmaster\Client($httpClientMock);
 

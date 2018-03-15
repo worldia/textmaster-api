@@ -13,8 +13,9 @@ namespace Textmaster\Unit\Translator\Provider;
 
 use Textmaster\Translator\Provider\ArrayBasedMappingProvider;
 use Textmaster\Unit\Mock\MockTranslatable;
+use PHPUnit\Framework\TestCase;
 
-class ArrayBasedMappingProviderTest extends \PHPUnit_Framework_TestCase
+class ArrayBasedMappingProviderTest extends TestCase
 {
     /**
      * @test

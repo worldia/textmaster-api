@@ -14,8 +14,9 @@ namespace Textmaster\Unit\Api;
 use GuzzleHttp\Psr7\Response;
 use Textmaster\Api\AbstractApi;
 use Textmaster\HttpClient\HttpClientInterface;
+use PHPUnit\Framework\TestCase;
 
-class AbstractApiTest extends \PHPUnit_Framework_TestCase
+class AbstractApiTest extends TestCase
 {
     /**
      * @test
@@ -157,12 +158,12 @@ class AbstractApiTest extends \PHPUnit_Framework_TestCase
      */
     protected function getHttpMock()
     {
-        return $this->getMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
+        return $this->createMock('Textmaster\HttpClient\HttpClient', [], [[], $this->getHttpClientMock()]);
     }
 
     protected function getHttpClientMock()
     {
-        $mock = $this->getMock('Guzzle\Http\Client', ['send']);
+        $mock = $this->createMock('GuzzleHttp\Client', ['send']);
         $mock
             ->expects($this->any())
             ->method('send');

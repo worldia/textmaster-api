@@ -11,13 +11,15 @@
 
 namespace Textmaster\Unit\Api;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
 {
     abstract protected function getApiClass();
 
     protected function getApiMock()
     {
-        $httpClientMock = $this->getMock('Textmaster\HttpClient\HttpClientInterface');
+        $httpClientMock = $this->createMock('Textmaster\HttpClient\HttpClientInterface');
 
         $client = new \Textmaster\Client($httpClientMock);
 

@@ -14,8 +14,9 @@ namespace Textmaster\Functional;
 use Textmaster\Client;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\Manager;
+use PHPUnit\Framework\TestCase;
 
-class ManagerTest extends \PHPUnit_Framework_TestCase
+class ManagerTest extends TestCase
 {
     const TEST_PROJECT_ID = '57065757f41f44001100000e';
     const TEST_DOCUMENT_ID = '57065d0ef41f44000e00008d';

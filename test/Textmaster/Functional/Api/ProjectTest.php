@@ -16,8 +16,9 @@ use Textmaster\Client;
 use Textmaster\HttpClient\HttpClient;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\ProjectInterface;
+use PHPUnit\Framework\TestCase;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase
+class ProjectTest extends TestCase
 {
     /**
      * Wait time between calls because the sandbox environment is not as fast as prod.

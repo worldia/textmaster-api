@@ -14,19 +14,20 @@ namespace Textmaster\Unit\Translator\Adapter;
 use Textmaster\Model\ProjectInterface;
 use Textmaster\Translator\Adapter\SyliusTranslatableAdapter;
 use Textmaster\Unit\Mock\MockTranslation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group sylius
  */
-class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
+class SyliusTranslatableAdapterTest extends TestCase
 {
     /**
      * @test
      */
     public function shouldSupportTranslatable()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $translatableMock = $this->createMock('Sylius\Component\Resource\Model\TranslatableInterface');
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
 
         $this->assertTrue($adapter->supports($translatableMock));
@@ -37,8 +38,8 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotSupportNotTranslatable()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\NotTranslatableInterface');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $translatableMock = $this->createMock('Sylius\Component\Resource\Model\NotTranslatableInterface');
         $adapter = new SyliusTranslatableAdapter($managerRegistryMock);
 
         $this->assertFalse($adapter->supports($translatableMock));
@@ -49,12 +50,12 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCreate()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $translatableMock = $this->createMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
         $translationMock->setName('Translated name');
-        $documentMock = $this->getMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
-        $projectMock = $this->getMock('Textmaster\Model\Project', ['getLanguageFrom'], [], '', false);
+        $documentMock = $this->createMock('Textmaster\Model\Document', ['getProject', 'save'], [], '', false);
+        $projectMock = $this->createMock('Textmaster\Model\Project', ['getLanguageFrom'], [], '', false);
 
         $documentMock->expects($this->once())
             ->method('getProject')
@@ -80,14 +81,14 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldComplete()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $objectManagerMock = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $objectRepositoryMock = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
 
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
-        $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
+        $projectMock = $this->createMock('Textmaster\Model\ProjectInterface');
 
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
+        $translatableMock = $this->createMock('Sylius\Component\Resource\Model\TranslatableInterface', ['getId', 'getTranslation', 'hasTranslation', 'setCurrentLocale', 'setFallbackLocale', 'getTranslations', 'addTranslation', 'removeTranslation']);
         $translationMock = new MockTranslation();
 
         $documentMock->expects($this->once())
@@ -136,13 +137,13 @@ class SyliusTranslatableAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldCompare()
     {
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $managerRegistryMock = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
 
-        $objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $documentMock = $this->getMock('Textmaster\Model\DocumentInterface');
-        $translatableMock = $this->getMock('Sylius\Component\Resource\Model\TranslatableInterface');
-        $projectMock = $this->getMock('Textmaster\Model\ProjectInterface');
+        $objectManagerMock = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $objectRepositoryMock = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $documentMock = $this->createMock('Textmaster\Model\DocumentInterface');
+        $translatableMock = $this->createMock('Sylius\Component\Resource\Model\TranslatableInterface');
+        $projectMock = $this->createMock('Textmaster\Model\ProjectInterface');
         $enTranslationMock = new MockTranslation();
         $enTranslationMock->setName('Name to translate');
         $frTranslationMock = new MockTranslation();
