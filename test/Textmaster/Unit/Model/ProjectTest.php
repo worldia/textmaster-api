@@ -15,8 +15,9 @@ use Textmaster\Model\AuthorInterface;
 use Textmaster\Model\DocumentInterface;
 use Textmaster\Model\Project;
 use Textmaster\Model\ProjectInterface;
+use PHPUnit\Framework\TestCase;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase
+class ProjectTest extends TestCase
 {
     protected $clientMock;
     protected $projectApiMock;
@@ -97,9 +98,9 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         ];
 
         $clientMock = $this->getMockBuilder('Textmaster\Client')->setMethods(['api'])->disableOriginalConstructor()->getMock();
-        $projectApiMock = $this->getMock('Textmaster\Api\Project', ['show', 'update', 'launch', 'authors'], [$clientMock]);
-        $documentApiMock = $this->getMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
-        $projectAuthorApiMock = $this->getMock('Textmaster\Api\Project\Author', ['all'], [$clientMock, 123456]);
+        $projectApiMock = $this->createMock('Textmaster\Api\Project', ['show', 'update', 'launch', 'authors'], [$clientMock]);
+        $documentApiMock = $this->createMock('Textmaster\Api\FilterableApiInterface', ['filter', 'getClient']);
+        $projectAuthorApiMock = $this->createMock('Textmaster\Api\Project\Author', ['all'], [$clientMock, 123456]);
 
         $clientMock->method('api')
             ->willReturn($projectApiMock);

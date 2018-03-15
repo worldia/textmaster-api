@@ -14,16 +14,17 @@ namespace Textmaster\Unit\Translator\Provider;
 use Textmaster\Exception\MappingNotFoundException;
 use Textmaster\Translator\Provider\ChainedMappingProvider;
 use Textmaster\Unit\Mock\MockTranslatable;
+use PHPUnit\Framework\TestCase;
 
-class ChainedMappingProviderTest extends \PHPUnit_Framework_TestCase
+class ChainedMappingProviderTest extends TestCase
 {
     /**
      * @test
      */
     public function shouldGetProperties()
     {
-        $providerMock1 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $providerMock2 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock1 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock2 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $providers = [$providerMock1, $providerMock2];
 
         $subjectMock = new MockTranslatable();
@@ -48,8 +49,8 @@ class ChainedMappingProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotGetProperties()
     {
-        $providerMock1 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
-        $providerMock2 = $this->getMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock1 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
+        $providerMock2 = $this->createMock('Textmaster\Translator\Provider\MappingProviderInterface');
         $providers = [$providerMock1, $providerMock2];
 
         $subjectMock = new MockTranslatable();

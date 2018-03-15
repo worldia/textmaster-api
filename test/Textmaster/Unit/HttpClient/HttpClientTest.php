@@ -12,8 +12,9 @@
 namespace Textmaster\Unit\HttpClient;
 
 use Textmaster\HttpClient\HttpClient;
+use PHPUnit\Framework\TestCase;
 
-class HttpClientTest extends \PHPUnit_Framework_TestCase
+class HttpClientTest extends TestCase
 {
     /**
      * @test

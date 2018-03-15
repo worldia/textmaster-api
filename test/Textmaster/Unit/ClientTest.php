@@ -14,8 +14,9 @@ namespace Textmaster\Unit;
 use Textmaster\Client;
 use Textmaster\Exception\BadMethodCallException;
 use Textmaster\Exception\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     /**
      * @test
@@ -101,6 +102,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $methods
         );
 
-        return $this->getMock('Textmaster\HttpClient\HttpClientInterface', $methods);
+        return $this->createMock('Textmaster\HttpClient\HttpClientInterface', $methods);
     }
 }

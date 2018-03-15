@@ -13,15 +13,16 @@ namespace Textmaster\Unit\Translator\Factory;
 
 use Textmaster\Model\Project;
 use Textmaster\Translator\Factory\DefaultDocumentFactory;
+use PHPUnit\Framework\TestCase;
 
-class DefaultDocumentFactoryTest extends \PHPUnit_Framework_TestCase
+class DefaultDocumentFactoryTest extends TestCase
 {
     /**
      * @test
      */
     public function shouldCreateDocument()
     {
-        $subjectMock = $this->getMock('SubjectInterface');
+        $subjectMock = $this->createMock('SubjectInterface');
         $clientMock = $this->getMockBuilder('Textmaster\Client')->disableOriginalConstructor()->getMock();
 
         $project = new Project($clientMock, ['id' => '123456', 'name' => 'Project-1']);
