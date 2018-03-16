@@ -24,7 +24,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $parameters = ['a' => 'b'];
         $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->get($path, $parameters, $headers);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
@@ -39,7 +39,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $body = ['a' => 'b'];
         $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->post($path, $body, $headers);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
@@ -52,7 +52,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
     {
         $path = '/some/path';
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->post($path);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
@@ -67,7 +67,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $body = ['a' => 'b'];
         $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->patch($path, $body, $headers);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
@@ -82,7 +82,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $body = ['a' => 'b'];
         $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->delete($path, $body, $headers);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));
@@ -96,7 +96,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $path = '/some/path';
         $headers = ['c' => 'd'];
 
-        $httpClient = new HttpClient('key', 'secret', []);
+        $httpClient = new HttpClient('http://key:secret@api.sandbox.textmaster.com/v1');
         $response = $httpClient->put($path, $headers);
 
         $this->assertTrue(in_array('Psr\Http\Message\ResponseInterface', class_implements($response), true));

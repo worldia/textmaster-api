@@ -36,11 +36,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $httpClient = new HttpClient(
-            'GFHunwb2DHw',
-            'gqvE7aZS_JM',
-            ['base_uri' => 'http://api.sandbox.textmaster.com/%s']
-        );
+        $httpClient = new HttpClient('http://GFHunwb2DHw:gqvE7aZS_JM@api.sandbox.textmaster.com/v1');
         $client = new Client($httpClient);
         $this->api = $client->author();
     }
