@@ -38,8 +38,9 @@ class HttpClient implements HttpClientInterface
      * @var array
      */
     protected $options = [
-        'base_uri' => 'http://api.textmaster.com/%s',
-        'api_version' => 'v1',
+        'key' => null,
+        'secret' => null,
+        'base_uri' => 'http://api.textmaster.com/v1',
         'user_agent' => 'textmaster-api (http://github.com/worldia/textmaster-api)',
     ];
 
@@ -56,29 +57,28 @@ class HttpClient implements HttpClientInterface
     /**
      * HttpClient constructor.
      *
-     * @param string $key
-     * @param string $secret
-     * @param array  $options
+     * @param string $dsn
      */
-    public function __construct($key, $secret, array $options = [])
+    public function __construct($dsn)
     {
-        $options = array_merge($this->options, $options);
+        $this->parseDsn($dsn);
+
+        $options = $this->options;
 
         $stack = new HandlerStack();
         $stack->setHandler(new CurlHandler());
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($key, $secret, $options) {
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) use ($options) {
             $date = new \DateTime('now', new \DateTimeZone('UTC'));
 
             return $request
                 ->withHeader('User-Agent', $options['user_agent'])
-                ->withHeader('Apikey', $key)
+                ->withHeader('Apikey', $options['key'])
                 ->withHeader('Date', $date->format('Y-m-d H:i:s'))
-                ->withHeader('Signature', sha1($secret.$date->format('Y-m-d H:i:s')))
+                ->withHeader('Signature', sha1($options['secret'].$date->format('Y-m-d H:i:s')))
             ;
         }));
 
-        $this->options = array_merge($this->options, $options, ['handler' => $stack]);
-        $this->options['base_uri'] = sprintf($this->options['base_uri'], $this->options['api_version']);
+        $this->options = array_merge($options, ['handler' => $stack]);
 
         $this->client = new Client($this->options);
     }
@@ -192,5 +192,23 @@ class HttpClient implements HttpClientInterface
     protected function getFinalPath($path)
     {
         return $this->client->getConfig('base_uri')->getPath().'/'.$path;
+    }
+
+    /**
+     * @param string $dsn
+     */
+    private function parseDsn($dsn)
+    {
+        $scheme = parse_url($dsn, PHP_URL_SCHEME);
+        $host = parse_url($dsn, PHP_URL_HOST);
+        $path = parse_url($dsn, PHP_URL_PATH);
+
+        parse_str(parse_url($dsn, PHP_URL_QUERY), $options);
+
+        $this->options = array_merge($this->options, $options);
+
+        $this->options['base_uri'] = sprintf('%s://%s%s', $scheme, $host, $path);
+        $this->options['key'] = urldecode(parse_url($dsn, PHP_URL_USER));
+        $this->options['secret'] = urldecode(parse_url($dsn, PHP_URL_PASS));
     }
 }
