@@ -27,6 +27,6 @@ class ApiTemplate extends AbstractApi
      */
     public function all()
     {
-        return $this->get('clients/api_templates');
+        return $this->get('clients/api_templates?per_page=100');
     }
 }
