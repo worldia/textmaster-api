@@ -4,3 +4,4 @@ composer.lock
 composer.phar
 vendor/*
 docker-compose.yml
+.idea
