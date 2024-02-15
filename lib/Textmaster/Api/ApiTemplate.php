@@ -25,8 +25,13 @@ class ApiTemplate extends AbstractApi
      *
      * @return array
      */
-    public function all()
+    public function all($page = 1, $perPage = 100)
     {
-        return $this->get('clients/api_templates?per_page=100');
+        $query = http_build_query([
+            'page' => $page,
+            'per_page' => $perPage,
+        ]);
+
+        return $this->get('clients/api_templates?' . $query);
     }
 }
